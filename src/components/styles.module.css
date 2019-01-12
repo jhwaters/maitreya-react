@@ -1,0 +1,86 @@
+.Wrapper {
+  display: grid;
+  grid-template-areas:
+    "title title"
+    "sidebar preview"
+    "status status";
+  grid-template-columns: 10rem 1fr;
+  height: 100vh;
+  width: 100vw;
+}
+
+.CustomTitleBar {
+  grid-template-rows: 25px 1fr 25px;
+}
+
+.NoTitleBar {
+  grid-template-areas:
+    "sidebar preview"
+    "status status";
+  grid-template-rows: 1fr 25px;  
+}
+
+.PreviewOuter {
+  grid-area: preview;
+  flex: 1 1 100%;
+  overflow: scroll;
+}
+
+.PreviewInner {
+  height: 130vh;
+}
+
+.SideBar {
+  grid-area: sidebar;
+  display: flex;
+  flex: 1 1 100%;
+  flex-direction: column;
+  background-image: linear-gradient(90deg, #ddd, 5%, #f0f0f0, 95%, #ddd);
+  overflow: clip;
+  padding: 0.5rem;
+}
+
+.SideBar > * {
+  margin: 0.2rem 0;
+}
+
+.StatusBar {
+  grid-area: status;
+  background-image: linear-gradient(0deg, #ddd, 25%, #f0f0f0, 99%, #ddd);
+  border-top: 1px solid #ccc;
+  padding-left: 0.5rem;
+  display: flex;
+  flex: 1 1 100%;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.TitleBar {
+  grid-area: title;
+  background-image: linear-gradient(0deg, #ddd, 25%, #ededed, 99%, #ddd);
+  display: flex;
+  flex: 1 1 100%;
+  align-items: center;
+  justify-content: center;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+
+
+@media print {
+  .Wrapper {
+    display: block;
+  }
+  
+  .SideBar {
+    display: none;
+  }
+
+  .StatusBar {
+    display: none;
+  }
+
+  .TitleBar {
+    display: none;
+  }
+}

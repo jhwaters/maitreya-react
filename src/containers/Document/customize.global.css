@@ -1,0 +1,23 @@
+#document {
+  font-family: var(--docFont, serif);
+  font-size: 3.5mm;
+}
+
+blockquote {
+  font-style: italic;
+}
+
+/* TABLES */
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  font-weight: bold;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 0.2rem 0.5rem;
+}
