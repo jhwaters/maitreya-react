@@ -90,7 +90,7 @@ class Heading extends React.Component {
     this.closeEditor();
   }
 
-  reset = () => this.setState({...defaultState, editorOpen: true})
+  reset = () => this.setState({edits: defaultState.edits})
 
   addRow = () => {
     const left = [...this.state.edits.left, '']

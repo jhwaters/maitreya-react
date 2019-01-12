@@ -19,12 +19,10 @@ import {
 } from '../actions/document'
 
 import * as exampleQuestions from '../questions/examplequestions'
-import * as demoGenerators from '../questions/testinggenerators'
+import { QuadTreePlotTest } from '../questions/testinggenerators'
 
 let questionBank = exampleQuestions
-for (const q in demoGenerators) {
-  questionBank['___' + q] = demoGenerators[q]
-}
+questionBank['___QuadTree'] = QuadTreePlotTest
 
 ReactModal.setAppElement('#root')
 
