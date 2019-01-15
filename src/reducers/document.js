@@ -27,12 +27,17 @@ const document = function(state=initialState, action) {
         order: [...state.order, action.payload.id],
       }
     case CLEAR_ALL:
-      return initialState;
+      return {
+        ...state,
+        questions: {},
+        order: [],
+      }
     case REMOVE_LAST:
       const lastId = state.order[-1]
       let newquestions = {...state.questions}
       delete newquestions[lastId]
       return {
+        ...state,
         questions: newquestions,
         order: state.order.slice(0,-1),
       }

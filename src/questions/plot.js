@@ -172,7 +172,7 @@ class Plot extends SvgElement {
 		maxD2=0.06,
 		roundTo=6,
 		style={
-			stroke: 'purple',
+			stroke: 'rgb(200,0,100)',
 			strokeOpacity: '0.8',
 			strokeWidth: '0.2',
 			fill: 'none',

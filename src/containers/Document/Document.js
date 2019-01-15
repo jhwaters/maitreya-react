@@ -4,7 +4,6 @@ import {
   AnswerKey,
   Heading,
   QuestionSet,
-  StyleBlock,
 } from './components'
 
 

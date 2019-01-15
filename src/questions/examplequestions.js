@@ -279,7 +279,7 @@ export class FindIntervals extends QGen {
     }
 
     diagram.add(new Path(points.map(p => [p.x, p.y]), {'style': {
-			stroke: 'purple',
+			stroke: 'rgb(200,0,100)',
 			strokeOpacity: '0.8',
 			strokeWidth: '0.2',
 			fill: 'none',
