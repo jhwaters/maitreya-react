@@ -6,9 +6,9 @@ class Wrapper extends React.Component {
   render() {
     let classNames = [styles.Wrapper]
     if (this.props.customTitleBar) {
-      classNames.push(styles.CustomTitleBar)
+      classNames.push(styles.WrapperTitleBar)
     } else {
-      classNames.push(styles.NoTitleBar)
+      classNames.push(styles.WrapperTopBar)
     }
 
     return (

@@ -10,7 +10,7 @@ const examples = [
   latexfmt`**Markdown:** a~n~ = a~n-1~ + 2n - 1 , **LaTeX:** $$a_n = a_{n-1} + 2n - 1$$`,
   latexfmt`There are two ways to write a fraction: $$\frac{24}{18} = {4 \over 3}$$`,
   latexfmt`$$V = \frac{4}{3}\pi r^3$$`,
-  latexfmt`Use the quadratic formula to solve for $$x$$: $$$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$$`,
+  latexfmt`Use the quadratic formula to solve for $$x$$: $$$x = { -b \pm \sqrt{b^2 - 4ac} \over 2a }$$$`,
   latexfmt`Determine the measure of $$\angle{ABC}$$.`,
   latexfmt`$$\overline{AB}$$ is a line segment. $$\overleftrightarrow{CD}$$ is a line. $$\overrightarrow{EF}$$ is a ray.`,
   latexfmt`Prove that $$\triangle{ABC} \cong \triangle{DEF}$$.`,
@@ -43,14 +43,13 @@ const RenderExample = ({text}) => {
   return (
     <>
     <pre style={{
-      backgroundColor: 'rgba(255,255,255,0.7)',
+      backgroundColor: 'rgba(55,55,55,0.01)',
       border: '1px solid rgba(0,0,0,0.5)',
       padding: '0.5rem',
       overflowX: 'scroll',
     }}>{text}</pre>
     <span style={{
       fontFamily: 'serif', 
-      fontSize: '1rem',
       paddingLeft: '0.5rem',
     }}>{renderElement(text)}</span>
     </>
@@ -59,21 +58,16 @@ const RenderExample = ({text}) => {
 
 const Notes = (props) => {
   return (
-    <div style={{fontSize: '0.85rem'}} onClick={props.onRequestClose}>
-      
+    <div style={{fontSize: '0.8rem'}} onClick={props.onRequestClose}>
       <p>Double-click the header to edit it.</p>
-      <p>
-        Change the document's font by changing the default Serif font 
-        in your browser's settings.
-      </p>
       <p>Make sure the scale is set to 100% when printing.</p>
       <p>Create a PDF by selecting "Save to PDF" when printing.</p>
 
       <h4>Issues</h4>
-      <p>Everything past the first page gets cut off currently.</p>
+      <p>Questions past the first page get cut off.</p>
       <p>
-        The Rational Graph question sometimes takes too long to generate.
-        This is because the graphing algorithm is dumb.
+        The plotting algorithm (used on the Rational Graph question) 
+        needs to be improved.
       </p>
 
       <h4>Text formatting for custom questions</h4>

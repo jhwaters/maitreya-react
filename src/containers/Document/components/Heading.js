@@ -1,61 +1,99 @@
 import React from 'react'
 import ReactModal from 'react-modal';
-import styles from './styles.module.css'
-import renderElement from '../../../renderMethods/renderElement'
 
-const defaultState = {
-  left: [
-    'Assignment',
-    '',
-  ],
 
-  right: [
-    'Name: _________________________',
-    'Date: _________________________'
-  ],
-
-  editorOpen: false,
-
-  edits: {
-    left: [
-      'Assignment',
-      '',
-    ],
-  
-    right: [
-      'Name: _________________________',
-      'Date: _________________________'
-    ],
+const parseHeading = (text) => {
+  let result = []
+  let current = ''
+  let isBlank = false
+  let i = 0
+  let blankSize = 0
+  while (i < text.length) {
+    const nextChar = text[i]
+    if (isBlank) {
+      if (nextChar === '_') {
+        blankSize += 1
+      } else {
+        result.push({type: 'blank', size: blankSize})
+        current = nextChar
+        isBlank = false
+        blankSize = 0
+      }
+    } else {
+      if (nextChar === '_') {
+        if (current !== '') {
+          result.push({type: 'text', text: current})
+          current = ''
+        }
+        isBlank = true
+        blankSize = 1
+      } else {
+        current += nextChar
+      }
+    }
+    i += 1
   }
+  if (isBlank) {
+    if (blankSize > 0) {
+      result.push({type: 'blank', size: blankSize})
+    }
+  } else {
+    if (current !== '') {
+      result.push({type: 'text', text: current})
+    }
+  }
+  return result
 }
 
-
-
-const HeadingElement = (content, i) => {
-  let toRender = content
-  if (typeof toRender === 'string') {
-    toRender = {type: 'text', data: content}
-  }
+const HeadingBlank = ({size=3}) => {
+  const w = `${1 + 3*(size - 1)}cm`
   return (
-    <div key={`heading-L${i}`}>
-      {renderElement(toRender)}
-    </div>
+    <div className='HeadingBlank' style={{width: w}} />
   )
 }
+
+const renderHeading = (text) => {
+  const parts = parseHeading(text)
+  return (
+    <>
+      {parts.map((p, i) => {
+        if (p.type === 'text') {
+          return (
+            <div key={`heading-${text}-${i}`} style={{display: 'inline-block'}}>{p.text}</div>
+          )
+        } else {
+          return (
+            <HeadingBlank key={`heading-${text}-${i}`} size={p.size}/>
+          )
+        }
+      })}
+    </>
+  )
+}
+
+
+const defaultHeading = () => ([
+  {left: 'Assignment', right: 'Name ___'},
+  {left: '', right: 'Date __'},
+])
 
 class Heading extends React.Component {
   constructor(props) {
     super(props)
-    this.state = defaultState
-    //this.edits = {...defaultHeading};
+    this.state = {
+      heading: defaultHeading(),
+      edits: defaultHeading(),
+      editorOpen: false, 
+    }
+    //this.clearEdits()
   }
 
   clearEdits = () => {
-    const edits = {
-      left: [...this.state.left],
-      right: [...this.state.right],
+    let newEdits = []
+    for (const row of this.state.heading) {
+      newEdits.push({...row})
     }
-    this.setState({edits: edits})
+    this.setState({edits: newEdits})
   }
 
   openEditor = () => {
@@ -67,93 +105,129 @@ class Heading extends React.Component {
     this.setState({editorOpen: false})
   }
 
-  updateEdits(lr, i, content) {
-    if (!this.state.edits[lr]) {
-      this.state.edits[lr] = {}
-    }
-    this.state.edits[lr][i] = content
+  updateElement(row, lr, content) {
+    let newRow = {...this.state.edits[row]}
+    newRow[lr] = content
+    let edits = [...this.state.edits]
+    edits[row] = newRow
+    this.setState({edits: edits})
   }
 
   updateHeading = () => {
-    const left = [...this.state.edits.left];
-    const right = [...this.state.edits.right];
-    this.setState({left: left, right: right})
+    let newHeading = []
+    for (const row of this.state.edits) {
+      newHeading.push({...row})
+    }
+    //if (newHeading.length === 0) {
+    //  newHeading.push({left: '', right: ''})
+    //}
+    this.setState({heading: newHeading});
   }
 
   applyEdits = () => {
     this.updateHeading();
-    this.clearEdits();
   }
 
   applyAndClose = () => {
-    this.applyEdits()
+    this.applyEdits();
     this.closeEditor();
   }
 
-  reset = () => this.setState({edits: defaultState.edits})
+  resetToDefault = () => {
+    this.setState({heading: defaultHeading()})
+    this.closeEditor()
+  }
 
   addRow = () => {
-    const left = [...this.state.edits.left, '']
-    const right = [...this.state.edits.right, '']
-    this.setState({edits: {left: left, right: right}})
+    this.setState({edits: [...this.state.edits, {left: '', right: ''}]})
   }
 
   removeRow = () => {
-    const left = this.state.edits.left.slice(0,-1)
-    const right = this.state.edits.right.slice(0,-1)
-    this.setState({edits: {left: left, right: right}})
+    this.setState({edits: this.state.edits.slice(0,-1)})
   }
 
   render() {
 
     return (
       <>
-      <div className={styles.Heading} onDoubleClick={this.openEditor} title="Double-click to edit">
-        <div className={styles.HeadingL}>
-          {this.state.left.map((elem, i) => HeadingElement(elem, i))}
-        </div>
-        <div className={styles.HeadingR}>
-          {this.state.right.map((elem, i) => HeadingElement(elem, i))}
-        </div>
-      </div>
+      {this.state.heading.length === 0
+      ? (
+        <div className='Heading' onDoubleClick={this.openEditor} title="Double-click to edit"
+          style={{height: '5mm'}}
+        ></div>
+      ) : (
+        <table className='Heading' onDoubleClick={this.openEditor} title="Double-click to edit">
+          <tbody>
+            {this.state.heading.map((row, i) => {
+              const {left, right} = row
+              return (
+                <tr key={`heading-row-${i+1}`}>
+                  <td>{renderHeading(left)}</td>
+                  <td>{renderHeading(right)}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      )}
+
+
       <ReactModal
         isOpen={this.state.editorOpen}
         onRequestClose={this.closeEditor}
       >
         <div>
-          <div style={{display: 'flex', flexDirection: 'row'}}>
-            <div>
-              {this.state.edits.left.map((elem, i) => {
+          <h4>Edit Document Heading:</h4>
+          <p>Underscores will be translated into an underlined blank space.</p>
+
+          <table style={{width: '100%'}}>
+            <tbody>
+              {this.state.edits.map((row, i) => {
+                const {left, right} = row
                 return (
-                  <div key={`editing-left-${i}`}>
-                    <input defaultValue={elem} 
-                      onChange={(evt) => this.updateEdits('left', i, evt.target.value)}
-                      style={{fontSize:'1.2rem', fontFamily: 'serif'}}
-                      size='25'></input>
-                  </div>
+                  <tr key={`edit-heading-row-${i+1}`}>
+                    <td style={{border: '2px dotted rgba(0,0,0,0.2)'}}>
+                      <input defaultValue={left} 
+                        onChange={(evt) => this.updateElement(i, 'left', evt.target.value)}
+                        style={{
+                          fontSize:'1rem', 
+                          fontWeight: 'bold',
+                          fontFamily: 'var(--docFontFamily, serif)', 
+                          width: '100%',
+                          border: 'none',
+                        }}
+                        ></input>
+                    </td>
+                    <td style={{border: '2px dotted rgba(0,0,0,0.2)'}}>
+                      <input defaultValue={right} 
+                        onChange={(evt) => this.updateElement(i, 'right', evt.target.value)}
+                        style={{
+                          fontSize:'1rem', 
+                          fontWeight: 'bold',
+                          fontFamily: 'var(--docFontFamily, serif)', 
+                          width: '100%',
+                          border: 'none',
+                        }}
+                        ></input>
+                    </td>
+                  </tr>
                 )
               })}
-            </div>
-            <div>
-              {this.state.edits.right.map((elem, i) => {
-                return (
-                  <div key={`editing-right-${i}`}>
-                    <input defaultValue={elem} 
-                    onChange={(evt) => this.updateEdits('right', i, evt.target.value)}
-                    style={{fontSize:'1.2rem', fontFamily: 'serif', textAlign: 'right'}}
-                    size='40'></input>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-          <div>
+            </tbody>
+          </table>
+
+          <div style={{marginTop: '5mm'}}>
             <button onClick={this.removeRow}>-</button>
             <button onClick={this.addRow}>+</button>
           </div>
-          <button onClick={this.applyAndClose}>Apply</button>
-          <button onClick={this.closeEditor}>Cancel</button>
-          <button onClick={this.reset}>Reset</button>
+
+          <div style={{marginTop: '1cm', bottom: '0'}}>
+            <button onClick={this.applyAndClose}>Apply</button>
+            <button onClick={this.closeEditor}>Cancel</button>
+            <button onClick={this.resetToDefault}>Reset</button>
+          </div>
+          
+          
         </div>
       </ReactModal>
       </>

@@ -26,10 +26,13 @@ const splitWithDelimiters = function(text, delimiters) {
 
 
 const reactRenderMathInText = function(text, options) {
-  let optionsCopy = {delimiters: [
-    {left: options.math.delimiters.display.left, right: options.math.delimiters.display.right, display: true},
-    {left: options.math.delimiters.inline.left, right: options.math.delimiters.inline.right, display: false},
-  ]}
+  let optionsCopy = {
+    delimiters: [
+      {left: options.math.delimiters.display.left, right: options.math.delimiters.display.right, display: true},
+      {left: options.math.delimiters.inline.left, right: options.math.delimiters.inline.right, display: false},
+    ],
+    errorCallback: console.error,
+  }
   const data = splitWithDelimiters(text, optionsCopy.delimiters);
   let children = []
   for (let i = 0; i < data.length; i++) {

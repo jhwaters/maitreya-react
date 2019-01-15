@@ -87,7 +87,7 @@ class CustomQuestion extends React.Component {
                 style={inputStyle}
                 onChange={this.updateInstructions}
                 ></textarea>
-              <span style={{marginLeft: '1rem', fontFamily: 'serif'}}>{renderElement(this.state.preview.instructions)}</span>
+              <span style={{marginLeft: '1rem', fontFamily: 'var(--docFontFamily, serif)'}}>{renderElement(this.state.preview.instructions)}</span>
               <br />
               Question: <br/>
               <textarea 
@@ -95,7 +95,7 @@ class CustomQuestion extends React.Component {
                 onChange={this.updateQuestion}
                 style={inputStyle}
               ></textarea>
-              <span style={{marginLeft: '1rem', fontFamily: 'serif'}}>{renderElement(this.state.preview.question)}</span>
+              <span style={{marginLeft: '1rem', fontFamily: 'var(--docFontFamily, serif)'}}>{renderElement(this.state.preview.question)}</span>
               <br/>
               Answer: <br/>
               <textarea 
@@ -103,7 +103,7 @@ class CustomQuestion extends React.Component {
                 style={inputStyle}
                 onChange={this.updateAnswer}
                 ></textarea>
-              <span style={{marginLeft: '1rem', fontFamily: 'serif'}}>{renderElement(this.state.preview.answer)}</span>
+              <span style={{marginLeft: '1rem', fontFamily: 'var(--docFontFamily, serif)'}}>{renderElement(this.state.preview.answer)}</span>
             </div>
             <br />
             <button onClick={this.addQuestion}>Add to Assignment</button>

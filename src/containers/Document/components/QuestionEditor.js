@@ -1,6 +1,5 @@
 import React from 'react'
 import renderElement from '../../../renderMethods/renderElement'
-import './katex.global.css'
 
 const Props = {
   areaNames: [],

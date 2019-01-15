@@ -1,0 +1,100 @@
+@import '~katex/dist/katex.min.css';
+@import './papercss.global.css';
+@import './variables.global.css';
+@import './fonts.global.css';
+
+.katex-html {
+  white-space: nowrap;
+  font-size: 3.5mm;
+}
+
+blockquote {
+  font-style: italic;
+}
+
+/* TABLES */
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  font-weight: bold;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 0.2rem 0.5rem;
+}
+
+.Document {
+  font-family: var(--docFontFamily, serif);
+  font-size: var(--docFontSize, 3.5mm);
+}
+
+.AnswerChoices {
+  padding-left: 5mm;
+}
+
+.AnswerChoice {
+  margin: 2mm;
+}
+
+.QuestionWrapper {
+  display: grid;
+  grid-gap: 0.5rem;
+  margin-bottom: 0.8rem;
+  break-inside: avoid;
+}
+
+/*
+.QuestionWrapper:hover {
+  outline: 1px solid var(--editColorSolid);
+}
+.QuestionWrapper > div:hover {
+  background-color: var(--editColorFaded);
+  outline: 1px solid var(--editColorSolid);
+}
+*/
+
+.QuestionSet > ol {
+  padding-left: 5mm;
+}
+
+.Heading {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 1.05rem;
+  font-weight: bold;
+}
+
+.HeadingBlank {
+  display: inline-block;
+  border-bottom: 1px solid black; 
+  margin: 0 1mm;
+}
+
+.Heading > tbody > tr > * {
+  border: none;
+}
+
+.Heading > tbody > tr > td {
+  padding-bottom: 3mm;
+}
+
+.Heading > tbody > tr > td:first {
+  text-align: left;
+}
+
+.Heading > tbody > tr > td:last-child {
+  text-align: right;
+  right: 0;
+}
+
+.Heading:hover {
+  outline: 1px solid var(--editColorSolid);
+}
+
+.Editor:hover {
+  outline: none;
+}

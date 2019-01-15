@@ -1,7 +1,5 @@
 import React from 'react'
 import renderElement from '../../../renderMethods/renderElement'
-import styles from './styles.module.css'
-
 
 const renderAnswer = (question) => {
   const options = question.options || {}
@@ -23,14 +21,12 @@ const renderAnswer = (question) => {
 
 const AnswerKey  = ({
   questions,
-  options={},
+  startNumbering=1,
 }) => {
-
-  const startNumbering = options.startNumbering || 1
   return (
-    <div className={styles.AnswerKey}>
+    <div className='AnswerKey'>
       <h4>Answer Key</h4>
-      <ol>
+      <ol start={startNumbering}>
         {questions.map((q, i) => <li key={`A${i+startNumbering}`}>{renderAnswer(q)}</li>)}
       </ol>
     </div>

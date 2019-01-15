@@ -1,9 +1,14 @@
+
+
 const initialState = {
   titleBarStyle: 'default',
 }
 
 const config = function(state=initialState, action) {
-  return state
+  switch(action.type) {
+    default:
+      return state
+  }
 }
 
 export default config

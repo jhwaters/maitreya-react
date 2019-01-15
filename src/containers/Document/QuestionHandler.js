@@ -81,7 +81,7 @@ class QuestionHandler extends React.Component {
 
 
     return (
-      <div onDoubleClick={this.openEditor} title="Double-click to edit">
+      <div onDoubleClick={this.openEditor}>
         <QuestionWrapper areas={areas} style={wrapperStyle} options={options} />
 
         <ReactModal

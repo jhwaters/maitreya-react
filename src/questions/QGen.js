@@ -1,5 +1,6 @@
 //import math from 'mathjs'
 import { Randomizer } from './random_randomjs'
+import { defaultsDeep } from 'lodash'
 
 let randomSeedGenerator = new Randomizer()
 
@@ -13,8 +14,7 @@ class QGen {
 
   static register() {
     let result = {name: this.name}
-    Object.assign(result, this.info)
-    return result
+    return {...result, ...this.info}
   }
 
   getOptions() {
@@ -39,8 +39,12 @@ class QGen {
     this.randomizer.seed(seed)
   }
 
+  _getParams() {
+    return defaultsDeep({}, this.params, this.constructor.defaults)
+  }
+
   output() {
-    const out = this.generate(this.params)
+    const out = this.generate(this._getParams())
     let generated = {}
     for (const k in out) {
       generated[k] = this._handleSpecialCases(k, out[k])

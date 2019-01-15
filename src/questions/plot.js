@@ -30,13 +30,13 @@ function makesrange(min, max, step=1, anchor) {
 }
 
 
-class SvgElement extends DomElement {
+export class SvgElement extends DomElement {
 	add(elem) {
 		this.children.push(elem)
 	}
 }
 
-class Canvas extends SvgElement {
+export class Canvas extends SvgElement {
 	constructor(x0, y0, x1, y1, props={}, ...children) {
 		super('svg', props, ...children)
 		this.x0 = x0
@@ -63,13 +63,13 @@ class Canvas extends SvgElement {
 	}
 }
 
-class Layer extends SvgElement {
+export class Layer extends SvgElement {
 	constructor(props={}, children=[]) {
 		super('g', props, ...children)
 	}
 }
 
-class CartesianPlane extends Canvas {
+export class CartesianPlane extends Canvas {
 
 	viewBox() {
 		const a = this.x0 - this.extra
@@ -146,7 +146,7 @@ function makeGrid(x0, y0, x1, y1) {
 	])
 }
 
-class Path extends SvgElement {
+export class Path extends SvgElement {
 	constructor(points, props={}, roundTo=6) {
 		super('path', props, [])
 		this.points = points
@@ -192,7 +192,7 @@ class Plot extends SvgElement {
 	}
 }
 
-class Parametric extends Plot {
+export class Parametric extends Plot {
 	constructor({ymap = t => t, xmap = t => t, domain=[-10, 10]}={}, props={}) {
 		super(props)
 		this.ymap = ymap
@@ -321,7 +321,7 @@ class Parametric extends Plot {
 }
 
 
-class Piecewise extends Plot {
+export class Piecewise extends Plot {
 	constructor(pieces, props) {
 		/*
 			pieces should be objects with ymap and domain, e.g. 
@@ -348,7 +348,7 @@ class Piecewise extends Plot {
 }
 
 
-class Rational extends Plot {
+export class Rational extends Plot {
 	constructor(rationalProps, props={}) {
 		super(props)
 		this.roots = rationalProps.roots || []
@@ -449,7 +449,7 @@ class Rational extends Plot {
 
 const defaultMarker = (p) => new SvgElement('circle', {cx: p.x, cy: p.y, r: '0.1'})
 
-class QuadTreePlot extends SvgElement {
+export class QuadTreePlot extends SvgElement {
 	constructor(quadtreeprops, {marker=defaultMarker, style={fill: 'rgba(200,0,100,0.6)'}}={}) {
 		super('g', {style: style})
 		this.marker = marker
@@ -464,15 +464,4 @@ class QuadTreePlot extends SvgElement {
 		console.log(points)
 		return [...points.map(p => this.marker(p))]
 	}
-}
-
-
-export {
-	Canvas,
-	CartesianPlane,
-	Parametric,
-	Piecewise,
-	QuadTreePlot,
-	Rational,
-	SvgElement,
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import VegaLite from 'react-vega-lite'
 
 
-const renderVega = function(data, options) {
+const renderVegaLite = function(data, options) {
   const wrapper = options.wrapper || {}
   return (
     <div {...wrapper}>
@@ -12,4 +12,4 @@ const renderVega = function(data, options) {
 }
 
 
-export default renderVega
+export { renderVegaLite }
