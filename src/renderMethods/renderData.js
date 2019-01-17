@@ -2,7 +2,7 @@ import renderHtml from './renderHtml'
 import renderText from './renderText'
 import renderMarkdown from './renderMarkdown'
 import renderJsonML from './renderJsonML'
-import { renderVegaLite } from './renderVega'
+import { renderVega, renderVegaLite } from './renderVega'
 
 const renderAnswerChoices = (data, options) => renderJsonML(
   ['ol', {className: 'AnswerChoices', type: 'a'}, 
@@ -17,6 +17,7 @@ const renderData = function(data, type, options={}) {
     case 'jsonml': return renderJsonML(data, options)
     case 'html': return renderHtml(data, options)
     case 'markdown': return renderMarkdown(data, options)
+    case 'vega': return renderVega(data, options['vega'] | {})
     case 'vega-lite': return renderVegaLite(data, options['vega-lite'] | {})
     default:
       console.log('no rendering method for ', type)

@@ -1,55 +1,5 @@
 import Random from 'random-js'
 
-/*
-let _RANDOM_ENGINE = new Random(Random.engines.mt19937().autoSeed())
-
-function setRandomSeed(seed) {
-  _RANDOM_ENGINE.seed(seed)
-}
-
-function choice(arr) {
-  return Random.pick(_RANDOM_ENGINE, arr)
-}
-
-function randint(min, max) {
-  return Random.integer(min, max)(_RANDOM_ENGINE)
-}
-
-function sample(pop, size) {
-  return Random.sample(_RANDOM_ENGINE, pop, size)
-}
-
-function shuffle(arr, first) {
-  if (first) {
-    let shuffled = Random.shuffle(_RANDOM_ENGINE, arr.slice(1))
-    return [...shuffled.slice(0,first), arr[0], ...shuffled.slice(first)]
-  } else {
-    return Random.shuffle(_RANDOM_ENGINE, arr)
-  }
-}
-
-function poprandom(arr) {
-  const i = randint(0, arr.length-1)
-  const v = arr[i]
-  const remaining = [...arr.slice(0,i), ...arr.slice(i+1)]
-  return {
-    popped: v,
-    remaining: remaining
-  }
-}
-
-
-export {
-  choice,
-  randint,
-  sample,
-  shuffle,
-  setRandomSeed,
-  poprandom,
-}
-*/
-
-
 export class Randomizer {
   constructor(seed=null) {
     this.seed = seed

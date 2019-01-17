@@ -1,15 +1,21 @@
 import React from 'react'
+import Vega from 'react-vega'
 import VegaLite from 'react-vega-lite'
 
 
-const renderVegaLite = function(data, options) {
-  const wrapper = options.wrapper || {}
+const renderVega = function(data, options) {
   return (
-    <div {...wrapper}>
-      <VegaLite spec={data} />
-    </div>
+    <Vega spec={data} />
   )
 }
 
+const renderVegaLite = function(data, options) {
+  //const wrapper = options.wrapper || {}
+  return <VegaLite spec={data} />
+}
 
-export { renderVegaLite }
+
+export { 
+  renderVega,
+  renderVegaLite,
+}

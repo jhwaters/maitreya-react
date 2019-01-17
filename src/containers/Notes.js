@@ -49,7 +49,7 @@ const RenderExample = ({text}) => {
       overflowX: 'scroll',
     }}>{text}</pre>
     <span style={{
-      fontFamily: 'serif', 
+      fontFamily: 'var(--docFontFamily, serif)', 
       paddingLeft: '0.5rem',
     }}>{renderElement(text)}</span>
     </>
@@ -58,7 +58,11 @@ const RenderExample = ({text}) => {
 
 const Notes = (props) => {
   return (
-    <div style={{fontSize: '0.8rem'}} onClick={props.onRequestClose}>
+    <>
+    <style>{`
+.katex-html { font-size: 12pt; }
+    `}</style>
+    <div style={{fontSize: '11pt'}} onClick={props.onRequestClose}>
       <p>Double-click the header to edit it.</p>
       <p>Make sure the scale is set to 100% when printing.</p>
       <p>Create a PDF by selecting "Save to PDF" when printing.</p>
@@ -89,6 +93,7 @@ const Notes = (props) => {
         </div>
       ))}
     </div>
+    </>
   )
 }
 

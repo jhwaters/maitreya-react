@@ -11,9 +11,10 @@ import {
 } from '../components'
 import Document from './Document'
 import CustomQuestion from './CustomQuestion'
-import {
-  SettingsPage, 
+import SettingsPage, {
   FontSelect,
+  PageMargins,
+  PreviewZoom,
   StartNumbering
 } from './Settings'
 import Notes from './Notes'
@@ -29,13 +30,16 @@ import {
   clearAll,
 } from '../actions/document'
 
-import * as exampleQuestions from '../questions/examplequestions'
-//import * as demoGenerators from '../questions/testinggenerators'
+import {
+  examplequestions, demogenerators
+} from '../questions'
 
-let questionBank = exampleQuestions
-//for (const q in demoGenerators) {
-//  questionBank['___' + q] = demoGenerators[q]
-//}
+
+let questionBank = {
+  ...examplequestions,
+  //...demogenerators,
+}
+
 
 ReactModal.setAppElement('#root')
 
@@ -119,6 +123,8 @@ class AppWrapper extends React.Component {
           <button onClick={window.print}>Print</button>
           <div style={{width: '1cm'}}></div>
           <span style={{margin: '0 0.5rem'}}>Font:</span><FontSelect />
+          <span style={{margin: '0 0.5rem'}}>Margins:</span><PageMargins />
+          <span style={{margin: '0 0.5rem'}}>Zoom:</span><PreviewZoom />
           <span style={{margin: '0 0.5rem'}}>Start Numbering At:</span><StartNumbering />
         </TopBar>
         <Preview>
@@ -134,11 +140,14 @@ class AppWrapper extends React.Component {
           <button onClick={this.openCustomEditor}>Custom Question</button>
           <button onClick={this.props.removeLast}>Remove Last</button>
           <button onClick={this.props.clearAll}>Clear All</button>
+          <button onClick={() => this.setState({modal: 'Settings'})}>Settings</button>
           <div style={{height: '1in'}}></div>
           <button onClick={() => this.setState({modal: 'Notes'})}>Notes</button>
           <CheckStateButton>Log State</CheckStateButton>
         </SideBar>
         <StatusBar><span>{this.props.statusBar}</span></StatusBar>
+
+
 
         <ReactModal
           isOpen={this.state.modal === 'CustomEditor'}
@@ -148,12 +157,6 @@ class AppWrapper extends React.Component {
           <button onClick={this.closeModal}>Cancel</button>
         </ReactModal>
 
-        <ReactModal
-          isOpen={this.state.modal === 'Notes'}
-          onRequestClose={this.closeModal}
-        >
-          <Notes onRequestClose={this.closeModal} />
-        </ReactModal>
 
         <ReactModal
           isOpen={this.state.modal === 'Settings'}
@@ -161,6 +164,14 @@ class AppWrapper extends React.Component {
         >
           <SettingsPage onRequestClose={this.closeModal}/>
           <button onClick={this.closeModal}>Close</button>
+        </ReactModal>
+
+
+        <ReactModal
+          isOpen={this.state.modal === 'Notes'}
+          onRequestClose={this.closeModal}
+        >
+          <Notes onRequestClose={this.closeModal} />
         </ReactModal>
 
       </Wrapper>

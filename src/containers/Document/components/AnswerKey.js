@@ -6,8 +6,12 @@ const renderAnswer = (question) => {
   const generated = question.generated || {}
   let answer = 'no answer provided'
   if (generated.choices) {
-    if (generated.answerIndex !== undefined) {
-      answer = 'abcde'[generated.answerIndex]
+    if (generated.choices.answerIndex !== undefined) {
+      if (Array.isArray(generated.choices.answerIndex)) {
+        answer = generated.choices.answerIndex.map(i => 'abcdef'[i]).join(', ')
+      } else {
+        answer = 'abcde'[generated.choices.answerIndex]
+      }
     } else if (generated.answer) {
       answer = generated.answer
     }

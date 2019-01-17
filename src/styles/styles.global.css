@@ -5,7 +5,7 @@
 
 .katex-html {
   white-space: nowrap;
-  font-size: 3.5mm;
+  font-size: var(--docFontMathSize, var(--docFontSize, 3.5mm));
 }
 
 blockquote {

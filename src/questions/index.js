@@ -1,5 +1,7 @@
-import factorQuadratic from './factorQuadratic'
+import * as examplequestions from './examplequestions'
+import * as demogenerators from './demogenerators'
 
 export {
-  factorQuadratic
+  examplequestions,
+  demogenerators,
 }

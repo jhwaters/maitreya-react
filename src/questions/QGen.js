@@ -1,5 +1,5 @@
 //import math from 'mathjs'
-import { Randomizer } from './random_randomjs'
+import { Randomizer } from './tools/random_randomjs'
 import { defaultsDeep } from 'lodash'
 
 let randomSeedGenerator = new Randomizer()

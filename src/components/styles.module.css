@@ -28,8 +28,10 @@
   overflow: scroll;
 }
 
-.PreviewInner {
-  height: 130vh;
+@media screen {
+  .PreviewInner {
+    transform: var(--previewZoom);
+  }
 }
 
 .SideBar {
@@ -99,7 +101,6 @@
   bottom: auto;
   top: auto;
 }
-
 
 @media print {
   .Wrapper {

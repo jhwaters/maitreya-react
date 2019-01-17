@@ -9,9 +9,10 @@ const initialState = {
   questions: {},
   order: [],
   settings: {
-    fontFamily: 'PT Serif',
-    fontSize: '9pt',
+    fontFamily: 'Lora',
+    fontSize: '8pt',
     startNumbering: 1,
+    pageMargins: '10mm',
   },
 }
 

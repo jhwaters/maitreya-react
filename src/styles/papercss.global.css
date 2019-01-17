@@ -20,7 +20,21 @@ div.letter.landscape .sheet { width: 280mm; height: 215mm }
 div.legal            .sheet { width: 216mm; height: 356mm }
 div.legal.landscape  .sheet { width: 357mm; height: 215mm }
 
+/*
+div.A3               .sheet { width: 297mm; }
+div.A3.landscape     .sheet { width: 420mm; }
+div.A4               .sheet { width: 210mm; }
+div.A4.landscape     .sheet { width: 297mm; }
+div.A5               .sheet { width: 148mm; }
+div.A5.landscape     .sheet { width: 210mm; }
+div.letter           .sheet { width: 216mm; }
+div.letter.landscape .sheet { width: 280mm; }
+div.legal            .sheet { width: 216mm; }
+div.legal.landscape  .sheet { width: 357mm; }
+*/
+
 /** Padding area **/
+.sheet.padding-5mm { padding: 5mm }
 .sheet.padding-10mm { padding: 10mm }
 .sheet.padding-15mm { padding: 15mm }
 .sheet.padding-20mm { padding: 20mm }
@@ -28,7 +42,7 @@ div.legal.landscape  .sheet { width: 357mm; height: 215mm }
 
 /** For screen preview **/
 @media screen {
-  html, body { background-color: #aaa }
+  html, body { background-color: #aaa; }
   .sheet {
     background: white;
     box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);

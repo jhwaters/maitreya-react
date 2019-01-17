@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { updateDocumentSettings } from '../../actions/document'
 
-const MarginOptions = ['10mm', '15mm', '20mm', '25mm']
+const MarginOptions = ['5mm', '10mm', '15mm', '20mm']
 
 
 class SetPageMargins extends React.Component {
@@ -11,10 +11,12 @@ class SetPageMargins extends React.Component {
     this.selection = React.createRef()
   }
 
-  setPageMargins = () {
+  setPageMargins = () => {
     const marginSize = this.selection.current.value
+    if (marginSize) {
+      this.props.updateDocumentSettings({pageMargins: marginSize})
+    }
   }
-
 
 
   renderOptions() {
@@ -34,7 +36,7 @@ class SetPageMargins extends React.Component {
       return (
         <>
         <select ref={this.selection}
-          default={this.props.default}
+          defaultValue={this.props.default}
           >
           {this.renderOptions()}
         </select>
@@ -45,7 +47,7 @@ class SetPageMargins extends React.Component {
       return (
         <select ref={this.selection}
           onChange={this.setPageMargins}
-          default={this.props.default}
+          defaultValue={this.props.default}
           >
           {this.renderOptions()}
         </select>
@@ -57,7 +59,7 @@ class SetPageMargins extends React.Component {
 
 
 const mapStateToProps = state => ({
-  default: state.document.settings.pageMargin
+  default: state.document.settings.pageMargins
 })
 const mapDispatchToProps = dispatch => ({
   updateDocumentSettings: (settings) => dispatch(updateDocumentSettings(settings))

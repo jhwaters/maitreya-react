@@ -1,6 +1,7 @@
 :root {
   --docFontFamily: 'pt serif';
   --docFontSize: 9pt;
+  --docFontMathSize: 9pt;
   --editColorSolid: rgba(0,200,120,0.5);
   --editColorFaded: rgba(0,200,120,0.05);
 }
