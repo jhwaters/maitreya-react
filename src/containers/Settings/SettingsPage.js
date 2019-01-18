@@ -1,8 +1,9 @@
 import React from 'react'
 import AddLocalFont from './AddLocalFont'
-import FontSelect from './FontSelect'
-import PageMargins from './PageMargins'
-import StartNumbering from './StartNumbering'
+//import FontFamily from './FontSelect'
+//import FontSize from './FontSize'
+//import PageMargins from './PageMargins'
+//import StartNumbering from './StartNumbering'
 
 import styles from './styles.module.css'
 
@@ -16,10 +17,6 @@ export const SettingsPage = (props) => {
       <div>
       Font Name: <AddLocalFont>Add To List</AddLocalFont> (You will then need to select it from the menu)
       </div>
-      <p>
-        Try to use a font with easily distinguised characters.
-        In particular, I, J, l and 1 can be difficult to tell apart.
-      </p>
     </div>
   )
   /*

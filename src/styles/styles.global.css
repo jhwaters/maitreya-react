@@ -1,100 +1,53 @@
 @import '~katex/dist/katex.min.css';
-@import './papercss.global.css';
-@import './variables.global.css';
 @import './fonts.global.css';
+@import './variables.global.css';
+@import './papercss.global.css';
+@import './document.global.css';
 
-.katex-html {
-  white-space: nowrap;
-  font-size: var(--docFontMathSize, var(--docFontSize, 3.5mm));
+
+
+body {
+  font-family: var(--ui-font-family), sans-serif;
 }
 
-blockquote {
-  font-style: italic;
+button, input, select {
+  border-radius: 4px;
+  border-color: #ccc;
+  border-width: 1px;
+  border-style: solid;
+  background-color: white;
+  color: black;
+  font-family: var(--ui-font-family);
+  margin: 1px;
+  font-size: 0.9rem;
 }
 
-/* TABLES */
-
-table {
-  border-collapse: collapse;
+button:hover, input:hover, select:hover {
+  color: black;
+  border-color: #999;
 }
 
-th {
-  font-weight: bold;
-}
-
-th, td {
-  border: 1px solid black;
-  padding: 0.2rem 0.5rem;
-}
-
-.Document {
-  font-family: var(--docFontFamily, serif);
-  font-size: var(--docFontSize, 3.5mm);
-}
-
-.AnswerChoices {
-  padding-left: 5mm;
-}
-
-.AnswerChoice {
-  margin: 2mm;
-}
-
-.QuestionWrapper {
-  display: grid;
-  grid-gap: 0.5rem;
-  margin-bottom: 0.8rem;
-  break-inside: avoid;
-}
-
-/*
-.QuestionWrapper:hover {
-  outline: 1px solid var(--editColorSolid);
-}
-.QuestionWrapper > div:hover {
-  background-color: var(--editColorFaded);
-  outline: 1px solid var(--editColorSolid);
-}
-*/
-
-.QuestionSet > ol {
-  padding-left: 5mm;
-}
-
-.Heading {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 1.05rem;
-  font-weight: bold;
-}
-
-.HeadingBlank {
-  display: inline-block;
-  border-bottom: 1px solid black; 
-  margin: 0 1mm;
-}
-
-.Heading > tbody > tr > * {
-  border: none;
-}
-
-.Heading > tbody > tr > td {
-  padding-bottom: 3mm;
-}
-
-.Heading > tbody > tr > td:first {
-  text-align: left;
-}
-
-.Heading > tbody > tr > td:last-child {
-  text-align: right;
-  right: 0;
-}
-
-.Heading:hover {
-  outline: 1px solid var(--editColorSolid);
-}
-
-.Editor:hover {
+button:focus, input:focus, select:focus {
   outline: none;
 }
+
+button:active, input:active, select:active {
+  outline: none;
+}
+
+button {
+  background-image: linear-gradient(white, 50%, #f5f5f5);
+}
+
+button:hover {
+  background-image: linear-gradient(white, 50%, #eee);
+}
+
+button:active {
+  color: white;
+  border-color: black;
+  background-image: linear-gradient(0deg, #27f, 50%, #05f);
+}
+
+
+

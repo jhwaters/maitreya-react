@@ -12,7 +12,8 @@ import {
 import Document from './Document'
 import CustomQuestion from './CustomQuestion'
 import SettingsPage, {
-  FontSelect,
+  FontFamilySelect,
+  FontSizeSelect,
   PageMargins,
   PreviewZoom,
   StartNumbering
@@ -35,10 +36,15 @@ import {
 } from '../questions'
 
 
-let questionBank = {
-  ...examplequestions,
-  //...demogenerators,
+let questionBank = {}
+for (const q in examplequestions) {
+  const n = examplequestions[q].register().name
+  questionBank[n] = examplequestions[q]
 }
+//for (const q in demogenerators) {
+//  const n = `_ ${demogenerators[q].register().name}`
+//  questionBank[n] = demogenerators[q]
+//}
 
 
 ReactModal.setAppElement('#root')
@@ -80,31 +86,22 @@ class AppWrapper extends React.Component {
   openRpcTest = () => this.setState({modal: 'RpcTest'})
   openCustomEditor = () => this.setState({modal: 'CustomEditor'})
   openSettings = () => this.setState({modal: 'Settings'})
-
-  //changeQuestionTypeSelection = (evt) => this.setState({selected: evt.target.value})
-
+  
   renderQuestionList() {
     const sortfunc = (a, b) => {
-      const aName = this.props.questionTypes[a].register().name.toUpperCase()
-      const bName = this.props.questionTypes[b].register().name.toUpperCase()
-      if (aName < bName) {
-        return -1
-      }
-      if (aName > bName) {
-        return 1
-      }
+      const A = a.toUpperCase(), B = b.toUpperCase()
+      if (A > B) return 1
+      if (A < B) return -1
       return 0
     }
 
-    const qlist = Object.keys(this.props.questionTypes).sort(sortfunc)
-
-    return qlist.map(k => {
+    return Object.keys(this.props.questionTypes).sort(sortfunc).map(k => {
       const register = this.props.questionTypes[k].register()
       return (
         <option key={`qtype${k}`} 
           title={register.description}
           value={k} >
-          {register.name}
+          {k}
         </option>
       )
     })
@@ -122,7 +119,7 @@ class AppWrapper extends React.Component {
         <TopBar>
           <button onClick={window.print}>Print</button>
           <div style={{width: '1cm'}}></div>
-          <span style={{margin: '0 0.5rem'}}>Font:</span><FontSelect />
+          <span style={{margin: '0 0.5rem'}}>Font:</span><FontFamilySelect /><FontSizeSelect />
           <span style={{margin: '0 0.5rem'}}>Margins:</span><PageMargins />
           <span style={{margin: '0 0.5rem'}}>Zoom:</span><PreviewZoom />
           <span style={{margin: '0 0.5rem'}}>Start Numbering At:</span><StartNumbering />

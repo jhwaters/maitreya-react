@@ -10,7 +10,7 @@ class AddLocalFont extends React.Component {
 
   addFont = () => {
     const fontName = this.input.current.value
-    this.props.addLocalFont({name: fontName})
+    this.props.addLocalFont({family: fontName})
   }
 
   render() {

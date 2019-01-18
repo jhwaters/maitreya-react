@@ -543,7 +543,7 @@ export class RationalRootTheorem extends QGen {
     const question = '$$y = ' + f.toLatex() + '$$'
     
     return {
-      instructions: 'Work in progress',
+      instructions: "Work in progress",
       question: question,
     }
   }

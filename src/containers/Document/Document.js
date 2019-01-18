@@ -7,7 +7,6 @@ import {
   QuestionSet,
 } from './components'
 
-
 class Document extends React.Component {
   constructor(props) {
     super(props)

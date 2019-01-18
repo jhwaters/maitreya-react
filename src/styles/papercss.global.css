@@ -46,7 +46,7 @@ div.legal.landscape  .sheet { width: 357mm; }
   .sheet {
     background: white;
     box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
-    margin: 5mm auto;
+    margin: 3mm auto;
   }
 }
 

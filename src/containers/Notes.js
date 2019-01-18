@@ -59,10 +59,9 @@ const RenderExample = ({text}) => {
 const Notes = (props) => {
   return (
     <>
-    <style>{`
-.katex-html { font-size: 12pt; }
-    `}</style>
-    <div style={{fontSize: '11pt'}} onClick={props.onRequestClose}>
+    <style>{`.katex-html { font-size: 12pt; }`}</style>
+    <h4>Notes <span /><button onClick={props.onRequestClose}>Close</button></h4>
+    <div style={{fontSize: '11pt'}}>
       <p>Double-click the header to edit it.</p>
       <p>Make sure the scale is set to 100% when printing.</p>
       <p>Create a PDF by selecting "Save to PDF" when printing.</p>
@@ -93,6 +92,7 @@ const Notes = (props) => {
         </div>
       ))}
     </div>
+    <button onClick={props.onRequestClose}>Close</button>
     </>
   )
 }

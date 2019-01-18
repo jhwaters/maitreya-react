@@ -74,7 +74,7 @@ const renderHeading = (text) => {
 
 const defaultHeading = () => ([
   {left: 'Assignment', right: 'Name ___'},
-  {left: '', right: 'Date __'},
+  {left: '', right: 'Date __ Class _'},
 ])
 
 class Heading extends React.Component {
@@ -180,7 +180,7 @@ class Heading extends React.Component {
           <h4>Edit Document Heading:</h4>
           <p>Underscores will be translated into an underlined blank space.</p>
 
-          <table style={{width: '100%'}}>
+          <table className="Heading" style={{width: '100%'}}>
             <tbody>
               {this.state.edits.map((row, i) => {
                 const {left, right} = row
@@ -190,9 +190,7 @@ class Heading extends React.Component {
                       <input defaultValue={left} 
                         onChange={(evt) => this.updateElement(i, 'left', evt.target.value)}
                         style={{
-                          fontSize:'1rem', 
-                          fontWeight: 'bold',
-                          fontFamily: 'var(--docFontFamily, serif)', 
+                          fontFamily: 'var(--doc-font-family, serif)',
                           width: '100%',
                           border: 'none',
                         }}
@@ -202,9 +200,7 @@ class Heading extends React.Component {
                       <input defaultValue={right} 
                         onChange={(evt) => this.updateElement(i, 'right', evt.target.value)}
                         style={{
-                          fontSize:'1rem', 
-                          fontWeight: 'bold',
-                          fontFamily: 'var(--docFontFamily, serif)', 
+                          fontFamily: 'var(--doc-font-family, serif)',
                           width: '100%',
                           border: 'none',
                         }}

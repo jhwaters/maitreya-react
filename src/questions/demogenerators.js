@@ -3,17 +3,23 @@ import { CartesianPlane, SvgElement } from './tools/plot'
 import { createTree } from './tools/QuadTree'
 
 export class FontTest extends QGen {
+  static info = {
+    name: "Font Test"
+  }
+
   generate(params) {
     
     const text = 'the quick brown fox jumps over the lazy dog 1234567890'
 
-    let lines = ['$$\\text{' + text + '}$$']
+    let lines = []
 
     for (const chars of [text, text.toUpperCase()]) {
       for (const x of ['', '_', '__', '___']) {
         lines.push(`${x}${chars}${x}`)
       }
     }
+
+    lines.push('$$\\text{' + text + '}$$ (LaTeX)')
 
     const dontConfuse = ['IJl1']
 
@@ -43,7 +49,7 @@ export class FontTest extends QGen {
 
 export class QuadTreePlotTest extends QGen {
   static info = {
-    name: 'QuadTree Plot',
+    name: 'QuadTree Plot Test',
     description: 'Test alternate graphing algorithm'
   }
 
@@ -130,21 +136,20 @@ class JsonMlTest extends QGen {
   }
 }
 
-class MdTest extends QGen {
+export class MdTest extends QGen {
 
   static info = {
-    name: 'Formatting',
+    name: 'Formatting Test',
     description: 'Test markdown/latex'
   }
 
   generate(params) {
 
-    const mdtest = `## Text Formatting
+    const mdtest = `# Heading
 
 Regular, _Italic_, __Bold__, ___Both___, ~sub~script, ^super^script,  \`monospaced\`,  
 arrows: --> <-- ==> <== <--> <==>
 
-#### Math (LaTeX)
 The formula $$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$
 is used to solve quadratic equations.
 
@@ -154,14 +159,11 @@ $$$f(n) = \\left\\{ \\begin{array}{rl}
   3n+1 & \\text{ if $n$ is odd}
 \\end{array}\\right.$$$
 
-
-#### List
 - Thing A
   - Thing A.1
   - Thing A.2
 - Thing B
 
-#### Table
 input ($$x$$) | output ($$y$$)
 :-: | :-:
 -3  | 3
@@ -169,7 +171,6 @@ input ($$x$$) | output ($$y$$)
 -1  | -5
  0  | -6
 
-#### Block quote
 > All summations have a beginning, all effect has a  
 > story, all kindness begins with the sown seed.  
 > Thought buds toward radiance. The gospel of  
@@ -177,10 +178,8 @@ input ($$x$$) | output ($$y$$)
 > 
 > Be ignited, or be gone.
 
-#### Hyperlink
-[NPR Website](https://npr.org)
+[Hyperlink](https://npr.org)
 
-#### Code
 ${'```'}python
 def gcd(a, b):
     if a == b or b == 0:
@@ -204,6 +203,47 @@ ${'```'}
 
 
 
+export class VegaLite extends QGen {
+  static info = {
+    name: 'Vega Lite Test',
+    description: 'Test Vega-Lite rendering'
+  }
+
+  generate(params) {
+    let points = []
+    for (let x = -3; x <= 3; x++) {
+      points.push({x: x, y: x*x})
+    }
+    const diagram2 = {
+      "data": {"values": points},
+      "mark": {
+        'type': 'line', 
+        'interpolate': 'monotone',
+      },
+      "encoding": {
+        'x': {
+          'field': 'x', 
+          'type': 'quantitative',
+        },
+        'y': {
+          'field': 'y', 
+          'type': 'quantitative',
+        },
+        axisX: {
+          titleFont: 'Lora'
+        },
+      },
+    }
+
+    return {
+      instructions: 'Rendered with Vega-Lite:',
+      diagram: {
+        type: 'vega-lite',
+        data: diagram2,
+      }
+    }
+  }
+}
 
 export class VegaTest extends QGen {
   static info = {
@@ -213,6 +253,7 @@ export class VegaTest extends QGen {
 
   generate(params) {
     return {
+      instructions: "Rendered with Vega:",
       diagram: {
         type: 'vega',
         data: {
@@ -323,50 +364,6 @@ export class VegaTest extends QGen {
           ]
         }
         
-      }
-    }
-  }
-}
-
-
-
-export class VegaLite extends QGen {
-  static info = {
-    name: 'Vega Lite',
-    description: 'Test Vega-Lite rendering'
-  }
-
-  generate(params) {
-    let points = []
-    for (let x = -3; x <= 3; x++) {
-      points.push({x: x, y: x*x})
-    }
-    const diagram2 = {
-      "data": {"values": points},
-      "mark": {
-        'type': 'line', 
-        'interpolate': 'monotone',
-      },
-      "encoding": {
-        'x': {
-          'field': 'x', 
-          'type': 'quantitative',
-        },
-        'y': {
-          'field': 'y', 
-          'type': 'quantitative',
-        },
-        axisX: {
-          titleFont: 'Lora'
-        },
-      },
-    }
-
-    return {
-      instructions: 'Check this out:',
-      diagram: {
-        type: 'vega-lite',
-        data: diagram2,
       }
     }
   }

@@ -24,11 +24,3 @@ export const updateDocumentSettings = (props) => ({
 })
 
 export const setStartNumbering = (startat) => updateDocumentSettings({startNumbering: startat})
-
-export const setDocumentFontFamily = (fontFamily) => {
-  return updateDocumentSettings({fontFamily: fontFamily})
-}
-
-export const setDocumentFontSize = (fontSize) => {
-  return updateDocumentSettings({fontSize: fontSize})
-}
