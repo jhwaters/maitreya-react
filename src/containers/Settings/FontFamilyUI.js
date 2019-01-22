@@ -5,23 +5,17 @@ import { setFontFamilyUI } from '../../actions/config'
 
 class FontFamilyUI extends React.Component {
   static propTypes = {
-    default: PropTypes.string,
+    current: PropTypes.string,
     setFontFamilyUI: PropTypes.func.isRequired
   }
 
-  constructor(props) {
-    super(props)
-    this.selection = React.createRef()
-  }
-
-  setFontFamilyUI = () => {
-    const value = this.selection.current.value
-    this.props.setFontFamilyUI(value)
+  setFontFamilyUI = (evt) => {
+    this.props.setFontFamilyUI(evt.target.value)
   }
 
   render() {
     return (
-      <select ref={this.selection} onChange={this.setFontFamilyUI} defaultValue={this.props.default}>
+      <select onChange={this.setFontFamilyUI} value={this.props.current}>
         <option value='input'>Input</option>
         <option value='select'>Menu</option>
       </select>
@@ -30,7 +24,7 @@ class FontFamilyUI extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  default: state.config.fontFamilyUI
+  current: state.config.fontFamilyUI
 })
 
 const mapDispatchToProps = dispatch => ({

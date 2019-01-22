@@ -58,21 +58,18 @@ function renderFontOption(font) {
 
 class FontFamilySelect extends React.Component {
   static propTypes = {
-    applyButton: PropTypes.bool.isRequired || PropTypes.string.isRequired,
-    default: PropTypes.string,
+    current: PropTypes.string,
     localFonts: PropTypes.array.isRequired,
     setDocumentFontFamily: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
-    applyButton: false,
     localFonts: [],
   }
 
   constructor(props) {
     super(props)
-    this.selection = React.createRef()
-    this.setCSSVariable(props.default)
+    this.setCSSVariable(props.current)
   }
 
   fontList = () => {
@@ -91,50 +88,32 @@ class FontFamilySelect extends React.Component {
     document.body.style.setProperty('--doc-font-family', fontFamily)
   }
 
-  setDocFontFamily(fontFamily) {
-    this.props.setDocumentFontFamily(fontFamily)
-  }
-
-  setFromSelection = () => {
-    const value = this.selection.current.value
+  onSelection = (evt) => {
+    const value = evt.target.value
     const fontFamily = value.slice(0,7) === '_LOCAL_' ? value.slice(8) : value
     if (fontFamily) {
       this.setCSSVariable(fontFamily)
-      this.setDocFontFamily(fontFamily)
+      this.props.setDocumentFontFamily(fontFamily)
     }
-  }  
+  }
 
   render() {
-    if (this.props.applyButton) {
-      const buttonLabel = this.props.applyButton === true ? 'Apply' : this.props.applyButton
-      return (
-        <>
-          <select ref={this.selection}
-            defaultValue={this.props.default}
-          >
-            {this.fontList().map((f) => renderFontOption(f))}
-          </select>
-          <button onClick={this.setFromSelection}>{buttonLabel}</button>
-        </>
-      )
-    } else {
-      return (
-        <>
-          <select ref={this.selection}
-            defaultValue={this.props.default}
-            onChange={this.setFromSelection}
-          >
-            {this.fontList().map((f) => renderFontOption(f))}
-          </select>
-        </>
-      )
-    }
+    return (
+      <>
+        <select
+          value={this.props.current}
+          onChange={this.onSelection}
+        >
+          {this.fontList().map((f) => renderFontOption(f))}
+        </select>
+      </>
+    )
   }
 }
 
 
 const mapStateToProps = state => ({
-  default: state.document.settings.fontFamily,
+  current: state.document.settings.fontFamily,
   localFonts: [...state.config.localFonts],
 })
 

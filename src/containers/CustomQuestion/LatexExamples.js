@@ -62,11 +62,13 @@ const LatexExamples = (props) => {
   return (
     <>
     <h4>Examples: <button onClick={props.onRequestClose}>Close</button></h4>
-    {examples.map((s, i) => (
-      <div key={`render-example-${i}`} style={{marginBottom: '1rem'}}>
-        <RenderExample text={s} />
-      </div>
-    ))}
+    <div style={{fontSize: '1.1em'}}>
+      {examples.map((s, i) => (
+        <div key={`render-example-${i}`} style={{marginBottom: '1rem'}}>
+          <RenderExample text={s} />
+        </div>
+      ))}
+    </div>
     <button onClick={props.onRequestClose}>Close</button>
     </>
   )

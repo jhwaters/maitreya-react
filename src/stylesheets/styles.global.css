@@ -61,5 +61,11 @@ pre, code {
   font-family: var(--ui-font-family-monospace, monospace);
 }
 
+.preview-area {
+  border: 1px solid #ccc;
+  background-color: white;
+  padding: 1cm;
+}
+
 
 

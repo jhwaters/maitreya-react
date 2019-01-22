@@ -3,8 +3,6 @@ import { defaultsDeep } from 'lodash'
 import { renderTypes, detectType } from './renderTypes'
 
 
-
-
 function renderAs(type, data, options) {
   const RenderType = renderTypes[type]
   if (RenderType) {
@@ -16,7 +14,7 @@ function renderAs(type, data, options) {
     )
   } else {
     console.error(`No render method for type ${type}`)
-    return <code>{JSON.stringify(data)}</code>
+    return <code className='error-failed-render'>{JSON.stringify(data)}</code>
   }
 }
 
@@ -34,9 +32,12 @@ export const RenderElement = ({content, inherited}) => {
     if (!type) {
       type = detectType(data)
     }
-    return renderAs(type, data, inherited ? defaultsDeep({}, options, inherited) : options)
+    if (data) {
+      return renderAs(type, data, inherited ? defaultsDeep({}, options, inherited) : options)
+    }
+    return <code className='error-failed-render'>{JSON.stringify(content)}</code>
   } catch(e) {
     console.error(e)
-    return <code>{JSON.stringify(content)}</code>
+    return <code className='error-failed-render'>{JSON.stringify(content)}</code>
   }
 }

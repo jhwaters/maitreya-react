@@ -42,7 +42,8 @@ for (const q in examplequestions) {
   const n = examplequestions[q].register().name
   questionBank[n] = examplequestions[q]
 }
-questionBank['_ Alternate Plotting Method'] = demogenerators.QuadTreePlotTest
+questionBank['_ Quadtree'] = demogenerators.QuadTreePlotTest
+
 
 
 ReactModal.setAppElement('#root')
@@ -122,7 +123,7 @@ class AppWrapper extends React.Component {
       <Wrapper >
         {/* customTitleBar ? <TitleBar /> : null */}
         <TopBar>
-          <button onClick={window.print}>Print</button>
+          <button onClick={window.print}>Print / Save PDF</button>
           <span style={toplabel}>Answer Key:</span><AnswerKeyToggle />
           <span style={toplabel}>Start Numbering At:</span><StartNumbering />
           <span style={toplabel}>Font:</span>
@@ -153,7 +154,6 @@ class AppWrapper extends React.Component {
         </SideBar>
         { this.props.statusBar ? <StatusBar><span>{this.props.statusBar}</span></StatusBar> : null }
 
-
         <ReactModal
           isOpen={this.state.modal === 'Settings'}
           onRequestClose={this.closeModal}
@@ -169,7 +169,6 @@ class AppWrapper extends React.Component {
           <CustomQuestion onRequestClose={this.closeModal}/>
           <button onClick={this.closeModal}>Close</button>
         </ReactModal>
-
 
         <ReactModal
           isOpen={this.state.modal === 'Notes'}

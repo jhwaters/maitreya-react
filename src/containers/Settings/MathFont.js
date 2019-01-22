@@ -11,12 +11,6 @@ class MathFontSettings extends React.Component {
     setMathFontWeight: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props)
-    this.size = React.createRef()
-    this.bold = React.createRef()
-  }
-
   setSizeCSS(size) {
     document.body.style.setProperty('--doc-math-font-size', size)
   }
@@ -35,13 +29,12 @@ class MathFontSettings extends React.Component {
     this.props.setMathFontWeight(weight)
   }
 
-  updateSize = () => {
-    const s = this.size.current.value
-    this.setSize(s)
+  updateSize = (evt) => {
+    this.setSize(evt.target.value)
   }
 
-  updateWeight = () => {
-    if (this.bold.current.checked) {
+  updateWeight = (evt) => {
+    if (evt.target.checked) {
       this.setWeight('bold')
     } else {
       this.setWeight('normal')
@@ -52,7 +45,7 @@ class MathFontSettings extends React.Component {
     return (
       <>
         Relative Size:
-        <select ref={this.size} 
+        <select
           onChange={this.updateSize}
           defaultValue={this.props.defaultSize}
         >
@@ -63,6 +56,8 @@ class MathFontSettings extends React.Component {
           <option value='1em'>1.0</option>
           <option value='1.1em'>1.1</option>
           <option value='1.2em'>1.2</option>
+          <option value='1.3em'>1.3</option>
+          <option value='1.4em'>1.4</option>
         </select>
         Bold:
         <input ref={this.bold} 
@@ -73,7 +68,6 @@ class MathFontSettings extends React.Component {
       </>
     )
   }
-
 }
 
 const mapStateToProps = state => ({

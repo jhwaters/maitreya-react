@@ -80,6 +80,10 @@
   background-color: var(--edit-color-faded);
 }
 
+.error-failed-render {
+  color: red;
+}
+
 .header {
   border-collapse: collapse;
   width: 100%;

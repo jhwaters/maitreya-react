@@ -7,16 +7,18 @@ import FontFamilyUI from './FontFamilyUI'
 import MathFontSettings from './MathFont'
 import TextPreview from './TextPreview'
 
-const previewtext = `The equation $$y = mx + b$$ defines a line.
+const previewtext = `To solve an equation of the form $$ax^2 + bx + c = 0$$, use the quadratic formula:
 
-The quadratic formula is $$x = {-b \\pm \\sqrt{b^2 - 4ac} \\over 2a}$$.`
+$$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$$
+
+Is it true that $$e^{i\\theta} = i\\sin{\\theta} + \\cos{\\theta}$$?`
 
 
 export const SettingsPage = (props) => {
   return (
     <div>
       <h2>Settings <button onClick={props.onRequestClose}>Close</button></h2>
-
+      <h3>Fonts</h3>
       <h4>Document Font</h4>
       Font: {props.fontFamilyUI === 'input' ? <FontFamilyInput applyButton={false}/> : <FontFamilySelect />}
       <div>

@@ -54,8 +54,21 @@ class CustomQuestion extends React.Component {
   openExamples = () => this.setState({ modal: 'examples' })
   closeModal = () => this.setState({ modal: 'none' })
 
-  updateInputType = () => {
-    const inputType = this.inputType.current.value
+  updateInstructions = (evt) => {
+    this.setState({ instructions: evt.target.value })
+  }
+  updateQuestion = (evt) => {
+    this.setState({ question: evt.target.value })
+  }
+  updateAnswer = (evt) => {
+    this.setState({ _answer: evt.target.value })
+  }
+  updateJSON = (evt) => {
+    this.setState({ json: evt.target.value })
+  }
+
+  updateInputType = (evt) => {
+    const inputType = evt.target.value
     const data = this.getDataFromState()
     if (data) {
       if (inputType === 'json') {
@@ -81,22 +94,6 @@ class CustomQuestion extends React.Component {
     } else {
       this.setState({inputType})
     }
-  }
-  updateInstructions = () => {
-    const instructions = this.instructions.current.value
-    this.setState({ instructions })
-  }
-  updateQuestion = () => {
-    const question = this.question.current.value
-    this.setState({ question })
-  }
-  updateAnswer = () => {
-    const answer = this.answer.current.value
-    this.setState({ _answer: answer })
-  }
-  updateJSON = () => {
-    const json = this.json.current.value
-    if (json) this.setState({ json })
   }
 
   getDataFromState() {
@@ -134,24 +131,21 @@ class CustomQuestion extends React.Component {
           <button onClick={this.openExamples}>See Examples</button>
           <p>Instructions:</p>
           <textarea 
-            ref={this.instructions} 
-            defaultValue={this.state.instructions}
+            value={this.state.instructions}
             onChange={this.updateInstructions}
             style={inputStyle}
             ></textarea>
 
           <p>Question:</p>
           <textarea 
-            ref={this.question} 
-            defaultValue={this.state.question}
+            value={this.state.question}
             onChange={this.updateQuestion}
             style={inputStyle}
           ></textarea>
           
           <p>Answer:</p>
           <textarea 
-            ref={this.answer} 
-            defaultValue={this.state.answer}
+            value={this.state.answer}
             onChange={this.updateAnswer}
             style={inputStyle}
           ></textarea>
@@ -162,8 +156,7 @@ class CustomQuestion extends React.Component {
         <>
           <p>Enter JSON:</p>
           <textarea 
-            ref={this.json} 
-            defaultValue={this.state.json}
+            value={this.state.json}
             onChange={this.updateJSON}
             onKeyDown={onKeyDown}
             spellCheck={false}
@@ -178,10 +171,7 @@ class CustomQuestion extends React.Component {
   renderPreview() {
     const data = this.getDataFromState()
     const previewStyle = {
-      backgroundColor: 'white',
-      border: '1px solid gray',
       margin: '2mm',
-      padding: '1cm',
       width: 'fit-content',
       fontSize: '1.2em',
       minWidth: '3in',
@@ -190,11 +180,11 @@ class CustomQuestion extends React.Component {
     return (
       <>
       <p>Question</p>
-      <div className='document' style={previewStyle}>
+      <div className='document preview-area' style={previewStyle}>
         {data ? <RenderElement content={{type: 'question-nonumber', data}} /> : null}
       </div>
       <p>Answer</p>
-      <div className='document' style={previewStyle}>
+      <div className='document preview-area' style={previewStyle}>
         {data ? <RenderElement content={{type: 'answer',  data}} /> : null}
       </div>
       </>
@@ -229,6 +219,16 @@ class CustomQuestion extends React.Component {
       <button onClick={this.addQuestion}>Add to Assignment</button>
       <ReactModal isOpen={this.state.modal === 'examples'}
         onRequestClose={this.closeModal}
+        style={{
+          content: {
+            top: '0',
+            bottom: '0',
+            borderTop: 'none',
+            borderBottom: 'none',
+            left: '50px',
+            right: '50px',
+          }
+        }}
       >
         <LatexExamples onRequestClose={this.closeModal}/>
       </ReactModal>

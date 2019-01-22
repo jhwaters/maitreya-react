@@ -18,14 +18,23 @@ class SetPageMargins extends React.Component {
 
   constructor(props) {
     super(props)
-    this.selection = React.createRef()
+    this.state = { current: this.props.default }
+  }
+
+  updateSelection = (evt) => {
+    this.setState({ current: evt.target.value })
   }
 
   setPageMargins = () => {
-    const marginSize = this.selection.current.value
+    const marginSize = this.state.current
     if (marginSize) {
       this.props.setAllPageMargins(marginSize)
     }
+  }
+
+  updateAndSetPageMargins = (evt) => {
+    this.setState({ current: evt.target.value })
+    this.props.setAllPageMargins(evt.target.value)
   }
 
   renderOptions() {
@@ -45,8 +54,10 @@ class SetPageMargins extends React.Component {
       const buttonLabel = this.props.applyButton === true ? 'Apply' : this.props.applyButton
       return (
         <>
-        <select ref={this.selection}
+        <select
           defaultValue={this.props.default}
+          onChange={this.updateSelection}
+          value={this.state.current}
           >
           {this.renderOptions()}
         </select>
@@ -55,8 +66,8 @@ class SetPageMargins extends React.Component {
       )
     } else {
       return (
-        <select ref={this.selection}
-          onChange={this.setPageMargins}
+        <select
+          onChange={this.updateAndSetPageMargins}
           defaultValue={this.props.default}
           >
           {this.renderOptions()}

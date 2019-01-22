@@ -47,9 +47,8 @@ class TextPreview extends React.Component {
     this.state = { text: props.defaultValue || '' }
   }
 
-  updatePreview = () => {
-    const text = this.input.current.value
-    this.setState({ text })
+  updatePreview = (evt) => {
+    this.setState({ text: evt.target.value })
   }
 
   renderPreview() {
@@ -70,20 +69,17 @@ class TextPreview extends React.Component {
   render() {
     return (
       <>
-      <textarea ref={this.input}
+      <textarea
         onChange={this.updatePreview}
         onKeyDown={onKeyDown}
-        defaultValue={this.props.defaultValue}
+        value={this.state.text}
         rows='3'
         style={{
           minWidth: '4in',
         }}
       />
-      <div className='document' style={{
+      <div className='document preview-area' style={{
         fontSize: '1.2em',
-        backgroundColor: 'white',
-        border: '1px solid #777',
-        padding: '1cm',
         width: 'fit-content',
       }}>
         {this.renderPreview()}

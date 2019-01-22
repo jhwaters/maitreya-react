@@ -5,34 +5,31 @@ import { setAllowEditing } from '../../actions/config'
 
 class AllowEditing extends React.Component {
   static propTypes = {
-    default: PropTypes.bool.isRequired,
+    current: PropTypes.bool.isRequired,
     setAllowEditing: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props)
-    this.toggle = React.createRef()
-  }
-
-  isChecked = () => this.toggle.current.checked
-  setAllowEditing = () => {
-    const val = this.isChecked()
-    this.props.setAllowEditing(val)
+  toggle = (evt) => {
+    if (evt.target.checked) {
+      this.props.setAllowEditing(true)
+    } else {
+      this.props.setAllowEditing(false)
+    }
   }
 
   render() {
     return (
-      <input ref={this.toggle}
-        onChange={this.setAllowEditing}
+      <input
+        onChange={this.toggle}
         type='checkbox' 
-        defaultChecked={this.props.default}
+        checked={this.props.current}
       />
     )
   }
 }
 
 const mapStateToProps = state => ({
-  default: state.config.allowEditing,
+  current: state.config.allowEditing,
 })
 
 const mapDispatchToProps = dispatch => ({

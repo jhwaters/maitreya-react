@@ -7,17 +7,13 @@ import { setDocumentFontSize } from '../../actions/document'
 class FontSizeSelect extends React.Component {
 
   static propTypes = {
-    applyButton: PropTypes.bool || PropTypes.string.isRequired,
-    default: PropTypes.string.isRequired,
+    current: PropTypes.string.isRequired,
     setDocumentFontSize: PropTypes.func.isRequired,
   }
 
-  static defaultProps = { applyButton: false }
-
   constructor(props) {
     super(props)
-    this.selection = React.createRef()
-    this.setCSSVariable(props.default)
+    this.setCSSVariable(props.current)
   }
 
   setCSSVariable(fontSize) {
@@ -25,15 +21,13 @@ class FontSizeSelect extends React.Component {
   }
 
   setDocFontSize(size) {
+    this.setCSSVariable(size)
     this.props.setDocumentFontSize(size)
   }
 
-  setFromSelection = () => {
-    const value = this.selection.current.value
-    if (value) {
-      this.setCSSVariable(value)
-      this.setDocFontSize(value)
-    }
+  onSelect = (evt) => {
+    const value = evt.target.value
+    this.setDocFontSize(value)
   }  
 
   renderSizeOptions() {
@@ -54,36 +48,22 @@ class FontSizeSelect extends React.Component {
   }
 
   render() {
-    if (this.props.applyButton) {
-      const buttonLabel = this.props.applyButton === true ? 'Apply' : this.props.applyButton
-      return (
-        <>
-          <select ref={this.selection}
-            defaultValue={this.props.default}
-          >
-            {this.renderSizeOptions()}
-          </select>
-          <button onClick={this.setFromSelection}>{buttonLabel}</button>
-        </>
-      )
-    } else {
-      return (
-        <>
-          <select ref={this.selection}
-            defaultValue={this.props.default}
-            onChange={this.setFromSelection}
-          >
-            {this.renderSizeOptions()}
-          </select>
-        </>
-      )
-    }
+    return (
+      <>
+        <select 
+          value={this.props.current}
+          onChange={this.onSelect}
+        >
+          {this.renderSizeOptions()}
+        </select>
+      </>
+    )
   }
 }
 
 
 const mapStateToProps = state => ({
-  default: state.document.settings.fontSize,
+  current: state.document.settings.fontSize,
 })
 
 const mapDispatchToProps = dispatch => ({

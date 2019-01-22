@@ -426,7 +426,7 @@ export class DecreasingIntervals extends FindIntervals {
 }
 
 
-export class AngleMeasure extends QGen {
+class AngleMeasure extends QGen {
   static info = {
     name: 'Angle Measure',
     description: '',
@@ -504,7 +504,7 @@ export class AngleMeasure extends QGen {
   }
 }
 
-export class RationalRootTheorem extends QGen {
+class RationalRootTheorem extends QGen {
   static info = {
     name: 'Rational Root Theorem',
     description: 'State possible rational roots for a given function.'

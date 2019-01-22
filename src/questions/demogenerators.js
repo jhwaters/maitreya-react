@@ -60,10 +60,10 @@ export class QuadTreePlotTest extends QGen {
     //const f4 = ({x, y}) => Math.pow(Math.cos(x*x), 1)
 
     let graph = new CartesianPlane(-7, -7, 7, 7, {height: '4in'})
-    let q = createTree(pt => f1(pt) - f2(pt), -7, -7, 14, 8, 8)
-    const marker = ({x, y}) => new SvgElement('circle', {cx: x, cy: y, r: '0.05'})
+    let q = createTree(pt => f1(pt) - f2(pt), -7, -7, 14, 8, 7)
+    const marker = ({x, y}) => new SvgElement('circle', {cx: x, cy: y, r: '0.07'})
     const points = q.map(marker)
-    graph.add(new SvgElement('g', {style: {fill: 'rgba(200,0,100,0.6)'}}, ...points))
+    graph.add(new SvgElement('g', {style: {fill: 'rgba(200,0,100,0.5)'}}, ...points))
 
     return {
       question: "The graph of $$\\sin(x^2) = \\cos(y^2)$$:",

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Page from './Page'
-import { Answer } from '../../renderMethods/secondaryTypes/Question'
+import { RenderElement } from '../../renderMethods'
 
 
 const AnswerKey = (props) => {
@@ -14,7 +14,7 @@ const AnswerKey = (props) => {
           if (element.type === 'question') {
             return (
               <div key={`answer-${id}`} className='answerkey-item'>
-                <Answer data={element.data} options={element.options} />
+                <RenderElement content={{...element, type: 'answer'}} />
               </div>
             )
           } else {
