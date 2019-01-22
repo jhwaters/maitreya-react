@@ -1,10 +1,19 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { updateDocumentSettings } from '../../actions/document'
-
+import { setDocumentFontSize } from '../../actions/document'
 
 
 class FontSizeSelect extends React.Component {
+
+  static propTypes = {
+    applyButton: PropTypes.bool || PropTypes.string.isRequired,
+    default: PropTypes.string.isRequired,
+    setDocumentFontSize: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = { applyButton: false }
+
   constructor(props) {
     super(props)
     this.selection = React.createRef()
@@ -16,7 +25,7 @@ class FontSizeSelect extends React.Component {
   }
 
   setDocFontSize(size) {
-    this.props.updateDocumentSettings({fontSize: size})
+    this.props.setDocumentFontSize(size)
   }
 
   setFromSelection = () => {
@@ -46,6 +55,7 @@ class FontSizeSelect extends React.Component {
 
   render() {
     if (this.props.applyButton) {
+      const buttonLabel = this.props.applyButton === true ? 'Apply' : this.props.applyButton
       return (
         <>
           <select ref={this.selection}
@@ -53,7 +63,7 @@ class FontSizeSelect extends React.Component {
           >
             {this.renderSizeOptions()}
           </select>
-          <button onClick={this.setFromSelection}>Apply</button>
+          <button onClick={this.setFromSelection}>{buttonLabel}</button>
         </>
       )
     } else {
@@ -77,7 +87,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  updateDocumentSettings: (settings) => dispatch(updateDocumentSettings(settings)),
+  setDocumentFontSize: (size) => dispatch(setDocumentFontSize(size)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(FontSizeSelect)

@@ -21,18 +21,21 @@ class QGen {
     return this.constructor.options
   }
 
-  _handleSpecialCases(k, v) {
-    if (k === 'choices' && Array.isArray(v)) {
-      return {
-        type: 'jsonml',
-        data: ['ol', {
-          type: 'a', 
-          children: v.map(c => ['li', {style: {margin: '0.3rem'}}, c])
-        }]
+  _specialCaseValues(k, v) {
+    if (k[0] !== '_' || k === 'answer') {
+      //if (typeof v === 'string') return {type: 'text', data: v}
+      //if (typeof v === 'number') return {type: 'text', data: v.toString()}
+      if (Array.isArray(v)) {
+        if (k === 'answer') return {type: 'answerchoices', data: v}
+        return {type: 'list', data: v}
       }
-    } else {
-      return v
     }
+    return v
+  }
+
+  _specialCaseKeys(k, v) {
+    //if (k === 'answer') return '_answer'
+    return k
   }
 
   setRandomSeed(seed) {
@@ -45,15 +48,13 @@ class QGen {
 
   output() {
     const out = this.generate(this._getParams())
-    let generated = {}
+    let content = {}
     for (const k in out) {
-      generated[k] = this._handleSpecialCases(k, out[k])
+      content[this._specialCaseKeys(k)] = this._specialCaseValues(k, out[k])
     }
     return {
-      method: '',
-      randomSeed: this.randomSeed,
-      params: this.params,
-      generated: generated,
+      type: 'question',
+      data: content,
       options: this.getOptions(),
     }
   }

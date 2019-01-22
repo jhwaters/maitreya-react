@@ -2,11 +2,6 @@ import { DomElement } from './domElement'
 import { createTree } from './QuadTree'
 
 
-function round(n, places) {
-	const d = Math.pow(10, places)
-	return Math.round(n * d) / d
-}
-
 function makesrange(min, max, step=1, anchor) {
 	if (anchor === undefined) {
 		anchor = min;

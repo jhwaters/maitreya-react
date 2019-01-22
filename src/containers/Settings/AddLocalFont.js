@@ -1,8 +1,18 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { addLocalFont } from '../../actions/config'
 
 class AddLocalFont extends React.Component {
+  static propTypes = {
+    addLocalFont: PropTypes.func.isRequired,
+    buttonLabel: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    buttonLabel: 'Add'
+  }
+
   constructor(props) {
     super(props)
     this.input = React.createRef()
@@ -16,8 +26,8 @@ class AddLocalFont extends React.Component {
   render() {
     return (
       <>
-      <input ref={this.input}></input>
-      <button onClick={this.addFont}>{this.props.children}</button>
+      <input ref={this.input} spellCheck={false} />
+      <button onClick={this.addFont}>{this.props.buttonLabel}</button>
       </>
     )
   }

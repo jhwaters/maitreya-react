@@ -1,43 +1,46 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import AddLocalFont from './AddLocalFont'
-//import FontFamily from './FontSelect'
-//import FontSize from './FontSize'
-//import PageMargins from './PageMargins'
-//import StartNumbering from './StartNumbering'
+import FontFamilyInput from './FontFamilyInput'
+import FontFamilySelect from './FontFamilySelect'
+import FontFamilyUI from './FontFamilyUI'
+import MathFontSettings from './MathFont'
+import TextPreview from './TextPreview'
 
-import styles from './styles.module.css'
+const previewtext = `The equation $$y = mx + b$$ defines a line.
+
+The quadratic formula is $$x = {-b \\pm \\sqrt{b^2 - 4ac} \\over 2a}$$.`
 
 
 export const SettingsPage = (props) => {
   return (
-    <div className={styles.SettingsPage}>
-      <h3>Settings </h3>
+    <div>
+      <h2>Settings <button onClick={props.onRequestClose}>Close</button></h2>
 
-      <h4>Use Local Font</h4>
+      <h4>Document Font</h4>
+      Font: {props.fontFamilyUI === 'input' ? <FontFamilyInput applyButton={false}/> : <FontFamilySelect />}
       <div>
-      Font Name: <AddLocalFont>Add To List</AddLocalFont> (You will then need to select it from the menu)
+        Font Selection Method: <FontFamilyUI />
+      </div>
+      <div>
+        Add Local Font to Menu: <AddLocalFont buttonLabel="Add To List" /> (You will then need to select it from the menu)
+      </div>
+      <h4>Math Font</h4>
+      <div style={{justifyItems: 'right'}}>
+        <MathFontSettings />
+      </div>
+      
+      <h4>Preview</h4>
+      <div style={{display: 'flex', flexDirection: 'row'}}>
+        <TextPreview defaultValue={previewtext} />      
       </div>
     </div>
   )
-  /*
-      <h4>Document Font</h4>
-      <div>
-        <FontSelect />
-      </div>
-
-      <h4>Page Margins</h4>
-      <div>
-        <PageMargins />
-      </div>
-
-      <h4>Start Numbering At:</h4>
-      <div>
-        <StartNumbering />
-      </div>
-    </div>
-  */
 }
 
+const mapStateToProps = state => ({
+  fontFamilyUI: state.config.fontFamilyUI
+})
 
 
-export default SettingsPage
+export default connect(mapStateToProps)(SettingsPage)

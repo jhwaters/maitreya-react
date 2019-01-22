@@ -6,7 +6,7 @@
   overflow: hidden;
 }
 
-.WrapperTitleBar {
+.Wrapper-TitleBar-StatusBar {
   grid-template-areas:
     "title title"
     "sidebar preview"
@@ -14,7 +14,14 @@
   grid-template-rows: 25px 1fr 25px;
 }
 
-.WrapperTopBar {
+.Wrapper-TopBar {
+  grid-template-areas:
+    "topbar topbar"
+    "sidebar preview";
+  grid-template-rows: 8mm 1fr;  
+}
+
+.Wrapper-TopBar-StatusBar {
   grid-template-areas:
     "topbar topbar"
     "sidebar preview"
@@ -26,12 +33,6 @@
   grid-area: preview;
   flex: 1 1 100%;
   overflow: scroll;
-}
-
-@media screen {
-  .PreviewInner {
-    transform: var(--previewZoom);
-  }
 }
 
 .SideBar {
@@ -93,7 +94,8 @@
   display: flex;
   flex: 1 1 100%;
   align-items: center;
-  justify-content: center;
+  padding: 0 5mm;
+  justify-content: left;
   font-size: 0.9em;
 }
 
@@ -102,13 +104,22 @@
   top: auto;
 }
 
+@media screen {
+  .PreviewOuter {
+    position: relative;
+  }
+  .PreviewInner {
+    padding: 0 3mm;
+  }
+  .PreviewInner > * {
+    transform: var(--previewInnerTransform);
+  }
+}
+
 @media print {
   .Wrapper {
     display: block;
-  }
-
-  .PreviewOuter {
-    overflow: visible;
+    height: 100%;
   }
   
   .SideBar {

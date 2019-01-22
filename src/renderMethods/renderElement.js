@@ -1,15 +1,42 @@
+import React from 'react'
 import { defaultsDeep } from 'lodash'
-import { defaultOptions } from './defaultOptions'
-import renderData from './renderData'
+import { renderTypes, detectType } from './renderTypes'
 
 
-const renderElement = function(elem, options={}) {
-  const opts = defaultsDeep({}, elem.options || {}, options, defaultOptions)
-  if (elem.type) {
-    return renderData(elem.data, elem.type, opts)
+
+
+function renderAs(type, data, options) {
+  const RenderType = renderTypes[type]
+  if (RenderType) {
+    return (
+      <RenderType 
+        data={data} 
+        options={options} 
+      />
+    )
   } else {
-    return renderData(elem, 'text', opts)
+    console.error(`No render method for type ${type}`)
+    return <code>{JSON.stringify(data)}</code>
   }
 }
 
-export default renderElement
+const isArray = Array.isArray
+
+export const RenderElement = ({content, inherited}) => {
+  try {
+    if (typeof content === 'string' || typeof content === 'number') {
+      return renderAs('text', content, inherited)
+    }
+    if (isArray(content)) {
+      return renderAs('list', content, inherited)
+    }
+    let {type, data, options} = content
+    if (!type) {
+      type = detectType(data)
+    }
+    return renderAs(type, data, inherited ? defaultsDeep({}, options, inherited) : options)
+  } catch(e) {
+    console.error(e)
+    return <code>{JSON.stringify(content)}</code>
+  }
+}

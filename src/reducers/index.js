@@ -3,8 +3,7 @@ import document from './document'
 import config from './config'
 
 const rootReducer = combineReducers({
-  document: document,
-  config: config,
+  config, document
 })
 
 export default rootReducer

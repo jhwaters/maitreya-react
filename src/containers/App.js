@@ -5,28 +5,29 @@ import {
   Preview,
   SideBar,
   StatusBar,
-  TitleBar,
   TopBar,
   Wrapper,
 } from '../components'
-import Document from './Document'
+import Document from './Document/Document'
 import CustomQuestion from './CustomQuestion'
+import Notes from './Notes'
+import { CheckStateButton } from './Debug'
 import SettingsPage, {
+  AllowEditingToggle,
+  AnswerKeyToggle,
+  FontFamilyInput,
   FontFamilySelect,
   FontSizeSelect,
   PageMargins,
   PreviewZoom,
   StartNumbering
 } from './Settings'
-import Notes from './Notes'
-import {
-  CheckStateButton
-} from './Debug'
 
-import '../styles/styles.global.css'
+
+import '../stylesheets/styles.global.css'
 
 import {
-  addQuestion,
+  addToDocument,
   removeLast,
   clearAll,
 } from '../actions/document'
@@ -41,13 +42,24 @@ for (const q in examplequestions) {
   const n = examplequestions[q].register().name
   questionBank[n] = examplequestions[q]
 }
-//for (const q in demogenerators) {
-//  const n = `_ ${demogenerators[q].register().name}`
-//  questionBank[n] = demogenerators[q]
-//}
+questionBank['_ Alternate Plotting Method'] = demogenerators.QuadTreePlotTest
 
 
 ReactModal.setAppElement('#root')
+Object.assign(ReactModal.defaultStyles.content, {
+  borderRadius: '0',
+  borderColor: '#999',
+  background: 'white',
+  padding: '5mm',
+  top: '15px',
+  left: '15px',
+  right: '15px',
+  bottom: '15px',
+})
+Object.assign(ReactModal.defaultStyles.overlay, {
+  background: 'rgba(100,100,100,0.2)',
+})
+
 
 //let questionID = 0;
 
@@ -58,13 +70,10 @@ class AppWrapper extends React.Component {
     this.state = {
       modal: 'none',
     }
-    this.document = React.createRef();
-
   }
 
-  addNew = (question) => {
-    //const qid = ++questionID;
-    this.props.addQuestion(question)
+  addToDoc = (elem) => {
+    this.props.addToDocument(elem)
   }
 
   generateAndAdd = () => {
@@ -74,7 +83,7 @@ class AppWrapper extends React.Component {
       try {
         const qtype = this.props.questionTypes[questionType]
         const question = new qtype()
-        this.addNew(question.output())
+        this.addToDoc(question.output())
       } catch(e) {
         console.log('failed')
         console.log(e)
@@ -84,7 +93,7 @@ class AppWrapper extends React.Component {
 
   closeModal = () => this.setState({modal: 'none'})
   openRpcTest = () => this.setState({modal: 'RpcTest'})
-  openCustomEditor = () => this.setState({modal: 'CustomEditor'})
+  openCustomQuestion = () => this.setState({modal: 'CustomQuestion'})
   openSettings = () => this.setState({modal: 'Settings'})
   
   renderQuestionList() {
@@ -108,24 +117,24 @@ class AppWrapper extends React.Component {
   }
 
   render() {
-    const customTitleBar = {
-      'default': false,
-      'hidden': true,
-    }[this.props.titleBarStyle]
-
+    const toplabel = {margin: '0 0 0 0.5em'}
     return (
-      <Wrapper customTitleBar={customTitleBar}>
-        { customTitleBar ? <TitleBar /> : null }
+      <Wrapper >
+        {/* customTitleBar ? <TitleBar /> : null */}
         <TopBar>
           <button onClick={window.print}>Print</button>
-          <div style={{width: '1cm'}}></div>
-          <span style={{margin: '0 0.5rem'}}>Font:</span><FontFamilySelect /><FontSizeSelect />
-          <span style={{margin: '0 0.5rem'}}>Margins:</span><PageMargins />
-          <span style={{margin: '0 0.5rem'}}>Zoom:</span><PreviewZoom />
-          <span style={{margin: '0 0.5rem'}}>Start Numbering At:</span><StartNumbering />
+          <span style={toplabel}>Answer Key:</span><AnswerKeyToggle />
+          <span style={toplabel}>Start Numbering At:</span><StartNumbering />
+          <span style={toplabel}>Font:</span>
+          {this.props.fontFamilyUI === 'input' ? <FontFamilyInput applyButton={false}/> : <FontFamilySelect />}
+          <FontSizeSelect />
+          <span style={toplabel}>Margins:</span><PageMargins />
+          <span style={toplabel}>Zoom:</span><PreviewZoom />
+          <span style={toplabel}>Allow Editing:</span><AllowEditingToggle />
+          
         </TopBar>
         <Preview>
-          <Document ref={this.document}/>
+          <Document/>
         </Preview>
         <SideBar>
           <select ref={this.questionTypeSelect} defaultValue='__NONE__'>
@@ -134,25 +143,15 @@ class AppWrapper extends React.Component {
             {this.renderQuestionList()}
           </select>
           <button onClick={this.generateAndAdd}>Add</button>
-          <button onClick={this.openCustomEditor}>Custom Question</button>
+          <button onClick={this.openCustomQuestion}>Custom Question</button>
           <button onClick={this.props.removeLast}>Remove Last</button>
           <button onClick={this.props.clearAll}>Clear All</button>
-          <button onClick={() => this.setState({modal: 'Settings'})}>Settings</button>
+          <button onClick={this.openSettings}>Settings</button>
           <div style={{height: '1in'}}></div>
           <button onClick={() => this.setState({modal: 'Notes'})}>Notes</button>
           <CheckStateButton>Log State</CheckStateButton>
         </SideBar>
-        <StatusBar><span>{this.props.statusBar}</span></StatusBar>
-
-
-
-        <ReactModal
-          isOpen={this.state.modal === 'CustomEditor'}
-          onRequestClose={this.closeModal}
-        >
-          <CustomQuestion onRequestClose={this.closeModal}/>
-          <button onClick={this.closeModal}>Cancel</button>
-        </ReactModal>
+        { this.props.statusBar ? <StatusBar><span>{this.props.statusBar}</span></StatusBar> : null }
 
 
         <ReactModal
@@ -160,6 +159,14 @@ class AppWrapper extends React.Component {
           onRequestClose={this.closeModal}
         >
           <SettingsPage onRequestClose={this.closeModal}/>
+          <button onClick={this.closeModal}>Close</button>
+        </ReactModal>
+
+        <ReactModal
+          isOpen={this.state.modal === 'CustomQuestion'}
+          onRequestClose={this.closeModal}
+        >
+          <CustomQuestion onRequestClose={this.closeModal}/>
           <button onClick={this.closeModal}>Close</button>
         </ReactModal>
 
@@ -179,12 +186,13 @@ class AppWrapper extends React.Component {
 
 const mapStateToProps = state => ({
   questionTypes: questionBank,
-  titleBarStyle: state.config.titleBarStyle,
-  statusBar: `Questions: ${state.document.order.length}`
+  statusBar: "",
+  fontFamilyUI: state.config.fontFamilyUI,
+
 })
 
 const mapDispatchToProps = dispatch => ({
-  addQuestion: q => dispatch(addQuestion(q)),
+  addToDocument: q => dispatch(addToDocument(q)),
   removeLast: () => dispatch(removeLast()),
   clearAll: () => dispatch(clearAll()),
 })

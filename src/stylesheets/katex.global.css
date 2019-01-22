@@ -1,0 +1,7 @@
+@import '~katex/dist/katex.min.css';
+
+.katex-html {
+  white-space: nowrap;
+  font-size: var(--doc-math-font-size, 0.9em);
+  font-weight: var(--doc-math-font-weight, normal);
+}

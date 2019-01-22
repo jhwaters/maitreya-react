@@ -4,12 +4,7 @@ import styles from './styles.module.css'
 class Wrapper extends React.Component {
   
   render() {
-    let classNames = [styles.Wrapper]
-    if (this.props.customTitleBar) {
-      classNames.push(styles.WrapperTitleBar)
-    } else {
-      classNames.push(styles.WrapperTopBar)
-    }
+    let classNames = [styles.Wrapper, styles['Wrapper-TopBar']]
 
     return (
       <div className={classNames.join(' ')}>

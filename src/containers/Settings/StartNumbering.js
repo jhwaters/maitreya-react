@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { updateDocumentSettings } from '../../actions/document'
+import { setDocumentStartNumbering } from '../../actions/document'
 
 class StartNumbering extends React.Component {
   constructor(props) {
@@ -8,10 +8,15 @@ class StartNumbering extends React.Component {
     this.input = React.createRef()
   }
 
+  setCSSVariable(n) {
+    document.body.style.setProperty('--doc-startnumber', n-1)
+  }
+
   setNumbering = () => {
     const startat = this.input.current.value
     if (startat) {
-      this.props.updateDocumentSettings({startNumbering: startat})
+      this.setCSSVariable(startat)
+      this.props.setDocumentStartNumbering(startat)
     }
   }
 
@@ -45,7 +50,7 @@ class StartNumbering extends React.Component {
 
 
 const mapDispatchToProps = dispatch => ({
-  updateDocumentSettings: (settings) => dispatch(updateDocumentSettings(settings)),
+  setDocumentStartNumbering: (n) => dispatch(setDocumentStartNumbering(n)),
 })
 
 export default connect(null, mapDispatchToProps)(StartNumbering)

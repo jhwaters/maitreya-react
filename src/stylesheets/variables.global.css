@@ -1,0 +1,16 @@
+:root {
+  --doc-font-family: serif;
+  --doc-font-size: 9pt;
+  --doc-math-font-size: .9em;
+  --doc-math-font-weight: regular;
+
+  --ui-font-family: 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Ubuntu', 
+    'Source Sans Pro', 'Open Sans', sans-serif;
+  --ui-font-family-monospace: "Inconsolata", "Consolas", 
+    "Menlo", "Ubuntu Mono", "Roboto Mono", "Courier", monospace;
+  --ui-font-size: 3mm;
+
+  --edit-color-dark: rgba(0,150,100,1);
+  --edit-color-light: rgba(50,200,150,0.7);
+  --edit-color-faded: rgba(100,250,150,0.01);
+}

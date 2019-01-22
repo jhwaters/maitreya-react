@@ -1,10 +1,10 @@
 import math from 'mathjs'
 import Polynomial from 'polynomial'
-import { CartesianPlane, Rational, SvgElement, Canvas, Path, Parametric } from './tools/plot'
+import { CartesianPlane, Rational, SvgElement, Canvas, Path } from './tools/plot'
 import { range, gcd } from './tools/handystuff'
 //import { shuffle, randint, choice, sample } from './random_randomjs'
 import QGen from './QGen'
-import _ from 'lodash'
+//import _ from 'lodash'
 
 /***** Handy Things *********/
 
@@ -28,6 +28,7 @@ function randomPolynomial(props={}) {
   return new Polynomial(p)
 }
 
+/*
 function divrem(n, p) {
   let r = n
   let d = 0
@@ -90,6 +91,7 @@ function allFactors(n, {include1=false, includeN=false}) {
     result.push(n)
   }
 }
+*/
 /****************************/
 
 export class SolveQuadratic extends QGen {
@@ -119,7 +121,7 @@ export class SolveQuadratic extends QGen {
     return {
       instructions: 'Determine the values of $$x$$ that satisfy the equation:',
       question: '$$' + left.toLatex() + ' = ' + right.toLatex() +'$$',
-      answer: fmtAns([r1, r2]),
+      _answer: fmtAns([r1, r2]),
     }
   }
 }
@@ -181,7 +183,7 @@ export class FactorQuadraticHard extends QGen {
     return {
       instructions: 'Rewrite as the product of linear factors:',
       question: `&${poly.toLatex()}&`,
-      answer: answer,
+      _answer: answer,
     }
   }
 }
@@ -214,11 +216,11 @@ export class RationalGraph extends QGen {
 
     function fmtAns(ans) {
       let numer = ''
-      for (const r of ans.top.sort((a,b) => a-b)) {
+      for (const r of ans.top.sort((a,b) => b-a)) {
         numer += '(' + math.simplify(`x - ${r}`).toString() + ')'
       }
       let denom = ''
-      for (const r of ans.bottom.sort((a,b) => a-b)) {
+      for (const r of ans.bottom.sort((a,b) => b-a)) {
         denom += '(' + math.simplify(`x - ${r}`).toString() + ')'
       }
       return `$$y = \\displaystyle\\frac{ ${numer} }{ ${denom} }$$`
@@ -242,12 +244,8 @@ export class RationalGraph extends QGen {
         type: 'jsonml',
         data: graph.jsonml(),
       },
-      choices: {
-        type: 'answerchoices',
-        data: choices,
-        answerIndex: i,
-      },
-      answer: fmtAns(answer),
+      answer: choices,
+      _answerIndex: i,
     }
   }
 }
@@ -396,12 +394,9 @@ export class FindIntervals extends QGen {
         type: 'jsonml',
         data: diagram.toJsonML(),
       },
-      answer: fmtAns(answer),
-      choices: {
-        type: 'answerchoices', 
-        data: choices.map(fmtAns),
-        answerIndex: answerIndex,
-      },
+      answer: choices.map(fmtAns),
+      _answer: fmtAns(answer),
+      _answerIndex: answerIndex,
     })
   }
 }
@@ -441,18 +436,19 @@ export class AngleMeasure extends QGen {
 
     const translate = (a, b) => [a[0] + b[0], a[1]+ b[1]]
     const difference = (a, b) => [a[0] - b[0], a[1] - b[1]]
-    const complexMult = (a, b) => [a[0] * b[0] - a[1] * b[1], a[1] * b[0] + a[0] * b[1]]
+    //const complexMult = (a, b) => [a[0] * b[0] - a[1] * b[1], a[1] * b[0] + a[0] * b[1]]
+    /*
     const rotate = (pt, angle, center=[0,0]) => {
       const radians = angle * Math.PI / 180
       const rotator = [Math.cos(radians), Math.sin(radians)]
       const recenter = difference(pt, center)
       return translate(complexMult(recenter, rotator), center)
     }
+    */
 
     const rd = this.random
 
     const angle1 = rd.randint(35, 145)
-    const angle2 = 180 - angle1
 
     const rotateBy = rd.randint(0, 359)
     let diagram = new Canvas(-20, -20, 20, 20, {height: '1.5in'})

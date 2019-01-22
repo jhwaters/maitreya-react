@@ -1,5 +1,3 @@
-import renderElement from './renderElement'
+import { RenderElement } from './RenderElement'
 
-export {
-  renderElement
-}
+export { RenderElement }

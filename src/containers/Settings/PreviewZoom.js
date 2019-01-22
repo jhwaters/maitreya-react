@@ -1,17 +1,23 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class PreviewZoom extends React.Component {
+  static propTypes = { type: PropTypes.string.isRequired }
+
+  static defaultProps = { type: 'selection' }
+
   constructor(props) {
     super(props)
     this.selection = React.createRef()
-    this.default = 110
+    this.default = 100
     this.setPreviewZoom(this.default)
   }
 
-  setPreviewZoom(magnification) {
-    const scale = magnification / 100.0
-    const matrix = [scale, 0, 0, scale, (magnification-110)*1.5, (magnification-100)*10.8].join(',')
-    document.body.style.setProperty('--previewZoom', `matrix(${matrix})`)
+  setPreviewZoom(perc) {
+    const scale = perc / 100.0
+    
+    const transform = `matrix(${[scale, 0, 0, scale, 0, (perc-100)*10.8].join(',')})`
+    document.body.style.setProperty('--previewInnerTransform', transform)
   }
 
   setFromInput = () => {
@@ -20,7 +26,7 @@ class PreviewZoom extends React.Component {
   }
 
   render() {
-    if (this.props.type & this.props.type === 'input') {
+    if (this.props.type === 'input') {
       return (
         <input
           ref={this.selection} 

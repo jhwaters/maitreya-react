@@ -1,0 +1,27 @@
+@page { margin: 0 }
+body { margin: 0 }
+
+
+/** For screen preview **/
+@media screen {
+  html, body { background-color: #aaa; }
+  .page-outer {
+    background: white;
+    box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
+    margin: 3mm auto;
+  }
+  .page-overflowing {
+    outline: 4px dotted red;
+  }
+}
+
+@media print {
+  .document {
+    position: absolute;
+  }
+  .page-outer {
+    page-break-inside: avoid;
+    page-break-after: always;
+    overflow: hidden;
+  }
+}

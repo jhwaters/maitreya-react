@@ -1,0 +1,148 @@
+
+
+.document blockquote {
+  font-style: italic;
+}
+
+.document em > strong {
+  text-decoration-line: underline;
+}
+
+/* TABLES */
+
+.document table {
+  border-collapse: collapse;
+}
+
+.document th {
+  font-weight: bold;
+}
+
+.document th, .document td {
+  border: 1px solid black;
+  padding: 0.2em 0.5em;
+}
+
+.document {
+  font-family: var(--doc-font-family, serif);
+  font-size: var(--doc-font-size, 9pt);
+  counter-reset: question var(--doc-startnumber, 0);
+  display: flex;
+  flex-direction: column;
+}
+
+.answerchoice-list {
+  list-style: none;
+  padding: 0;
+}
+
+.answerchoice-item {
+  margin: 2mm;
+}
+
+.answerchoice-item:before {
+  counter-increment: answerchoice 1;
+  content: counter(answerchoice, lower-alpha) ') ';
+  margin-right: 2mm;
+}
+
+.answerkey {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  font-size: 1.1em;
+  counter-reset: answerkey var(--doc-startnumber, 0);
+  margin: 0;
+  padding: 0;
+  position: relative;
+  max-height: 90%;
+}
+
+.answerkey-item {
+  margin: 1mm;
+}
+
+.answerkey-item::before {
+  counter-increment: answerkey 1;
+  content: counter(answerkey) '. ';
+}
+
+.blank-underline {
+  display: inline-block;
+  border-bottom: 1px solid black; 
+  margin: 0 1mm;
+}
+
+/* .blank-underline-heading */
+
+.editable > *:hover {
+  outline: 3px dotted var(--edit-color-light, lightgreen);
+  background-color: var(--edit-color-faded);
+}
+
+.header {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.header td {
+  border: none;
+  font-size: 1.4em;
+  font-weight: bold;
+  border: none;
+  padding-bottom: 3mm;
+  text-align: left;
+}
+
+.header td:last-child {
+  text-align: right;
+  right: 0;
+}
+
+.header-empty {
+  height: 5mm;
+}
+
+.list-auto {
+  list-style-type: upper-roman;
+}
+
+.question-wrapper {
+  display: flex;
+  margin: 1em 0;
+}
+
+.question-wrapper::before {
+  counter-increment: question 1;
+  counter-reset: answerchoice 0;
+  content: counter(question) '. ';
+  font-size: 1em;
+  position: relative;
+}
+
+:root {
+  --layout-answer-diagram: 'answer diagram'
+}
+
+.question-layout {
+  display: grid;
+  padding: 0;
+  break-inside: avoid;
+  width: 100%;
+}
+
+.question-layout {
+  grid-template-areas: 
+    'instructions instructions'
+    'question question'
+    var(--layout-answer-diagram);
+}
+
+.question-wrapper > .question-layout {
+  margin-left: 1em;
+}
+
+.question-area {
+  margin-bottom: 0.5em;
+  margin-right: 0.5em;
+}

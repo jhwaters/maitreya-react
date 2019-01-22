@@ -1,11 +1,11 @@
 import { connect } from 'react-redux'
 import CustomQuestion from './CustomQuestion'
 import {
-  addQuestion
+  addToDocument
 } from '../../actions/document'
 
 const mapDispatchToProps = dispatch => ({
-  addQuestion: (q) => dispatch(addQuestion(q))
+  addToDocument: (thing) => dispatch(addToDocument(thing))
 })
 
 export default connect(null, mapDispatchToProps)(CustomQuestion)

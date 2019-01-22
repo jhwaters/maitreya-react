@@ -21,20 +21,21 @@ const contourPresent = function(f, x, y, d) {
   } catch(e) {
     r = test(f, x+d-p, y+p)
   }
-  if (r !== q) { return true }
+  if (r !== q) return true
 
   try {
     s = test(f, x+d, y+d)
   } catch(e) {
     s = test(f, x+d-p, y+d-p)
   }
-  if (s !== q) { return true }
+  if (s !== q) return true
 
   try {
     t = test(f, x, y+d)
   } catch(e) {
     t = test(f, x+p, y+d-p)
   }
+  if (t !== q) return true
 
   return false
 }

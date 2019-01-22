@@ -60,10 +60,10 @@ export class QuadTreePlotTest extends QGen {
     //const f4 = ({x, y}) => Math.pow(Math.cos(x*x), 1)
 
     let graph = new CartesianPlane(-7, -7, 7, 7, {height: '4in'})
-    let q = createTree(pt => f1(pt) - f2(pt), -7, -7, 14, 9, 8)
-    const marker = ({x, y}) => new SvgElement('circle', {cx: x, cy: y, r: '0.1'})
+    let q = createTree(pt => f1(pt) - f2(pt), -7, -7, 14, 8, 8)
+    const marker = ({x, y}) => new SvgElement('circle', {cx: x, cy: y, r: '0.05'})
     const points = q.map(marker)
-    graph.add(new SvgElement('g', {style: {fill: 'rgba(200,0,100,0.3)'}}, ...points))
+    graph.add(new SvgElement('g', {style: {fill: 'rgba(200,0,100,0.6)'}}, ...points))
 
     return {
       question: "The graph of $$\\sin(x^2) = \\cos(y^2)$$:",
@@ -71,67 +71,6 @@ export class QuadTreePlotTest extends QGen {
         type: 'jsonml',
         data: graph.toJsonML(),
       }
-    }
-  }
-}
-
-
-
-class JsonMlTest extends QGen {
-  static info = {
-    name: 'JsonML',
-    description: 'Test rendering from JsonML',
-  }
-
-  generate(params) {
-    const [color1, color2] = this.random.sample(['red', 'orange', 'yellow', 'green', 'blue', 'purple'], 2)
-
-    return {
-      instructions: {
-        type: 'jsonml',
-        data: [
-          'div', 
-            {
-              style: {
-                padding: '2mm',
-                backgroundColor: 'rgba(0,0,0,0.4)',
-                color: 'white',
-              },
-              children: [
-                ['span', 'Child 1'], ['br'],
-                ['span', {style: {'fontFamily': 'sans-serif'}}, 'Child 2'], ['br'],
-              ],
-            }, 
-            ['code', 'Child 3'],
-        ]
-      },
-      question: "What color are the circles?",
-      answer: `${color1} and ${color2}`,
-      diagram: {
-        type: "jsonml",
-        data: [
-          'svg',
-          {
-            viewBox: "-5 -5 17 10",
-            width: "2in",
-            children: [
-              ["circle", {cx: "0", cy: "0", r: "4", style: {
-                fill: color1, 
-                fillOpacity: "0.8",
-                stroke: 'black',
-                strokeWidth: '0.1',
-              }}],
-              ["circle", {cx: "8", cy: "0", r: "3", style: {
-                fill: color2, 
-                fillOpacity: "0.8",
-                stroke: 'black',
-                strokeWidth: '0.1',
-                title: `This one is ${color2}!`,
-              }}]
-            ]
-          }
-        ]
-      },
     }
   }
 }
