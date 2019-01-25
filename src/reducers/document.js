@@ -51,16 +51,17 @@ const document = function(state=initialState, action) {
         pagebreaks: state.pagebreaks.filter(n => n < state.order.length),
       }
     case DELETE_ELEMENT:
-      if (action.payload.split('.')[0] === 'header') {
-        return {
-          ...state, headers: {...state.headers, [action.payload.split('.')[1]]: {type: 'header', data: []}}
+      if (typeof action.payload === 'string') {
+        if (action.payload.split('.')[0] === 'header') {
+          return {
+            ...state, headers: {...state.headers, [action.payload.split('.')[1]]: {type: 'header', data: []}}
+          }
         }
+
       }
-      //let newContent = {...state.content}
-      //delete newContent[action.payload]
+      //Note that this does not remove the element from 'content', only from 'order'
       return {
         ...state, 
-        //content: newContent,
         order: state.order.filter(id => id !== action.payload),
         pagebreaks: state.pagebreaks.filter(n => n < state.order.length),
       }
