@@ -48,9 +48,10 @@ const RenderExample = ({text}) => {
       padding: '0.5rem',
       overflowX: 'scroll',
     }}>{text}</pre>
-    <span style={{
-      fontFamily: 'var(--doc-font-family, serif)', 
+    <span className='document' 
+      style={{
       paddingLeft: '0.5rem',
+      fontSize: '1em',
     }}>
       <RenderElement content={{type: 'text', data: text}}/>
     </span>

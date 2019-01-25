@@ -3,12 +3,7 @@ import {
   CLEAR_ALL,
   REMOVE_LAST,
   UPDATE_ELEMENT,
-  SET_DOCUMENT_FONTFAMILY,
-  SET_DOCUMENT_FONTSIZE,
   SET_DOCUMENT_STARTNUMBERING,
-  SET_MATH_FONTSIZE,
-  SET_MATH_FONTWEIGHT,
-  SET_PAGE_MARGINS,
   ADD_PAGEBREAK_BEFORE,
   DELETE_ELEMENT,
 } from '../actions/document'
@@ -19,32 +14,18 @@ const initialState = {
   content: {},
   order: [],
   headers: {
-    first: {
+    1: {
       type: 'header',
       data: [
         {left: 'Assignment', right: 'Name ___'},
         {right: 'Date __ Class _'},
       ],
     },
-    other: {type: 'header', data: []},
+    default: {type: 'header', data: []},
   },
   footers: {},
   pagebreaks: [],
-  settings: {
-    startNumbering: 1,
-    fontSize: '8pt',
-    fontFamily: 'CMUSerifRoman',
-    mathFontSize: '0.9em',
-    mathFontWeight: 'normal',
-    pageSize: 'letter',
-    pageOrientation: 'portrait',
-    pageMargins: {
-      top: '10mm',
-      left: '10mm',
-      right: '10mm',
-      bottom: '10mm',
-    },
-  },
+  startNumbering: 1,
 }
 
 const document = function(state=initialState, action) {
@@ -70,13 +51,10 @@ const document = function(state=initialState, action) {
         pagebreaks: state.pagebreaks.filter(n => n < state.order.length),
       }
     case DELETE_ELEMENT:
-      if (action.payload === 'header.first') {
+      if (action.payload.split('.')[0] === 'header') {
         return {
-          ...state, headers: {...state.headers, first: {type: 'header', data: []}}
+          ...state, headers: {...state.headers, [action.payload.split('.')[1]]: {type: 'header', data: []}}
         }
-      }
-      if (action.payload === 'header.other') {
-        return {...state, headers: {...state.headers, other: {type: 'header', data: []}}}
       }
       //let newContent = {...state.content}
       //delete newContent[action.payload]
@@ -87,15 +65,10 @@ const document = function(state=initialState, action) {
         pagebreaks: state.pagebreaks.filter(n => n < state.order.length),
       }
     case UPDATE_ELEMENT:
-      if (action.payload.id === 'header.first') {
+      if (action.payload.id.split('.')[0] === 'header') {
         return {
           ...state, 
-          headers: {...state.headers, first: action.payload.element}}
-      }
-      if (action.payload.id === 'header.other') {
-        return {
-          ...state, 
-          headers: {...state.headers, other: action.payload.element}}
+          headers: {...state.headers, [action.payload.id.split('.')[1]]: action.payload.element}}
       }
       return {
         ...state, 
@@ -104,18 +77,9 @@ const document = function(state=initialState, action) {
 
 
     // settings
-    case SET_DOCUMENT_FONTFAMILY:
-      return {...state, settings: {...state.settings, fontFamily: action.payload}}
-    case SET_DOCUMENT_FONTSIZE:
-      return {...state, settings: {...state.settings, fontSize: action.payload}}
-    case SET_MATH_FONTSIZE:
-      return {...state, settings: {...state.settings, mathFontSize: action.payload}}
-    case SET_MATH_FONTWEIGHT:
-      return {...state, settings: {...state.settings, mathFontWeight: action.payload}}
     case SET_DOCUMENT_STARTNUMBERING:
-      return {...state, settigns: {...state.settings, startNumbering: action.payload}}
-    case SET_PAGE_MARGINS:
-      return {...state, settings: {...state.settings, pageMargins: action.payload}}
+      return {...state, startNumbering: action.payload}
+
 
 
     // view

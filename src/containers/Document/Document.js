@@ -16,7 +16,6 @@ const Document = (props) => {
   }
   slices.push([prev])
   const pages = slices.map(s => props.contentIDs.slice(...s))
-  //pages[0] = ['heading1', ...pages[0]]
 
   return (
     <div className='document'>
@@ -24,9 +23,8 @@ const Document = (props) => {
         pages.length > 0 
         ? pages.map((ids,i) => (
           <MeasuredPage key={`page-${i+1}`} 
-            headerID={i === 0 ? 'first' : 'other'}
+            pageNumber={i+1}
             contentIDs={ids}
-            pagenumber={i+1}
           />
         )) : null
       )}
@@ -36,7 +34,6 @@ const Document = (props) => {
 }
 
 const mapStateToProps = state => ({
-  headers: state.document.headers,
   contentIDs: state.document.order,
   pagebreaks: state.document.pagebreaks,
   showAnswerKey: state.config.showAnswerKey,

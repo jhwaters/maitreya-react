@@ -1,39 +1,39 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { setMathFontSize, setMathFontWeight } from '../../actions/document'
+import { setMathFontSize, setMathFontWeight } from '../../../actions/style'
 
 class MathFontSettings extends React.Component {
   static propTypes = {
-    defaultSize: PropTypes.string,
-    defaultWeight: PropTypes.string,
+    currentSize: PropTypes.string,
+    currentWeight: PropTypes.string,
     setMathFontSize: PropTypes.func.isRequired,
     setMathFontWeight: PropTypes.func.isRequired,
   }
 
-  setSizeCSS(size) {
+  setSizeCss(size) {
     document.body.style.setProperty('--doc-math-font-size', size)
   }
 
-  setWeightCSS(weight) {
+  setWeightCss(weight) {
     document.body.style.setProperty('--doc-math-font-weight', weight)
   }
 
   setSize(size) {
-    this.setSizeCSS(size)
+    this.setSizeCss(size)
     this.props.setMathFontSize(size)
   }
 
   setWeight(weight) {
-    this.setWeightCSS(weight)
+    this.setWeightCss(weight)
     this.props.setMathFontWeight(weight)
   }
 
-  updateSize = (evt) => {
+  onChangeSize = (evt) => {
     this.setSize(evt.target.value)
   }
 
-  updateWeight = (evt) => {
+  onChangeWeight = (evt) => {
     if (evt.target.checked) {
       this.setWeight('bold')
     } else {
@@ -46,8 +46,8 @@ class MathFontSettings extends React.Component {
       <>
         Relative Size:
         <select
-          onChange={this.updateSize}
-          defaultValue={this.props.defaultSize}
+          onChange={this.onChangeSize}
+          value={this.props.currentSize}
         >
           <option value='0.6em'>0.6</option>
           <option value='0.7em'>0.7</option>
@@ -61,9 +61,9 @@ class MathFontSettings extends React.Component {
         </select>
         Bold:
         <input ref={this.bold} 
-          onChange={this.updateWeight}
+          onChange={this.onChangeWeight}
           type="checkbox"
-          defaultChecked={this.props.defaultWeight === 'bold'}
+          checked={this.props.currentWeight === 'bold'}
         />
       </>
     )
@@ -71,8 +71,8 @@ class MathFontSettings extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  defaultSize: state.document.settings.mathFontSize,
-  defaultWeight: state.document.settings.mathFontWeight,
+  currentSize: state.style.mathFontSize,
+  currentWeight: state.style.mathFontWeight,
 })
 
 const mapDispatchToProps = dispatch => ({

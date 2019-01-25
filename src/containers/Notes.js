@@ -3,14 +3,15 @@ import React from 'react'
 
 const Notes = (props) => {
   const notes = [
-    'Double-click the header to edit it.',
+    'Double-click on the document to edit an element (only works for headers right now).',
     'Make sure the scale is set to 100% when printing.',
     'Create a PDF by selecting "Save to PDF" when printing.',
   ]
   const issues = [
-    'In some browsers only the first page prints. Chrome works.',
     'Pagination is really sketchy.',
     "Zooming doesn't work right.",
+    'In some browsers only the first page prints.',
+    'In some browsers points and holes on are not rendered on graphs.',
   ]
   const formatting = [
     'Italic and bold font, as well as superscripts, subscripts, and arrows, can be achieved using markdown.',

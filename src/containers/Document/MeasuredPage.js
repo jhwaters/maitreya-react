@@ -9,24 +9,22 @@ import { portrait, landscape } from './pagesize'
 
 class MeasuredPage extends React.Component {
   static propTypes = {
-    headerID: PropTypes.string,
-    footerID: PropTypes.string,
+    headerID: PropTypes.string || PropTypes.number,
+    footerID: PropTypes.string || PropTypes.number,
     contentIDs: PropTypes.array.isRequired,
     content: PropTypes.object.isRequired,
-    size: PropTypes.string.isRequired,
-    orientation: PropTypes.string.isRequired,
-    margins: PropTypes.object.isRequired,
+    pageSize: PropTypes.string.isRequired,
+    pageOrientation: PropTypes.string.isRequired,
+    pageMargin: PropTypes.string.isRequired,
     addPageBreakBefore: PropTypes.func.isRequired,
+    pageNumber: PropTypes.number,
   }
 
   static defaultProps = {
     contentIDs: [],
-    size: 'letter',
-    orientation: 'portrait',
-    margins: {
-      left: '10mm', right: '10mm',
-      top: '10mm', bottom: '10mm',
-    }
+    pageSize: 'letter',
+    pageOrientation: 'portrait',
+    pageMargin: '10mm 10mm 10mm 10mm',
   }
 
   constructor(props) {
@@ -57,10 +55,10 @@ class MeasuredPage extends React.Component {
   }
 
   getPageSize()  {
-    if (this.props.orientation === 'landscape') {
-      return landscape[this.props.size]
+    if (this.props.pageOrientation === 'landscape') {
+      return landscape[this.props.pageSize]
     } else {
-      return portrait[this.props.size]
+      return portrait[this.props.pageSize]
     }
   }
 
@@ -73,11 +71,15 @@ class MeasuredPage extends React.Component {
     return {
       height: 'fit-content',
       margin: '0',
-      paddingTop: this.props.margins.top,
-      paddingLeft: this.props.margins.left,
-      paddingRight: this.props.margins.right,
-      paddingBottom: this.props.margins.bottom,
+      padding: this.props.pageMargin,
     }
+  }
+
+  getHeaderID() {
+    if (this.props.pageNumber in this.props.headers) {
+      return this.props.pageNumber
+    }
+    return 'default'
   }
 
   render() {
@@ -89,17 +91,14 @@ class MeasuredPage extends React.Component {
 
     const outerstyle = this.getOuterStyle()
     const innerstyle = this.getInnerStyle()
+    const headerID = this.getHeaderID()
     return (
       <div className={outerclassname} ref={this.outer} style={outerstyle}>
         <div className='page-inner' ref={this.inner} style={innerstyle}>
-          {this.props.headerID 
-            ? (
-              <TopLevelElement key={`header-${this.props.headerID}`}
-                id={`header.${this.props.headerID}`}
-                element={this.props.headers[this.props.headerID]}
-              />
-            ) : null
-          }
+          <TopLevelElement key={`header-${headerID}`}
+            id={`header.${headerID}`}
+            element={this.props.headers[headerID]}
+          />
           {this.props.contentIDs.map((id) => (
             <TopLevelElement key={`contentElement-${id}`}
               element={this.props.content[id]}
@@ -116,9 +115,9 @@ const mapStateToProps = state => ({
   headers: state.document.headers,
   footers: state.document.footers,
   content: state.document.content,
-  size: state.document.settings.pageSize,
-  orientation: state.document.settings.pageOrientation,
-  margins: state.document.settings.pageMargins,
+  pageSize: state.style.pageSize,
+  pageOrientation: state.style.pageOrientation,
+  pageMargin: state.style.pageMargin,
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { RenderElement } from '../../renderMethods'
 import { addToDocument } from '../../actions/document'
 import LatexExamples from './LatexExamples'
+import GraphMaker from './GraphMaker'
 import ReactModal from 'react-modal'
 
 const tabsize = 2;
@@ -41,6 +42,7 @@ class CustomQuestion extends React.Component {
       instructions: '',
       question: '',
       _answer: '',
+      diagram: '',
       json: '',
       modal: 'none',
     }
@@ -52,6 +54,7 @@ class CustomQuestion extends React.Component {
   }
 
   openExamples = () => this.setState({ modal: 'examples' })
+  openGraphMaker = () => this.setState({modal: 'graph'})
   closeModal = () => this.setState({ modal: 'none' })
 
   updateInstructions = (evt) => {
@@ -59,6 +62,9 @@ class CustomQuestion extends React.Component {
   }
   updateQuestion = (evt) => {
     this.setState({ question: evt.target.value })
+  }
+  updateDiagram = (diagram) => {
+    this.setState({diagram})
   }
   updateAnswer = (evt) => {
     this.setState({ _answer: evt.target.value })
@@ -104,6 +110,9 @@ class CustomQuestion extends React.Component {
           data[k] = this.state[k]
         }
       }
+      if (this.state.diagram) {
+        data.diagram = this.state.diagram
+      }
       return data
     } else if (this.state.inputType === 'json') {
       try {
@@ -142,6 +151,9 @@ class CustomQuestion extends React.Component {
             onChange={this.updateQuestion}
             style={inputStyle}
           ></textarea>
+
+          <p>Diagram:</p>
+          <button onClick={this.openGraphMaker}>Add Graph</button>
           
           <p>Answer:</p>
           <textarea 
@@ -217,6 +229,8 @@ class CustomQuestion extends React.Component {
         </div>
       </div>
       <button onClick={this.addQuestion}>Add to Assignment</button>
+
+
       <ReactModal isOpen={this.state.modal === 'examples'}
         onRequestClose={this.closeModal}
         style={{
@@ -231,6 +245,12 @@ class CustomQuestion extends React.Component {
         }}
       >
         <LatexExamples onRequestClose={this.closeModal}/>
+      </ReactModal>
+
+      <ReactModal isOpen={this.state.modal === 'graph'}
+        onRequestClose={this.closeModal}
+      >
+        <GraphMaker onRequestClose={this.closeModal} onSubmit={this.updateDiagram}/>
       </ReactModal>
       </>
     )

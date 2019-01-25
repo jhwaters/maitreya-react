@@ -117,6 +117,13 @@
 }
 
 @media print {
+  .PreviewOuter {
+    overflow: visible
+  }
+
+  .PreviewInner {
+    overflow: visible;
+  }
   .Wrapper {
     display: block;
     height: 100%;

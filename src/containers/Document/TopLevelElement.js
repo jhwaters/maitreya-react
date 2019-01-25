@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import ReactModal from 'react-modal'
 import { RenderElement } from '../../renderMethods'
@@ -131,6 +132,14 @@ class EditElement extends React.Component {
 
 
 class TopLevelElement extends React.Component {
+  static propTypes = {
+    //id: PropTypes.number.isRequired || PropTypes.string,
+    element: PropTypes.object,
+    canEdit: PropTypes.bool,
+    updateElement: PropTypes.func,
+    deleteElement: PropTypes.func,
+  } 
+
   constructor(props) {
     super(props)
     this.state = {

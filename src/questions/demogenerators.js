@@ -1,6 +1,184 @@
 import QGen from './QGen'
-import { CartesianPlane, SvgElement } from './tools/plot'
+import { CartesianPlane, PlotElement } from './tools/plot'
 import { createTree } from './tools/QuadTree'
+
+
+class RationalPlot extends QGen {
+  static info = {
+    name: 'Rational Plot',
+    description: 'Plot rational by parameters'
+  }
+
+  generate(params) {
+    
+
+    return {
+      question: 'Rational:',
+      diagram: {
+        type: 'graph',
+        data: [
+          'CartesianPlane',
+          {start: [-10,-10], stop: [10,10]},
+          [
+            'Rational',
+            {
+              inverse: true,
+              domain: [-10,10],
+              roots: [-1, 6],
+              holes: [-5],
+              asymptotes: [0, 3],
+            }
+          ]
+        ]
+      }
+    }
+  }
+}
+
+class PolynomialPlot extends QGen {
+  static info = {
+    name: 'Polynomial plot',
+    description: 'Plot polynomial by coefficients'
+  }
+
+  generate(params) {
+    const rd = this.random
+
+    const deg = rd.randint(2,7)
+    const inv = rd.choice([true, false])
+    let coeffs = rd.sample([-5,-4,-3,-2,-1,0,1,2,3,4,5], deg+1)
+    const denom = rd.randint(2, 21)
+    
+    if (coeffs[coeffs.length-1] === 0) {
+      coeffs = coeffs.slice(0,-1)
+    }
+    const [v, w] = inv ? ['y', 'x'] : ['x', 'y']
+    let tex = ''
+    for (let i = coeffs.length-1; i >= 0; i--) {
+      const c = coeffs[i]
+      const x = i === 0 ? '' : `${v}^{${i}}`
+      if (c > 0) {
+        if (i < coeffs.length-1) tex += '+';
+        if (c !== 1 || i === 0) tex += c;
+        tex += x
+      } else if (c < 0) {
+        if (c !== -1 || i === 0) {
+          tex += c
+        } else {
+          tex += '-'
+        }
+        tex += x
+      }
+    }
+
+
+    const graph = [
+      'CartesianPlane',
+      {start: [-10,-10], stop: [10,10]},
+      [
+        'Polynomial',
+        {coefficients: coeffs.map(c => c/denom), domain: [-10,10], inverse: inv}
+      ]
+    ]
+
+    const question = `The graph of a $$\\displaystyle ${w} = \\frac{1}{${denom}}(${tex})$$`
+
+    return {
+      question: question,
+      diagram: {
+        type: 'graph',
+        data: graph,
+      }
+    }
+  }
+}
+
+export class PlotStyling extends QGen {
+  static info = {
+    name: 'Plot Style',
+    description: 'Plot with custom style'
+  }
+
+  generate(params) {
+    const x = t => 9*Math.sin(t)
+    const y = t => 9*Math.sin(1.17*t)
+    const step = 0.1
+    let path1 = []
+    let path2 = []
+    let path3 = []
+    let path4 = []
+
+    let t = -36
+
+    while (t <= -18) {
+      path1.push([x(t), y(t)])
+      t += step
+    }
+    path1.push([x(t), y(t)])
+
+    while (t <= 0) {
+      path2.push([x(t), y(t)])
+      t += step
+    }
+    path2.push([x(t), y(t)])
+
+    while (t <= 18) {
+      path3.push([x(t), y(t)])
+      t += step
+    }
+    path3.push([x(t), y(t)])
+
+
+    while (t <= 36) {
+      path4.push([x(t), y(t)])
+      t += step
+    }
+    path4.push([x(t), y(t)])
+
+
+    return {
+      question: 'The graph of $$(x,y) = (9\\sin(t), 9\\cos(1.17t))$$ for $$-36 \\leq t \\leq 36$$:',
+      diagram: {
+        type: 'graph', 
+        data: [
+          'CartesianPlane', 
+          {
+            start: [-10,-10], stop: [10,10], padding: 0.2,
+            style: {
+              '--plot-grid-color': '#ddd',
+              '--plot-axis-color': '#444',
+              '--plot-grid-width': '0.3mm',
+              '--plot-axis-width': '0',
+              //backgroundColor: '#aaa',
+              height: '3in',
+            }
+          },
+          [
+            'Layer',
+            {style: {'--plot-path-color': 'hsl(340,70%,60%)'}},
+            ['Path', {points: path4}],
+          ],
+          [
+            'Layer',
+            {style: {'--plot-path-color': 'hsl(30,90%,50%)'}},
+            ['Path', {points: path3}],
+          ],
+          [
+            'Layer',
+            {style: {'--plot-path-color': 'hsl(80,90%,40%)'}},
+            ['Path', {points: path2}],
+          ],
+          [
+            'Layer',
+            {style: {'--plot-path-color': 'hsl(170,90%,40%)'}},
+            ['Path', {points: path1}],
+          ]
+        ]
+      }
+    }
+  }
+}
+
 
 export class FontTest extends QGen {
   static info = {
@@ -36,8 +214,9 @@ export class FontTest extends QGen {
     }
 
     const question = [
-      'Given that _x + y_ = _m_$$\\angle$$1, _IJK_ is equilateral ...',
-      'Given that $$x + y = m\\angle{1}$$, $$IJK$$ is equilateral ...',
+      '_y = ax^2^ + bx +c_', 
+      '$$y = ax^2 + bx + c$$',
+      '_IJK_ $$IJK$$',
     ].join('  \n')
 
     return {
@@ -60,10 +239,10 @@ export class QuadTreePlotTest extends QGen {
     //const f4 = ({x, y}) => Math.pow(Math.cos(x*x), 1)
 
     let graph = new CartesianPlane(-7, -7, 7, 7, {height: '4in'})
-    let q = createTree(pt => f1(pt) - f2(pt), -7, -7, 14, 8, 7)
-    const marker = ({x, y}) => new SvgElement('circle', {cx: x, cy: y, r: '0.07'})
+    let q = createTree(pt => f1(pt) - f2(pt), -7, -7, 14, 9, 8)
+    const marker = ({x, y}) => new PlotElement('circle', {cx: x, cy: y, r: '0.1'})
     const points = q.map(marker)
-    graph.add(new SvgElement('g', {style: {fill: 'rgba(200,0,100,0.5)'}}, ...points))
+    graph.add(new PlotElement('g', {style: {fill: 'rgba(200,0,100,0.3)'}}, ...points))
 
     return {
       question: "The graph of $$\\sin(x^2) = \\cos(y^2)$$:",

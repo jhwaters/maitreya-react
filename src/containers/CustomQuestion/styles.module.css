@@ -1,0 +1,25 @@
+.GraphMakerBody {
+  display: flex;
+  flex-direction: row;
+}
+
+.GraphMakerBody input {
+  width: 4em;
+}
+
+.GraphMakerBody table {
+  border-collapse: collapse;
+}
+
+.GraphMakerInput {
+  display: flex;
+  flex-direction: column;
+}
+
+.GraphMakerInput > div {
+  margin-bottom: '5mm';
+}
+
+.GraphMakerPreview {
+  height: fit-content;
+}

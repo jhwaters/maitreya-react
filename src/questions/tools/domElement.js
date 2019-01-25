@@ -21,6 +21,9 @@ class DomElement {
         this.props = {}
         this.children = [props]
       }
+    } else {
+      this.props = {}
+      this.children = []
     }
     this.children = this.children.concat(children)
   }

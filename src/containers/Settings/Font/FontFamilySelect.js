@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { setDocumentFontFamily } from '../../actions/document'
+import { setDocumentFontFamily } from '../../../actions/style'
 
 
 const GoogleFonts = [
   //{family: 'CharisSILRegular', label: 'Charis SIL'},
-  {family: 'CMUSerifRoman', label: 'CMU Serif'},
-  {family: 'Inconsolata'},
+  {family: 'CMU Serif'},
+  //{family: 'Inconsolata'},
   {family: 'Lora'},
   {family: 'Source Sans Pro'},
 ]
@@ -25,14 +25,13 @@ function fontSort(a, b) {
   return 0
 }
 
-let nullkey = 0
 
 function renderFontOption(font) {
   const {family, label} = font
   if (family === "0") {
     const optionLabel = label ? label : "---"
     return (
-      <option key={`font-null-${++nullkey}`}
+      <option key={`font-null-${optionLabel}`}
         value="0"
         disabled
       >{optionLabel}</option>
@@ -69,7 +68,7 @@ class FontFamilySelect extends React.Component {
 
   constructor(props) {
     super(props)
-    this.setCSSVariable(props.current)
+    this.setCss(props.current)
   }
 
   fontList = () => {
@@ -84,16 +83,20 @@ class FontFamilySelect extends React.Component {
     return result
   }
 
-  setCSSVariable(fontFamily) {
+  setCss(fontFamily) {
     document.body.style.setProperty('--doc-font-family', fontFamily)
   }
 
-  onSelection = (evt) => {
+  setFontFamily(fontFamily) {
+    this.setCss(fontFamily)
+    this.props.setDocumentFontFamily(fontFamily)
+  }
+
+  onChange = (evt) => {
     const value = evt.target.value
     const fontFamily = value.slice(0,7) === '_LOCAL_' ? value.slice(8) : value
     if (fontFamily) {
-      this.setCSSVariable(fontFamily)
-      this.props.setDocumentFontFamily(fontFamily)
+      this.setFontFamily(fontFamily)
     }
   }
 
@@ -102,7 +105,7 @@ class FontFamilySelect extends React.Component {
       <>
         <select
           value={this.props.current}
-          onChange={this.onSelection}
+          onChange={this.onChange}
         >
           {this.fontList().map((f) => renderFontOption(f))}
         </select>
@@ -113,7 +116,7 @@ class FontFamilySelect extends React.Component {
 
 
 const mapStateToProps = state => ({
-  current: state.document.settings.fontFamily,
+  current: state.style.fontFamily,
   localFonts: [...state.config.localFonts],
 })
 

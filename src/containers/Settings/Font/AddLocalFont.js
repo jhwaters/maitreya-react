@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { addLocalFont } from '../../actions/config'
+import { addLocalFont } from '../../../actions/config'
 
 class AddLocalFont extends React.Component {
   static propTypes = {

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { setDocumentFontSize } from '../../actions/document'
+import { setDocumentFontSize } from '../../../actions/style'
 
 
 class FontSizeSelect extends React.Component {
@@ -13,21 +13,20 @@ class FontSizeSelect extends React.Component {
 
   constructor(props) {
     super(props)
-    this.setCSSVariable(props.current)
+    this.setCss(props.current)
   }
 
-  setCSSVariable(fontSize) {
+  setCss(fontSize) {
     document.body.style.setProperty('--doc-font-size', fontSize)
   }
 
   setDocFontSize(size) {
-    this.setCSSVariable(size)
+    this.setCss(size)
     this.props.setDocumentFontSize(size)
   }
 
-  onSelect = (evt) => {
-    const value = evt.target.value
-    this.setDocFontSize(value)
+  onChange = (evt) => {
+    this.setDocFontSize(evt.target.value)
   }  
 
   renderSizeOptions() {
@@ -52,7 +51,7 @@ class FontSizeSelect extends React.Component {
       <>
         <select 
           value={this.props.current}
-          onChange={this.onSelect}
+          onChange={this.onChange}
         >
           {this.renderSizeOptions()}
         </select>
@@ -63,7 +62,7 @@ class FontSizeSelect extends React.Component {
 
 
 const mapStateToProps = state => ({
-  current: state.document.settings.fontSize,
+  current: state.style.fontSize,
 })
 
 const mapDispatchToProps = dispatch => ({

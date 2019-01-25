@@ -1,48 +1,58 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import AddLocalFont from './AddLocalFont'
-import FontFamilyInput from './FontFamilyInput'
-import FontFamilySelect from './FontFamilySelect'
-import FontFamilyUI from './FontFamilyUI'
-import MathFontSettings from './MathFont'
-import TextPreview from './TextPreview'
-
-const previewtext = `To solve an equation of the form $$ax^2 + bx + c = 0$$, use the quadratic formula:
-
-$$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$$
-
-Is it true that $$e^{i\\theta} = i\\sin{\\theta} + \\cos{\\theta}$$?`
+import FontSettings from './Font'
+import GraphSettings from './Graph'
+import styles from './styles.module.css'
 
 
-export const SettingsPage = (props) => {
-  return (
-    <div>
-      <h2>Settings <button onClick={props.onRequestClose}>Close</button></h2>
-      <h3>Fonts</h3>
-      <h4>Document Font</h4>
-      Font: {props.fontFamilyUI === 'input' ? <FontFamilyInput applyButton={false}/> : <FontFamilySelect />}
-      <div>
-        Font Selection Method: <FontFamilyUI />
+class SettingsPage extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {showing: 'graph'}
+  }
+
+  showFontSettings = () => {
+    this.setState({showing: 'font'})
+  }
+  showGraphSettings = () => {
+    this.setState({showing: 'graph'})
+  }
+
+  renderSettings() {
+    switch (this.state.showing) {
+      case 'font': return <FontSettings/>
+      case 'graph': return <GraphSettings/>
+      default: return null
+    }
+  }
+
+  render() {
+    return (
+      <div className={styles.SettingPage}>
+        <div className={styles.SettingPageHeader}>
+          <span>Settings </span>
+          <button onClick={this.props.onRequestClose}>Close</button>
+        </div>
+
+        <div className={styles.SettingNavArea}>
+          <button
+            className={styles.SettingNavButton}
+            onClick={this.showFontSettings}
+            disabled={this.state.showing === 'font'}
+          >Fonts</button>
+          <button
+            className={styles.SettingNavButton}
+            onClick={this.showGraphSettings}
+            disabled={this.state.showing === 'graph'}
+          >Graphs</button>
+        </div>
+        
+        <div className={styles.SettingSection}>
+          {this.renderSettings()}
+        </div>
       </div>
-      <div>
-        Add Local Font to Menu: <AddLocalFont buttonLabel="Add To List" /> (You will then need to select it from the menu)
-      </div>
-      <h4>Math Font</h4>
-      <div style={{justifyItems: 'right'}}>
-        <MathFontSettings />
-      </div>
-      
-      <h4>Preview</h4>
-      <div style={{display: 'flex', flexDirection: 'row'}}>
-        <TextPreview defaultValue={previewtext} />      
-      </div>
-    </div>
-  )
+    )
+  }
 }
 
-const mapStateToProps = state => ({
-  fontFamilyUI: state.config.fontFamilyUI
-})
-
-
-export default connect(mapStateToProps)(SettingsPage)
+export default SettingsPage

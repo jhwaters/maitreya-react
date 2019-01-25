@@ -1,4 +1,5 @@
 import {
+  Graph,
   Html,
   Markdown,
   Text,
@@ -20,6 +21,7 @@ export const renderTypes = {
   answer: Answer,
   answerchoices: AnswerChoices,
   //'answer-choices': AnswerChoices,
+  graph: Graph,
   header: Header,
   html: Html,
   jsonml: JsonML,

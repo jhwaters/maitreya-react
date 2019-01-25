@@ -25,20 +25,27 @@ function makesrange(min, max, step=1, anchor) {
 }
 
 
-export class SvgElement extends DomElement {
+export class PlotElement extends DomElement {
+	constructor(type, props, ...children) {
+		super(type, props, ...children)
+		if (!this.props.vectorEffect) {
+			this.props.vectorEffect = 'non-scaling-stroke'
+		}
+	}
+	
 	add(elem) {
 		this.children.push(elem)
 	}
 }
 
-export class Canvas extends SvgElement {
+export class Canvas extends PlotElement {
 	constructor(x0, y0, x1, y1, props={}, ...children) {
 		super('svg', props, ...children)
 		this.x0 = x0
 		this.x1 = x1
 		this.y0 = y0
 		this.y1 = y1
-		this.extra = 0.2
+		this.extra = 0.3
 	}
 
 	w() { return this.x1 - this.x0 }
@@ -58,7 +65,7 @@ export class Canvas extends SvgElement {
 	}
 }
 
-export class Layer extends SvgElement {
+export class Layer extends PlotElement {
 	constructor(props={}, children=[]) {
 		super('g', props, ...children)
 	}
@@ -75,7 +82,11 @@ export class CartesianPlane extends Canvas {
 	}
 
 	_children() {
-		return [new SvgElement('g', {transform: 'scale(1,-1)'}, ...this.children)]
+		return [new Layer({transform: 'scale(1,-1)'}, this.children)]
+	}
+
+	_props() {
+		return {className: 'plot-cartesian-plane', ...this.props, viewBox: this.viewBox()}
 	}
 
 	addGrid() {
@@ -83,30 +94,25 @@ export class CartesianPlane extends Canvas {
 	}
 }
 
-class Grid extends SvgElement {
+class Grid extends PlotElement {
 	constructor(values, span=[-10,10], axisAt=0, gridStyle={}, axisStyle={}, props={}) {
 		super('g', props)
 		this.values = values
 		this.span = span
 		this.axisAt = axisAt
-		this.gridStyle = Object.assign({}, {
-			stroke: 'blue', 
-			strokeWidth: '0.05',
-			strokeOpacity: '0.3',
-		}, gridStyle)
-		this.axisStyle = Object.assign({}, {
-			stroke: 'black',
-			strokeWidth: '0.1',
-			strokeOpacity: '1',
-		}, axisStyle)
+		this.gridStyle = gridStyle
+		this.axisStyle = axisStyle
 	}
 
 	makeLine(v) {
-		let props = {d: this.linePath(v)}
-		if (v === this.axisAt) {
-			props['style'] = this.axisStyle
+		const props = {
+			d: this.linePath(v),
+			className: v === this.axisAt ? 'plot-grid-axis' : 'plot-grid-line'
 		}
-		return ['path', props, []]
+		if (v === this.axisAt) {
+			props.style = this.axisStyle
+		}
+		return new PlotElement('path', props)
 	}
 
 	_props() {
@@ -141,11 +147,42 @@ function makeGrid(x0, y0, x1, y1) {
 	])
 }
 
-export class Path extends SvgElement {
+
+export class Point extends PlotElement {
+	constructor(x, y, props) {
+		super('path', props)
+		this.x = x
+		this.y = y
+	}
+
+	_props() {
+		return {
+			className: 'plot-point', 
+			...this.props, 
+			d: `M${this.x},${this.y}L${this.x},${this.y}`
+		}
+	}
+}
+
+export class Hole extends PlotElement {
+	constructor(x, y, props) {
+		super('g', {className: 'plot-hole', ...props})
+		this.x = x
+		this.y = y
+	}
+
+	_children() {
+		return [
+			new Point(this.x, this.y, {className: 'plot-hole-exterior'}),
+			new Point(this.x, this.y, {className: 'plot-hole-interior'}),
+		]
+	}
+}
+
+export class Path extends PlotElement {
 	constructor(points, props={}, roundTo=6) {
-		super('path', props, [])
+		super('path', props)
 		this.points = points
-		this.children = []
 		this.roundTo = roundTo
 	}
 
@@ -156,34 +193,30 @@ export class Path extends SvgElement {
 	_props() {
 		return {...this.props, d: this.d()}
 	}
+
 }
 
 
-class Plot extends SvgElement {
+class Plot extends PlotElement {
 	constructor({
 		xRange=[-10,10],
 		yRange=[-10,10],
 		step=0.05,
 		maxD2=0.06,
 		roundTo=6,
-		style={
-			stroke: 'rgb(200,0,100)',
-			strokeOpacity: '0.8',
-			strokeWidth: '0.2',
-			fill: 'none',
-		}
+		props={}
 	}={}) {
-		super('g', {}, [])
+		super('g', {})
 		this.xRange = xRange
 		this.yRange = yRange
 		this.step = step
 		this.maxD2 = maxD2
 		this.roundTo = roundTo
-		this.style = style
+		this.props = props
 	}
 
 	_props() {
-		return {style: this.style}
+		return {className: 'diagram-plot', ...this.props}
 	}
 }
 
@@ -308,7 +341,7 @@ export class Parametric extends Plot {
 		let result = []
 		for (const pts of paths) {
 			if (pts.length > 0) {
-				result.push(new Path(pts, this.roundTo))
+				result.push(new Path(pts, {className: 'plot-path'}, this.roundTo))
 			}
 		}
 		return result
@@ -390,33 +423,22 @@ export class Rational extends Plot {
 
 	_plotVerticalAsymptotes() {
 		
-		const asymptoteStyle = {
-			stroke: '#555',
-			strokeOpacity: '0.5',
-			strokeWidth: '0.2',
-			strokeDasharray: "0.7 0.2",
-		}
-
 		let asyms = []
 		for (const v of this.vas) {
 			if (v >= this.xRange[0] && v <= this.xRange[1]) {
-				asyms.push(new Path([[v, this.yRange[0]], [v, this.yRange[1]]]))
+				asyms.push(new Path([[v, this.yRange[0]], [v, this.yRange[1]]], {className: 'plot-asymptote'}))
 			}
 		}
 
-		return [new Layer({style: asymptoteStyle}, asyms)]
+		return asyms
 	}
 
 	_plotHoles() {
-		const holeStyle = {
-			fill: 'white',
-		}
 
 		let holes = []
-		const r = 0.25
 		for (const x of this.holes) {
 			const y = this.f(x)
-			holes.push(new SvgElement('circle', {cx: x, cy: y, r: r, style: holeStyle}))
+			holes.push(new Hole(x, y))
 		}
 		return holes
 	}
@@ -424,10 +446,9 @@ export class Rational extends Plot {
 	_plotRoots() {
 		//const rootStyle = {}
 		let roots = []
-		const r = 0.1
 		for (const x of this.roots) {
 			const y = this.f(x)
-			roots.push(new SvgElement('circle', {cx: x, cy: y, r: r}))
+			roots.push(new Point(x, y))
 		}
 		return roots
 	}
@@ -442,9 +463,9 @@ export class Rational extends Plot {
 	}
 }
 
-const defaultMarker = (p) => new SvgElement('circle', {cx: p.x, cy: p.y, r: '0.1'})
+const defaultMarker = (p) => new Point(p.x, p.y)
 
-export class QuadTreePlot extends SvgElement {
+export class QuadTreePlot extends PlotElement {
 	constructor(quadtreeprops, {marker=defaultMarker, style={fill: 'rgba(200,0,100,0.6)'}}={}) {
 		super('g', {style: style})
 		this.marker = marker
@@ -456,7 +477,7 @@ export class QuadTreePlot extends SvgElement {
 	_children() {
 		const {f, x, y, d, depth, searchDepth} = this.quadtreeprops
 		const points = createTree(f, x, y, d, depth, searchDepth)
-		console.log(points)
+		//console.log(points)
 		return [...points.map(p => this.marker(p))]
 	}
 }

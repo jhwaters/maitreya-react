@@ -27,10 +27,7 @@ class Page extends React.Component {
       margin: '0',
       width: '100%',
       height: '100%',
-      paddingTop: this.props.margins.top,
-      paddingLeft: this.props.margins.left,
-      paddingRight: this.props.margins.right,
-      paddingBottom: this.props.margins.bottom,
+      padding: this.props.margin,
     }
   }
 
@@ -46,9 +43,9 @@ class Page extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  size: state.document.settings.pageSize,
-  orientation: state.document.settings.pageOrientation,
-  margins: state.document.settings.pageMargins,
+  size: state.style.pageSize,
+  orientation: state.style.pageOrientation,
+  margin: state.style.pageMargin,
 })
 
 export default connect(mapStateToProps)(Page)

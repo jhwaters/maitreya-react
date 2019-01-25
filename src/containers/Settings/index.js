@@ -1,13 +1,9 @@
 import SettingsPage from './SettingsPage'
 
-import AddLocalFont from './AddLocalFont'
+import { FontFamily, FontSize, AddLocalFont, FontFamilyUI } from './Font'
 import AllowEditingToggle from './AllowEditing'
 import AnswerKeyToggle from './AnswerKeyToggle'
-import FontFamilyInput from './FontFamilyInput'
-import FontFamilySelect from './FontFamilySelect'
-import FontSizeSelect from './FontSize'
-import MathFontSettings from './MathFont'
-import PageMargins from './PageMargins'
+import PageMargin from './PageMargin'
 import PreviewZoom from './PreviewZoom'
 import StartNumbering from './StartNumbering'
 
@@ -15,12 +11,11 @@ export {
   AddLocalFont,
   AllowEditingToggle,
   AnswerKeyToggle,
-  PageMargins,
+  FontFamily,
+  FontFamilyUI,
+  FontSize,
+  PageMargin,
   PreviewZoom,
-  FontFamilyInput,
-  FontFamilySelect,
-  FontSizeSelect,
-  MathFontSettings,
   StartNumbering,
 }
 

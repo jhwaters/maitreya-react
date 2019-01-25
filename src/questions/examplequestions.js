@@ -1,6 +1,6 @@
 import math from 'mathjs'
 import Polynomial from 'polynomial'
-import { CartesianPlane, Rational, SvgElement, Canvas, Path } from './tools/plot'
+import { CartesianPlane, Rational, PlotElement, Canvas } from './tools/plot'
 import { range, gcd } from './tools/handystuff'
 //import { shuffle, randint, choice, sample } from './random_randomjs'
 import QGen from './QGen'
@@ -202,16 +202,23 @@ export class RationalGraph extends QGen {
     let holes = [vals[1]]
     let vas = [vals[2]]
     if (rd.random() < 0.5) {
-      holes.push(vals[3])
-    } else {
       vas.push(vals[3])
+    } else if (rd.random() < 0.8) {
+      holes.push(vals[3])
     }
 
-
-    let graph = new CartesianPlane(-10, -10, 10, 10, {height: '2in'})
-    graph.addGrid()
-    const rat = new Rational({roots: roots, holes: holes, vas: vas})
-    graph.add(rat)
+    const graph = [
+      'CartesianPlane',
+      {start: [-10,-10], stop: [10,10], padding: 0.3},
+      [
+        'Rational',
+        {
+          domain: [-12,12],
+          range: [-12,12],
+          roots: roots, holes: holes, asymptotes: vas,
+        }
+      ]
+    ]
 
 
     function fmtAns(ans) {
@@ -241,8 +248,8 @@ export class RationalGraph extends QGen {
     return {
       instructions: 'Choose the equation that best describes the graph shown.',
       diagram: {
-        type: 'jsonml',
-        data: graph.jsonml(),
+        type: 'graph',
+        data: graph,
       },
       answer: choices,
       _answerIndex: i,
@@ -347,9 +354,6 @@ export class FindIntervals extends QGen {
     let wrongAnswer3 = []  // switch dec/inc
     let wrongAnswer4 = []  // switch dec/inc, ys instead of xs
 
-    let diagram = new CartesianPlane(-10, yRange[0], 10, yRange[1], {height: '1.2in'})
-    diagram.addGrid()
-
     let points = [
       {x: xs[0], y: ys[0]},
     ]
@@ -366,14 +370,16 @@ export class FindIntervals extends QGen {
       }
     }
 
-    if (params.style === 'jagged') {
-      diagram.add(new Path(points.map(p => [p.x, p.y]), {'style': {
-        stroke: 'rgb(200,0,100)',
-        strokeOpacity: '0.8',
-        strokeWidth: '0.2',
-        fill: 'none',
-      }}))
-    }
+    const diagram = [
+      "CartesianPlane",
+      {
+        start: [-10,yRange[0]], 
+        stop: [10,yRange[1]], 
+        height: '1.2in', 
+        padding: 0.2,
+      },
+      ["Path", {points: points}]
+    ]
     
     const fullName = {inc: 'increasing', dec: 'decreasing'}[toFind]
 
@@ -391,8 +397,8 @@ export class FindIntervals extends QGen {
     return ({
       question: `Determine the intervals over which the function is ***${fullName}***.`,
       diagram: {
-        type: 'jsonml',
-        data: diagram.toJsonML(),
+        type: 'graph',
+        data: diagram,
       },
       answer: choices.map(fmtAns),
       _answer: fmtAns(answer),
@@ -426,7 +432,7 @@ export class DecreasingIntervals extends FindIntervals {
 }
 
 
-class AngleMeasure extends QGen {
+export class AngleMeasure extends QGen {
   static info = {
     name: 'Angle Measure',
     description: '',
@@ -452,7 +458,7 @@ class AngleMeasure extends QGen {
 
     const rotateBy = rd.randint(0, 359)
     let diagram = new Canvas(-20, -20, 20, 20, {height: '1.5in'})
-    let graph = new SvgElement('g', {transform: `rotate(${rotateBy})`})
+    let graph = new PlotElement('g', {transform: `rotate(${rotateBy})`})
 
     const intersect1 = [-5,0]
     const r = 10
@@ -469,13 +475,13 @@ class AngleMeasure extends QGen {
 
     
     const plotPoint = (pt) => {
-      return new SvgElement('circle', {cx: pt[0], cy: pt[1], r: '0.4', style: {
+      return new PlotElement('circle', {cx: pt[0], cy: pt[1], r: '0.4', style: {
         'fill': 'black'
       }})
     }
 
     const plotSegment = (a, b) => {
-      return new SvgElement('path', {
+      return new PlotElement('path', {
         d: `M${a[0]},${a[1]}L${b[0]},${b[1]}`, 
         style: {
           fill: 'none', 
@@ -504,7 +510,7 @@ class AngleMeasure extends QGen {
   }
 }
 
-class RationalRootTheorem extends QGen {
+export class RationalRootTheorem extends QGen {
   static info = {
     name: 'Rational Root Theorem',
     description: 'State possible rational roots for a given function.'
