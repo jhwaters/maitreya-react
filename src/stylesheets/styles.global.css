@@ -1,4 +1,4 @@
-/*@import './fonts.global.css';*/
+@import './fonts.global.css';
 @import './variables.global.css';
 @import './page.global.css';
 @import './katex.global.css';
