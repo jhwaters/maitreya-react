@@ -1,6 +1,6 @@
 import math from 'mathjs'
 import Polynomial from 'polynomial'
-import { CartesianPlane, Rational, PlotElement, Canvas } from './tools/plot'
+import * as SVG from './tools/svgplot'
 import { range, gcd } from './tools/handystuff'
 //import { shuffle, randint, choice, sample } from './random_randomjs'
 import QGen from './QGen'
@@ -121,7 +121,7 @@ export class SolveQuadratic extends QGen {
     return {
       instructions: 'Determine the values of $$x$$ that satisfy the equation:',
       question: '$$' + left.toLatex() + ' = ' + right.toLatex() +'$$',
-      _answer: fmtAns([r1, r2]),
+      answer: fmtAns([r1, r2]),
     }
   }
 }
@@ -130,15 +130,6 @@ export class FactorQuadraticHard extends QGen {
   static info = {
     name: 'Factor Quadratic (Hard)',
     description: 'Factor a quadratic using AC method.'
-  }
-
-  static options = {
-    math: {
-      delimiters: {
-        inline: {left: '&', right: '&'},
-        display: {left: '&&', right: '&&'},
-      }
-    }
   }
 
   generate(params) {
@@ -178,12 +169,15 @@ export class FactorQuadraticHard extends QGen {
 
     const poly = new Polynomial({2: a, 1: b, 0: c})
 
-    const answer = `&(${p1.toLatex()})(${p2.toLatex()})&`
+    const answer = `$$(${p1.toLatex()})(${p2.toLatex()})$$`
 
     return {
       instructions: 'Rewrite as the product of linear factors:',
-      question: `&${poly.toLatex()}&`,
-      _answer: answer,
+      question: `$$${poly.toLatex()}$$`,
+      answer: {
+        correct: answer,
+        prompt: [{width: '2.5in'}],
+      }
     }
   }
 }
@@ -197,25 +191,63 @@ export class RationalGraph extends QGen {
 
   generate(params) {
     const rd = this.random
-    let vals = rd.sample(range(1, 9), 4).map(v => rd.random() < 0.5 ? v : -v)
-    let roots = [vals[0]]
-    let holes = [vals[1]]
-    let vas = [vals[2]]
-    if (rd.random() < 0.5) {
-      vas.push(vals[3])
-    } else if (rd.random() < 0.8) {
-      holes.push(vals[3])
+
+    const makeFunction = (top, bottom) => {
+      let f = function(x) {
+        let n = 1
+        let d = 1
+        for (const r of top) {
+          n *= (x - r)
+        }
+        for (const r of bottom) {
+          d *= (x - r)
+        }
+        return n / d
+      }
+      return f
     }
+
+    function generateValues() {
+      let vals = rd.sample(range(1, 9), 4).map(v => rd.random() < 0.5 ? v : -v)
+      let roots = [vals[0]]
+      let holes = [vals[1]]
+      let asymptotes = [vals[2]]
+      if (rd.random() < 0.5) {
+        asymptotes.push(vals[3])
+      } else if (rd.random() < 0.8) {
+        holes.push(vals[3])
+      }
+      return ({roots, holes, asymptotes})
+    }
+
+    function allHolesInRange(holes, f) {
+      for (const r of holes) {
+        if (f(r) <= -10 || f(r) >= 10) {
+          return false
+        } 
+      }
+      return true
+    }
+
+    let roots, holes, asymptotes, f
+    let isGood = false
+
+    while (!isGood) {
+      ({roots, holes, asymptotes} = generateValues())
+      f = makeFunction(roots, asymptotes)
+      isGood = allHolesInRange(holes, f)
+    }
+    
 
     const graph = [
       'CartesianPlane',
-      {start: [-10,-10], stop: [10,10], padding: 0.3},
+      {span: [-10,-10,10,10], autogrid: true, height: '2.2in'},
       [
         'Rational',
         {
           domain: [-12,12],
           range: [-12,12],
-          roots: roots, holes: holes, asymptotes: vas,
+          roots, holes, asymptotes,
         }
       ]
     ]
@@ -233,13 +265,13 @@ export class RationalGraph extends QGen {
       return `$$y = \\displaystyle\\frac{ ${numer} }{ ${denom} }$$`
     }
 
-    const answer = {top: [...roots, ...holes], bottom: [...holes, ...vas]}
+    const answer = {top: [...roots, ...holes], bottom: [...holes, ...asymptotes]}
 
     const wrongs = [
-      {top: [...holes, ...vas], bottom: [...holes, ...roots]},
-      {top: [...roots], bottom: [...holes, ...vas]},
-      {top: [...roots, ...holes].map(r => -r), bottom: [...holes, ...vas].map(r => -r)},
-      {top: [...holes, ...vas].map(r => -r), bottom: [...holes, ...roots].map(r => -r)},
+      {top: [...holes, ...asymptotes], bottom: [...holes, ...roots]},
+      {top: [...roots], bottom: [...holes, ...asymptotes]},
+      {top: [...roots, ...holes].map(r => -r), bottom: [...holes, ...asymptotes].map(r => -r)},
+      {top: [...holes, ...asymptotes].map(r => -r), bottom: [...holes, ...roots].map(r => -r)},
     ]
 
     const i = rd.randint(0,wrongs.length)
@@ -247,12 +279,19 @@ export class RationalGraph extends QGen {
 
     return {
       instructions: 'Choose the equation that best describes the graph shown.',
+      freeResponse: {
+        instructions: 'Write the equation that best describes the graph shown.'
+      },
       diagram: {
-        type: 'graph',
+        type: 'vectorgraphic',
         data: graph,
       },
-      answer: choices,
-      _answerIndex: i,
+      answer: {
+        correct: fmtAns(answer),
+        choices: choices,
+        correctIndex: i,
+        prompt: [{label: '$$y = $$', height: '8em', width: '20em'}],
+      }
     }
   }
 }
@@ -373,10 +412,9 @@ export class FindIntervals extends QGen {
     const diagram = [
       "CartesianPlane",
       {
-        start: [-10,yRange[0]], 
-        stop: [10,yRange[1]], 
-        height: '1.2in', 
-        padding: 0.2,
+        span: [-10,yRange[0]-1,10,yRange[1]+1], 
+        autogrid: true,
+        height: '1.5in', 
       },
       ["Path", {points: points}]
     ]
@@ -392,17 +430,20 @@ export class FindIntervals extends QGen {
 
     const wrongs = [wrongAnswer1, wrongAnswer2, wrongAnswer3, wrongAnswer4]
     const answerIndex = rd.randint(0, wrongs.length)
-    const choices = rd.shuffle([answer, ...wrongs], answerIndex)
+    const choices = rd.shuffle([answer, ...wrongs], answerIndex).map(fmtAns)
 
     return ({
       question: `Determine the intervals over which the function is ***${fullName}***.`,
       diagram: {
-        type: 'graph',
+        type: 'vectorgraphic',
         data: diagram,
       },
-      answer: choices.map(fmtAns),
-      _answer: fmtAns(answer),
-      _answerIndex: answerIndex,
+      answer: {
+        correct: fmtAns(answer),
+        choices: choices,
+        correctIndex: answerIndex,
+        prompt: [{width: '2in'}]
+      }
     })
   }
 }
@@ -432,7 +473,7 @@ export class DecreasingIntervals extends FindIntervals {
 }
 
 
-export class AngleMeasure extends QGen {
+class AngleMeasure extends QGen {
   static info = {
     name: 'Angle Measure',
     description: '',
@@ -457,8 +498,8 @@ export class AngleMeasure extends QGen {
     const angle1 = rd.randint(35, 145)
 
     const rotateBy = rd.randint(0, 359)
-    let diagram = new Canvas(-20, -20, 20, 20, {height: '1.5in'})
-    let graph = new PlotElement('g', {transform: `rotate(${rotateBy})`})
+    //let diagram = new Canvas(-20, -20, 20, 20, {height: '1.5in'})
+    //let graph = new PlotElement('g', {transform: `rotate(${rotateBy})`})
 
     const intersect1 = [-5,0]
     const r = 10
@@ -475,42 +516,40 @@ export class AngleMeasure extends QGen {
 
     
     const plotPoint = (pt) => {
-      return new PlotElement('circle', {cx: pt[0], cy: pt[1], r: '0.4', style: {
-        'fill': 'black'
-      }})
+      return ['Point', {x: pt[0], y: pt[1]}]
     }
 
     const plotSegment = (a, b) => {
-      return new PlotElement('path', {
-        d: `M${a[0]},${a[1]}L${b[0]},${b[1]}`, 
-        style: {
-          fill: 'none', 
-          stroke: 'black',
-          strokeWidth: '0.2',
-        },
-      })
+     return ['Segment', {points: [a, b]}]
     }
     
-    graph.add(plotSegment(left, right))
-    graph.add(plotSegment(top1, bottom1))
-    graph.add(plotSegment(top2, bottom2))
-    graph.add(plotPoint(intersect1))
-    graph.add(plotPoint(intersect2))
+    const diagram = [
+      'CartesianPlane',
+      {span: [-20,-20,20,20], height: '3in', autogrid: false, style: 'geom'},
+      [
+        'Rotate', 
+        {degrees: rotateBy},
+        ['Line', {endpoints: [left, right]}],
+        ['Line', {endpoints: [top1, bottom1]}],
+        ['Line', {endpoints: [top2, bottom2]}],
+        ['Point', {coords: intersect1}],
+        ['Point', {coords: intersect2}]
+      ]
+    ]
 
-    diagram.add(graph)
 
     return {
       instructions: 'Work in progress',
       diagram: {
-        'type': 'jsonml',
-        'data': diagram.jsonml(),
+        'type': 'vectorgraphic',
+        'data': diagram,
       }
     }
 
   }
 }
 
-export class RationalRootTheorem extends QGen {
+class RationalRootTheorem extends QGen {
   static info = {
     name: 'Rational Root Theorem',
     description: 'State possible rational roots for a given function.'

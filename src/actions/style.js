@@ -4,6 +4,7 @@ export const SET_MATH_FONTSIZE = 'SET_MATH_FONTSIZE'
 export const SET_MATH_FONTWEIGHT = 'SET_MATH_FONTWEIGHT'
 export const SET_PAGE_MARGIN = 'SET_PAGE_MARGIN'
 export const UPDATE_GRAPHSTYLE = 'UPDATE_GRAPHSTYLE'
+export const RESET_GRAPHSTYLE = 'RESET_GRAPHSTYLE'
 
 // Document font
 export const setDocumentFontFamily = (family) => ({
@@ -35,4 +36,8 @@ export const setPageMargin = (margins) => ({
 export const updateGraphStyle = (props) => ({
   type: UPDATE_GRAPHSTYLE,
   payload: props,
+})
+
+export const resetGraphStyle = () => ({
+  type: RESET_GRAPHSTYLE,
 })

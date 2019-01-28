@@ -41,7 +41,7 @@ class CustomQuestion extends React.Component {
       inputType: 'manual',
       instructions: '',
       question: '',
-      _answer: '',
+      answer: '',
       diagram: '',
       json: '',
       modal: 'none',
@@ -67,7 +67,7 @@ class CustomQuestion extends React.Component {
     this.setState({diagram})
   }
   updateAnswer = (evt) => {
-    this.setState({ _answer: evt.target.value })
+    this.setState({ answer: {...this.state.answer, correct: evt.target.value }})
   }
   updateJSON = (evt) => {
     this.setState({ json: evt.target.value })
@@ -86,7 +86,7 @@ class CustomQuestion extends React.Component {
         }
       } else {
         const newstate = {}
-        for (const k of ['instructions', 'question', '_answer']) {
+        for (const k of ['instructions', 'question', 'answer']) {
           if (data[k]) {
             if (typeof data[k] === 'string') newstate[k] = data[k];
             else if (data[k].type === 'text') newstate[k] = data[k].data;
@@ -105,7 +105,7 @@ class CustomQuestion extends React.Component {
   getDataFromState() {
     if (this.state.inputType === 'manual') {
       let data = {}
-      for (const k of ['instructions', 'question', '_answer']) {
+      for (const k of ['instructions', 'question', 'answer']) {
         if (this.state[k]) {
           data[k] = this.state[k]
         }
@@ -157,7 +157,7 @@ class CustomQuestion extends React.Component {
           
           <p>Answer:</p>
           <textarea 
-            value={this.state.answer}
+            value={this.state.answer.correct}
             onChange={this.updateAnswer}
             style={inputStyle}
           ></textarea>
@@ -197,7 +197,7 @@ class CustomQuestion extends React.Component {
       </div>
       <p>Answer</p>
       <div className='document preview-area' style={previewStyle}>
-        {data ? <RenderElement content={{type: 'answer',  data}} /> : null}
+        {data ? <RenderElement content={{type: 'answerkey',  data}} /> : null}
       </div>
       </>
     )
@@ -235,12 +235,13 @@ class CustomQuestion extends React.Component {
         onRequestClose={this.closeModal}
         style={{
           content: {
-            top: '0',
-            bottom: '0',
-            borderTop: 'none',
-            borderBottom: 'none',
-            left: '50px',
-            right: '50px',
+            backgroundColor: 'white',
+            //top: '0',
+            //bottom: '0',
+            //borderTop: 'none',
+            //borderBottom: 'none',
+            //left: '50px',
+            //right: '50px',
           }
         }}
       >

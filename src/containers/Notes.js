@@ -3,7 +3,7 @@ import React from 'react'
 
 const Notes = (props) => {
   const notes = [
-    'Double-click on the document to edit an element (only works for headers right now).',
+    'Double-click on the document to edit an element.',
     'Make sure the scale is set to 100% when printing.',
     'Create a PDF by selecting "Save to PDF" when printing.',
   ]
@@ -11,13 +11,8 @@ const Notes = (props) => {
     'Pagination is really sketchy.',
     "Zooming doesn't work right.",
     'In some browsers only the first page prints.',
-    'In some browsers points and holes on are not rendered on graphs.',
   ]
-  const formatting = [
-    'Italic and bold font, as well as superscripts, subscripts, and arrows, can be achieved using markdown.',
-    'Text wrapped in $$ ... $$ will be rendered as a math formula using LaTeX.',
-    'Use $$$ ... $$$ for display style math.',
-  ]
+
   let i = 0
   return (
     <>
@@ -30,9 +25,6 @@ const Notes = (props) => {
 
       <h4>Issues</h4>
       {issues.map(n => <p key={`note-${++i}`}>{n}</p>)}
-
-      <h4>Text formatting for custom questions</h4>
-      {formatting.map(n => <p key={`note-${++i}`}>{n}</p>)}
 
     </div>
     </>

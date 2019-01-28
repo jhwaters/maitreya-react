@@ -1,33 +1,28 @@
 import QGen from './QGen'
-import { CartesianPlane, PlotElement } from './tools/plot'
+import * as svg from './tools/svgplot'
 import { createTree } from './tools/QuadTree'
 
 
-class RationalPlot extends QGen {
+export class VG extends QGen {
   static info = {
-    name: 'Rational Plot',
-    description: 'Plot rational by parameters'
+    name: 'VG',
+    description: 'test vector graphics'
   }
 
   generate(params) {
     
 
     return {
+      answer: null,
       question: 'Rational:',
       diagram: {
-        type: 'graph',
+        type: 'vectorgraphic',
         data: [
           'CartesianPlane',
-          {start: [-10,-10], stop: [10,10]},
+          {span: [-10,-10,10,10], autogrid: true, height: '6in'},
           [
-            'Rational',
-            {
-              inverse: true,
-              domain: [-10,10],
-              roots: [-1, 6],
-              holes: [-5],
-              asymptotes: [0, 3],
-            }
+            'Circle',
+            {cx: 0, cy: 0, r: 8, style: {fill: 'blue'}}
           ]
         ]
       }
@@ -35,7 +30,7 @@ class RationalPlot extends QGen {
   }
 }
 
-class PolynomialPlot extends QGen {
+export class PolynomialPlot extends QGen {
   static info = {
     name: 'Polynomial plot',
     description: 'Plot polynomial by coefficients'
@@ -45,7 +40,7 @@ class PolynomialPlot extends QGen {
     const rd = this.random
 
     const deg = rd.randint(2,7)
-    const inv = rd.choice([true, false])
+    const inv = false
     let coeffs = rd.sample([-5,-4,-3,-2,-1,0,1,2,3,4,5], deg+1)
     const denom = rd.randint(2, 21)
     
@@ -74,10 +69,10 @@ class PolynomialPlot extends QGen {
 
     const graph = [
       'CartesianPlane',
-      {start: [-10,-10], stop: [10,10]},
+      {span: [-10,-10,10,10], autogrid: true},
       [
         'Polynomial',
-        {coefficients: coeffs.map(c => c/denom), domain: [-10,10], inverse: inv}
+        {coefficients: coeffs.map(c => c/denom), domain: [-10,10]}
       ]
     ]
 
@@ -86,8 +81,11 @@ class PolynomialPlot extends QGen {
     return {
       question: question,
       diagram: {
-        type: 'graph',
+        type: 'vectorgraphic',
         data: graph,
+      },
+      answer: {
+        prompt: null,
       }
     }
   }
@@ -137,41 +135,39 @@ export class PlotStyling extends QGen {
 
 
     return {
+      answer: {prompt: null},
       question: 'The graph of $$(x,y) = (9\\sin(t), 9\\cos(1.17t))$$ for $$-36 \\leq t \\leq 36$$:',
       diagram: {
-        type: 'graph', 
+        type: 'vectorgraphic', 
         data: [
           'CartesianPlane', 
           {
-            start: [-10,-10], stop: [10,10], padding: 0.2,
-            style: {
-              '--plot-grid-color': '#ddd',
-              '--plot-axis-color': '#444',
-              '--plot-grid-width': '0.3mm',
-              '--plot-axis-width': '0',
-              //backgroundColor: '#aaa',
-              height: '3in',
-            }
+            span: [-10,-10,10,10], 
+            autogrid: false,
+            height: '3in',
           },
           [
-            'Layer',
-            {style: {'--plot-path-color': 'hsl(340,70%,60%)'}},
-            ['Path', {points: path4}],
-          ],
-          [
-            'Layer',
-            {style: {'--plot-path-color': 'hsl(30,90%,50%)'}},
-            ['Path', {points: path3}],
-          ],
-          [
-            'Layer',
-            {style: {'--plot-path-color': 'hsl(80,90%,40%)'}},
-            ['Path', {points: path2}],
-          ],
-          [
-            'Layer',
-            {style: {'--plot-path-color': 'hsl(170,90%,40%)'}},
-            ['Path', {points: path1}],
+            'Layer', {},
+            [
+              'Layer',
+              {style: {'--vg-path-color': 'hsl(340,70%,60%)'}},
+              ['Path', {points: path4}],
+            ],
+            [
+              'Layer',
+              {style: {'--vg-path-color': 'hsl(30,90%,50%)'}},
+              ['Path', {points: path3}],
+            ],
+            [
+              'Layer',
+              {style: {'--vg-path-color': 'hsl(80,90%,40%)'}},
+              ['Path', {points: path2}],
+            ],
+            [
+              'Layer',
+              {style: {'--vg-path-color': 'hsl(170,90%,40%)'}},
+              ['Path', {points: path1}],
+            ]
           ]
         ]
       }
@@ -238,17 +234,24 @@ export class QuadTreePlotTest extends QGen {
     //const f3 = ({x, y}) => Math.pow(Math.sin(y*y), 1)
     //const f4 = ({x, y}) => Math.pow(Math.cos(x*x), 1)
 
-    let graph = new CartesianPlane(-7, -7, 7, 7, {height: '4in'})
-    let q = createTree(pt => f1(pt) - f2(pt), -7, -7, 14, 9, 8)
-    const marker = ({x, y}) => new PlotElement('circle', {cx: x, cy: y, r: '0.1'})
-    const points = q.map(marker)
-    graph.add(new PlotElement('g', {style: {fill: 'rgba(200,0,100,0.3)'}}, ...points))
+    
+    let q = createTree(pt => f1(pt) - f2(pt), -7, -7, 14, 8, 7)
+    const marker = ({x, y}) => ['circle', {cx: x, cy: y, r: '0.1'}]
+
+    const graph = svg.cartesianPlane(
+      {span: [-7,-7,7,7], autogrid: true, height: '5in', width: '5in'},
+      [
+        'g', {style: {fill: 'rgba(200,0,100,0.3)'}},
+        ...q.map(marker),
+      ]
+    )
 
     return {
+      answer: null,
       question: "The graph of $$\\sin(x^2) = \\cos(y^2)$$:",
       diagram: {
         type: 'jsonml',
-        data: graph.toJsonML(),
+        data: graph,
       }
     }
   }
@@ -310,6 +313,7 @@ ${'```'}
 `
 
     return ({
+      answer: null,
       question: {
         type: 'markdown',
         data: mdtest,
@@ -354,6 +358,7 @@ export class VegaLite extends QGen {
     }
 
     return {
+      answer: null,
       instructions: 'Rendered with Vega-Lite:',
       diagram: {
         type: 'vega-lite',
@@ -371,6 +376,7 @@ export class VegaTest extends QGen {
 
   generate(params) {
     return {
+      answer: null,
       instructions: "Rendered with Vega:",
       diagram: {
         type: 'vega',

@@ -1,0 +1,142 @@
+:root {
+  --vg-shaded-region-opacity: 0.2;
+  --vg-asymptote-color: #777;
+  --vg-axis-color: #222;
+  --vg-grid-color: #25a;
+  --vg-axis-width: 0.3mm;
+  --vg-grid-width: 0.1mm;
+  --vg-asymptote-width: 0.7mm;
+
+
+  --vg-plot-path-color: #c07;
+  --vg-plot-path-width: 0.5mm;
+
+  --vg-geom-path-color: #111;
+  --vg-geom-path-width: 0.5mm;
+}
+
+
+/*
+.vg-cartesian-plane {}
+*/
+
+.vg-path {
+  stroke: var(--vg-path-color);
+  stroke-width: var(--vg-path-width);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.vg-path-segment {
+  marker-start: var(--vg-marker-point);
+  marker-end: var(--vg-marker-point);
+}
+
+.vg-path-ray {
+  marker-start: var(--vg-marker-point);
+  marker-end: var(--vg-marker-arrow);
+}
+
+.vg-path-line {
+  marker-start: var(--vg-marker-arrow);
+  marker-end: var(--vg-marker-arrow);
+}
+
+.vg-asymptote {
+  stroke: var(--vg-asymptote-color);
+  stroke-width: var(--vg-asymptote-width);
+  stroke-dasharray: 2mm 1mm;
+}
+
+.vg-point {
+  stroke: var(--vg-path-color);
+  stroke-width: var(--vg-path-width);
+  marker-start: var(--vg-marker-point-big);
+}
+
+.vg-hole {
+  stroke: var(--vg-path-color);
+  stroke-width: var(--vg-path-width);
+  marker-start: var(--vg-marker-hole);
+}
+
+/*
+.vg-path-marker {
+  stroke: var(--vg-path-color);
+  fill: var(--vg-path-color);
+}
+*/
+
+.vg-hole-marker {
+  fill: white;
+}
+
+.vg-axis {
+  --vg-marker-point: url(#vg-axis-point);
+  --vg-marker-point-big: url(#vg-axis-point-big);
+  --vg-marker-arrow: url(#vg-axis-arrow);
+  --vg-marker-hole: url(#vg-axis-hole);
+  stroke: var(--vg-axis-color);
+  stroke-width: var(--vg-axis-width);
+  stroke-opacity: 1;
+  stroke-linecap: none;  
+}
+
+.vg-axis-neg {
+  marker-end: none;
+}
+
+.vg-axis-pos {
+  marker-end: var(--vg-marker-arrow);
+  stroke-linecap: round;
+}
+
+.vg-grid {
+  --vg-path-color: var(--vg-grid-color);
+  --vg-path-width: var(--vg-grid-width);
+}
+
+.vg-shaded-region {
+  fill: var(--vg-path-color);
+  fill-opacity: var(--vg-shaded-region-opacity);
+}
+
+.vg-polygon {
+  marker-start: var(--vg-marker-point);
+  marker-mid: var(--vg-marker-point);
+  marker-end: var(--vg-marker-point);
+}
+
+/* STYLES */
+
+.vg-marker-axis {
+  fill: var(--vg-axis-color);
+}
+
+.vg-marker-plot {
+  fill: var(--vg-plot-path-color);
+}
+
+.vg-marker-geom {
+  fill: var(--vg-geom-path-color);
+}
+
+.vg-style-xyplot {
+  --vg-path-color: var(--vg-plot-path-color);
+  --vg-path-width: var(--vg-plot-path-width);
+  --vg-marker-point: url(#vg-plot-point);
+  --vg-marker-point-big: url(#vg-plot-point-big);
+  --vg-marker-arrow: url(#vg-plot-arrow);
+  --vg-marker-hole: url(#vg-plot-hole);
+}
+
+.vg-style-geom {
+  --vg-path-color: var(--vg-geom-path-color);
+  --vg-path-width: var(--vg-geom-path-width);
+  --vg-marker-point: url(#vg-geom-point-big);
+  --vg-marker-point-big: url(#vg-geom-point-big);
+  --vg-marker-arrow: url(#vg-geom-arrow);
+  --vg-marker-hole: url(#vg-geom-hole);
+}
+

@@ -28,7 +28,7 @@ export class Randomizer {
   }
 
   shuffle(array, first) {
-    if (first) {
+    if (first !== undefined) {
       let shuffled = Random.shuffle(this.engine, array.slice(1))
       return [...shuffled.slice(0,first), array[0], ...shuffled.slice(first)]
     } else {

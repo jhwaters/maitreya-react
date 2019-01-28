@@ -18,9 +18,11 @@ const FontSettings = () => {
   return (
     <>
       <h4>Document Font</h4>
-      Font: <FontFamily/> 
       <div>
         Font Selection Method: <FontFamilyUI />
+      </div>
+      <div>
+        Font: <FontFamily/> 
       </div>
       <div>
         Add Local Font to Menu: <AddLocalFont buttonLabel="Add To List" /> (You will then need to select it from the menu)
@@ -30,8 +32,8 @@ const FontSettings = () => {
         <MathFontSettings />
       </div>
       <h4>Preview</h4>
-      <div style={{display: 'flex', flexDirection: 'row'}}>
-        <TextPreview defaultValue={previewtext} />      
+      <div style={{display: 'flex', flexDirection: 'row', '--doc-font-size': '11pt'}}>
+        <TextPreview wrapperElement='div' defaultValue={previewtext} style={{input: {height: '100%'}, output: {height: '100%'}}}/>      
       </div>
     </>
   )

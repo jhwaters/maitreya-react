@@ -1,7 +1,54 @@
 import React from 'react'
 import { RenderElement } from '../../renderMethods'
 import styles from './styles.module.css'
-import { parseFunction, calcParametric } from '../../renderMethods/special/GraphParametric'
+import math from 'mathjs'
+
+
+const round = function(v, n) {
+  const d = Math.pow(10,n)
+  return Math.floor(d*v) / d
+}
+
+function calcParametric(x, y, domain, step) {
+  const f = (t) => ({x: round(x(t), 6), y: round(y(t), 6)})
+  let paths = []
+  let points = []
+  let t = domain[0]
+  while (t < domain[1]) {
+    try {
+      const pt = f(t)
+      if (points.length > 0 && Math.abs(pt.y - points[points.length-1].y) > 100) {
+        paths.push(points)
+        points = [pt]
+      } else {
+        points.push(pt)
+      }
+    } catch(e) {
+      if (points.length > 0) {
+        paths.push(points)
+        points = []
+      }
+    }
+    t += step
+  }
+  try {
+    points.push(f(domain[1]))
+  } catch(e) {}
+  if (points.length > 0) paths.push(points)
+  return paths
+}
+
+function parseFunction(str) {
+  try {
+    const nodes = math.parse(str)
+    const func = nodes.compile()
+    return scope => func.eval(scope)
+  } catch(e) {
+    console.error(e)
+  }
+}
+
+
 
 class GraphMaker extends React.Component {
   constructor(props) {
@@ -30,12 +77,12 @@ class GraphMaker extends React.Component {
   updateInverse = evt => this.setState({inverse: evt.target.value})
   updateParametricX = evt => this.setState({parametricX: evt.target.value})
   updateParametricY = evt => this.setState({parametricY: evt.target.value})
-  updateX0 = evt => this.setState({x0: +evt.target.value})
-  updateX1 = evt => this.setState({x1: +evt.target.value})
-  updateY0 = evt => this.setState({y0: +evt.target.value})
-  updateY1 = evt => this.setState({y1: +evt.target.value})
-  updateT0 = evt => this.setState({t0: +evt.target.value})
-  updateT1 = evt => this.setState({t1: +evt.target.value})
+  updateX0 = evt => this.setState({x0: evt.target.value})
+  updateX1 = evt => this.setState({x1: evt.target.value})
+  updateY0 = evt => this.setState({y0: evt.target.value})
+  updateY1 = evt => this.setState({y1: evt.target.value})
+  updateT0 = evt => this.setState({t0: evt.target.value})
+  updateT1 = evt => this.setState({t1: evt.target.value})
   updateStep = evt => this.setState({step: evt.target.value})
   updateHeight = evt => this.setState({height: evt.target.value})
   updateAutoDomain = evt => this.setState({autoDomain: evt.target.value})
@@ -83,7 +130,7 @@ class GraphMaker extends React.Component {
         <table>
           <tbody>
             <tr>
-              <td>y = </td>
+              <td>y=</td>
               <td><textarea value={this.state.standard} onChange={this.updateStandard}/></td> 
             </tr>
           </tbody>
@@ -95,7 +142,7 @@ class GraphMaker extends React.Component {
         <table>
           <tbody>
             <tr>
-              <td>x = </td>
+              <td>x=</td>
               <td><textarea value={this.state.inverse} onChange={this.updateInverse}/></td> 
             </tr>
           </tbody>
@@ -107,11 +154,11 @@ class GraphMaker extends React.Component {
         <table>
           <tbody>
             <tr>
-              <td>x = </td>
+              <td>x=</td>
               <td><textarea value={this.state.parametricX} onChange={this.updateParametricX}/></td>
             </tr>
             <tr>
-              <td>y = </td>
+              <td>y=</td>
               <td><textarea value={this.state.parametricY} onChange={this.updateParametricY}/></td>
             </tr>
           </tbody>
@@ -154,7 +201,7 @@ class GraphMaker extends React.Component {
       <>
       Height:
       <select value={this.state.autoSize} onChange={this.updateAutoSize}>
-        <option value='auto'>Auto</option>
+        <option value='auto'>Default</option>
         <option value='custom'>Custom</option>
       </select>
       {this.state.autoSize === 'custom' ? (
@@ -175,20 +222,24 @@ class GraphMaker extends React.Component {
 
   graphSize() {
     return {
-      start: [this.state.x0, this.state.y0], 
-      stop: [this.state.x1, this.state.y1],
+      span: [
+        +this.state.x0, 
+        +this.state.y0, 
+        +this.state.x1, 
+        +this.state.y1
+      ],
     }
   }
 
   getDomain() {
     if (this.state.mode === 'parametric' || this.state.autoDomain === 'custom') {
-      return [this.state.t0, this.state.t1]
+      return [+this.state.t0, +this.state.t1]
     }
     if (this.state.mode === 'standard') {
-      return [this.state.x0, this.state.x1]
+      return [+this.state.x0, +this.state.x1]
     }
     if (this.state.mode === 'inverse') {
-      return [this.state.y0, this.state.y1]
+      return [+this.state.y0, +this.state.y1]
     }
   }
 
@@ -227,10 +278,12 @@ class GraphMaker extends React.Component {
   getData() {
     let props = {
       ...this.graphSize(), 
-      padding: 0.1, 
+      autogrid: true,
     }
     if (this.state.autoSize === 'custom') {
       props.height = this.state.height + 'in'
+    } else {
+      props.height = '2in'
     }
     const paths = this.getFunction()
     if (paths) {
@@ -240,7 +293,7 @@ class GraphMaker extends React.Component {
   }
 
   onSubmit = () => {
-    this.props.onSubmit({type: 'graph', data: this.getData()})
+    this.props.onSubmit({type: 'vectorgraphic', data: this.getData()})
     this.props.onRequestClose()
   }
 
@@ -269,7 +322,7 @@ class GraphMaker extends React.Component {
           </div>
           <div className={styles.GraphMakerPreview}>
             <div className='document preview-area'>
-              <RenderElement content={{type: 'graph', data: this.getData()}} />
+              <RenderElement content={{type: 'vectorgraphic', data: this.getData()}} />
             </div>
           </div>
         </div>

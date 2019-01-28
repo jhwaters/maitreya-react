@@ -3,6 +3,7 @@ import FontFamilyUI from './FontFamilyUI'
 import FontFamily from './FontFamily'
 import FontSize from './FontSize'
 import FontSettings from './FontSettings'
+import TextPreview from './TextPreview'
 
 export {
   FontFamily,
@@ -10,6 +11,7 @@ export {
   AddLocalFont,
   FontFamilyUI,
   FontSettings,
+  TextPreview
 }
 
 export default FontSettings

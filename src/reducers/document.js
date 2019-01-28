@@ -66,10 +66,12 @@ const document = function(state=initialState, action) {
         pagebreaks: state.pagebreaks.filter(n => n < state.order.length),
       }
     case UPDATE_ELEMENT:
-      if (action.payload.id.split('.')[0] === 'header') {
-        return {
-          ...state, 
-          headers: {...state.headers, [action.payload.id.split('.')[1]]: action.payload.element}}
+      if (typeof action.payload.id === 'string') {
+        if (action.payload.id.split('.')[0] === 'header') {
+          return {
+            ...state, 
+            headers: {...state.headers, [action.payload.id.split('.')[1]]: action.payload.element}}
+        }
       }
       return {
         ...state, 

@@ -7,31 +7,47 @@
   left: 0;
   margin: 0;
   padding: 0;
-  background-color: #fafafa;
   height: 100%;
   overflow: scroll;
+  display: grid;
+  grid-template-areas:
+    'left settings';
+  grid-template-columns: auto 1fr;
 }
 
-.SettingPageHeader {
-  padding: .5em 1em;
-  font-size: 1.5em;
-  font-weight: bold;
-  background-color: #eee;
+.Title {
+  font-size: 1.2em;
 }
 
 .SettingSection {
+  grid-area: settings;
   margin: 1em;
 }
 
-.SettingNavArea {
-  padding: 0;
-  font-size: 1.3em;
+.LeftBar {
+  grid-area: left;
+  border-right: 1px solid rgba(0,0,0,0.2);
   font-weight: bold;
-  background-color: #eee;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 1.2em;
+  padding: 2mm;
 }
 
-.SettingNavButton, .SettingNavButton:hover, .SettingNavButton:disabled,
-.SettingNavButton.active, .SettingNavButton:focus {
+.LeftBar > div {
+  margin: 0 auto 10mm auto;
+}
+
+.NavArea {
+  grid-area: nav;
+  display: flex;
+  flex-direction: column;
+}
+
+.NavButton, .NavButton:hover, .NavButton:disabled,
+.NavButton.active, .NavButton:focus {
   color: #aaa;
   display: inline-block;
   font-size: inherit;
@@ -39,18 +55,17 @@
   background-image: none;
   background-color: inherit;
   border: none;
-  margin: 0;
+  margin: 1mm 0;
   padding: 0.2em 0.9em;
   border: none;
   border-radius: 0;
 }
 
-.SettingNavButton:hover {
+.NavButton:hover {
   color: #555
 }
 
-.SettingNavButton:disabled {
+.NavButton:disabled {
   color: #222;
-  background-color: #fafafa;
 }
 

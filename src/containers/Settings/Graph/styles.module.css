@@ -1,0 +1,24 @@
+
+.Layout {
+  height: 100%;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.Settings {
+  min-width: 8cm;
+}
+
+.SettingTable {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.SettingTable > div {
+  display: grid;
+  grid-template-columns: 2cm 2cm 2cm;
+}
+
+.StyleSetting {
+  margin: 5mm 0;
+}

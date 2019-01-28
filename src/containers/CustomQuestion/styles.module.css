@@ -23,3 +23,31 @@
 .GraphMakerPreview {
   height: fit-content;
 }
+
+.LatexExamples {
+  font-size: 1.1em;
+  border-collapse: collapse;
+}
+
+.LatexExamples > tbody > tr {
+  height: 3cm;
+}
+
+.LatexExamples > tbody > tr > td {
+  height: 100%;
+  padding: 2mm;
+  margin: 1mm;
+  border: none;
+}
+
+.LatexExamples > tbody > tr > td > textarea {
+  font-size: 10pt;
+  margin: 0;
+  padding: 2mm;
+  height: calc(100% - 3mm);
+}
+.LatexExamples > tbody > tr > td > div {
+  font-size: 12pt;
+  margin: 0;
+  padding: 0;
+}

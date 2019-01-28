@@ -2,59 +2,29 @@
 
 
 @font-face {
-  font-family: 'CMU Serif';
+  font-family: 'Computer Modern Serif';
   font-style: normal;
   font-weight: normal;
-  src: url('https://fontlibrary.org/assets/fonts/cmu-serif/6fcdeb7a603e986ae49da1030eb1966b/01643be9fa75a4523c77ac348b242aed/CMUSerifRoman.ttf') format('truetype');
+  src: url('./fonts/cmunrm-webfont.woff');
 }
 
 @font-face {
-  font-family: 'CMU Serif';
+  font-family: 'Computer Modern Serif';
   font-style: normal;
   font-weight: bold;
-  src: url('https://fontlibrary.org/assets/fonts/cmu-serif/6fcdeb7a603e986ae49da1030eb1966b/971a7f1818098f6fd3bb91b08be096df/CMUSerifBold.ttf') format('truetype');
+  src: url('./fonts/cmunbx-webfont.woff');
 }
 
 @font-face {
-  font-family: 'CMU Serif';
-  font-style: italic;
-  font-weight: bold;
-  src: url('https://fontlibrary.org/assets/fonts/cmu-serif/59c4efc3fa08079ca44060ca808c8f58/cd9c0404b3cd1dc863a5940ca609c8f4/CMUSerifBoldItalic.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'CMU Serif';
+  font-family: 'Computer Modern Serif';
   font-style: italic;
   font-weight: normal;
-  src: url('https://fontlibrary.org/assets/fonts/cmu-serif/59c4efc3fa08079ca44060ca808c8f58/86153f0958ae90bf30249dcb98d04a7d/CMUSerifItalic.ttf') format('truetype');
-}
-
-/*
-@font-face {
-  font-family: 'Charis SIL';
-  font-style: normal;
-  font-weight: bold;
-  src: url('https://fontlibrary.org/assets/fonts/charis/10b9f94ed21e56254b068c91ead7ec6f/6f5069ac6a300dad45383c952e92c573/CharisSILBold.ttf') format('truetype');
+  src: url('./fonts/cmunti-webfont.woff');
 }
 
 @font-face {
-  font-family: 'Charis SIL';
+  font-family: 'Computer Modern Serif';
   font-style: italic;
   font-weight: bold;
-  src: url('https://fontlibrary.org/assets/fonts/charis/10b9f94ed21e56254b068c91ead7ec6f/ac79840675d19023359400f0100eb862/CharisSILBoldItalic.ttf') format('truetype');
+  src: url('./fonts/cmunbi-webfont.woff');
 }
-
-@font-face {
-  font-family: 'Charis SIL';
-  font-style: italic;
-  font-weight: normal;
-  src: url('https://fontlibrary.org/assets/fonts/charis/10b9f94ed21e56254b068c91ead7ec6f/b40fe3cdd488775fcc62904560c56e04/CharisSILItalic.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Charis SIL';
-  font-style: normal;
-  font-weight: normal;
-  src: url('https://fontlibrary.org/assets/fonts/charis/10b9f94ed21e56254b068c91ead7ec6f/017b2b2ad86e09d3c22b8cf0dfc78247/CharisSILRegular.ttf') format('truetype');
-}
-*/

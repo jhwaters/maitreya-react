@@ -1,82 +1,125 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { updateGraphStyle } from '../../../actions/style'
+import { resetGraphStyle } from '../../../actions/style'
 import {
-  PathColor, AsymptoteColor, AxisColor, GridColor,
-  PathWidth, AxisWidth, GridWidth
+  PlotPathColor, PlotPathWidth,
+  GeomPathColor, GeomPathWidth,
+  AsymptoteColor, AsymptoteWidth,
+  AxisColor, AxisWidth,
+  GridColor, GridWidth,
+  ShadedRegionOpacity,
 } from './GraphStyle'
-import GraphPreview from './GraphPreview'
+import { PreviewXYPlot, PreviewGeom } from './GraphPreview'
+
+import styles from './styles.module.css'
 
 
 class GraphSettings extends React.Component {
 
-  static defaults = [
-    ['pathColor', '--plot-path-color', '#cc0077'],
-    ['pathWidth', '--plot-path-width', '0.5mm'],
-    ['asymptoteColor', '--plot-asymptote-color', '#555555'],
-    ['gridColor', '--plot-grid-color', '#8899aa'],
-    ['gridWidth', '--plot-grid-width', '0.2mm'],
-    ['axisWidth', '--plot-axis-width', '0.4mm'],
-    ['axisColor', '--plot-axis-color', '#222222'],
-  ]
+  constructor(props) {
+    super(props)
+    this.state = {style: 'xy-plot'}
+  }
+
+  changeStyle = evt => {
+    this.setState({style: evt.target.value})
+  }
 
   resetToDefaults = () => {
-    const updates = {}
-    for (const d of this.constructor.defaults) {
-      document.body.style.setProperty(d[1], d[2])
-      updates[d[0]] = d[2]
+   this.props.resetGraphStyle()
+  }
+
+  renderPreview() {
+    if (this.state.style === 'geom') {
+      return <PreviewGeom />
     }
-    this.props.updateGraphStyle(updates)
+    return <PreviewXYPlot />
+  }
+
+  renderStyleSettings() {
+    if (this.state.style === 'xy-plot') {
+      return (
+        <>
+          <div>
+            <div>Graph</div>
+            <div><PlotPathColor/></div>
+            <div><PlotPathWidth/></div>
+          </div>
+          <div>
+            <div>Asymptote</div>
+            <div><AsymptoteColor/></div>
+            <div><AsymptoteWidth/></div>
+          </div>
+          <div>
+            <div>Fill Opacity</div>
+            <div><ShadedRegionOpacity /></div>
+          </div>
+        </>
+      )
+    }
+    if (this.state.style === 'geom') {
+      return (
+        <>
+          <div>
+            <div>Objects</div>
+            <div><GeomPathColor/></div>
+            <div><GeomPathWidth/></div>
+          </div>
+        </>
+      )
+    }
+    return null
   }
 
   render() {
     return (
-      <>
-        <button onClick={this.resetToDefaults}>Reset to Defaults</button>
-        <div style={{display: 'flex', flexDirection: 'row'}}>
-          <div>
-            
+      <div className={styles.Layout}>
+        <div className={styles.Settings}>
+          <h3>Graph Style</h3>
+          <button onClick={this.resetToDefaults}>Reset to Defaults</button>
+          
+          <div className={styles.SettingTable}>
+
             <div>
-              <PathColor/>
-              Graph Color
+              <div></div>
+              <div>Color</div>
+              <div>Thickness</div>
             </div>
             <div>
-              <AsymptoteColor/>
-              Asymptote Color
-            </div>
-            <div>
-              <AxisColor/>
-              Axis Color
-            </div>
-            <div>
-              <GridColor/>
-              Grid Color
-            </div>
-            <div>
-              <PathWidth/>
-              Graph Thickness
-            </div>
-            <div>
-              <AxisWidth/>
-              Axis Thickness
-            </div>
-            <div>
-              <GridWidth/>
-              Grid Thickness
+              <div>Axis</div>
+              <div><AxisColor/></div>
+              <div><AxisWidth/></div>
             </div>
 
+            <div>
+              <div>Grid</div>
+              <div><GridColor/></div>
+              <div><GridWidth/></div>
+            </div>
+            <div className={styles.StyleSetting}>
+              Style:
+              <select onChange={this.changeStyle} value={this.state.style}>
+                <option value='xy-plot'>xy-plot</option>
+                <option value='geom'>geometry</option>
+              </select>
+            </div>
+
+            {this.renderStyleSettings()}
           </div>
-          <div style={{margin: '3mm'}}>
-            <GraphPreview />
+
+        </div>
+        <div className={styles.Preview}>
+          <div className='document preview-area'>
+            {this.renderPreview()}
           </div>
         </div>
-      </>
+      </div>
     )
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  updateGraphStyle: (props) => dispatch(updateGraphStyle(props)),
+  resetGraphStyle: () => dispatch(resetGraphStyle()),
 })
 
 export default connect(null, mapDispatchToProps)(GraphSettings)

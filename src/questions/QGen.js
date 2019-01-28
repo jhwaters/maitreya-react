@@ -22,13 +22,13 @@ class QGen {
   }
 
   _specialCaseValues(k, v) {
-    if (k[0] !== '_' || k === 'answer') {
-      //if (typeof v === 'string') return {type: 'text', data: v}
-      //if (typeof v === 'number') return {type: 'text', data: v.toString()}
-      if (Array.isArray(v)) {
-        if (k === 'answer') return {type: 'answerchoices', data: v}
-        return {type: 'list', data: v}
+    if (Array.isArray(v)) {
+      if (k === 'answerspace') {
+        return {type: 'answerchoices', data: v}
       }
+      if (k[0] === '_') {
+        return {type: 'list', data: v}
+      }      
     }
     return v
   }

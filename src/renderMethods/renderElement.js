@@ -20,7 +20,9 @@ function renderAs(type, data, options) {
 
 const isArray = Array.isArray
 
-export const RenderElement = ({content, inherited}) => {
+export const RenderElement = ({content, inherited}) => renderElement(content, inherited)
+
+export const renderElement = function(content, inherited) {
   try {
     if (typeof content === 'string' || typeof content === 'number') {
       return renderAs('text', content, inherited)

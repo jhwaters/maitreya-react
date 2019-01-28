@@ -14,7 +14,7 @@ const AnswerKey = (props) => {
           if (element.type === 'question') {
             return (
               <div key={`answer-${id}`} className='answerkey-item'>
-                <RenderElement content={{...element, type: 'answer'}} />
+                <RenderElement content={{...element, type: 'answerkey'}} />
               </div>
             )
           } else {

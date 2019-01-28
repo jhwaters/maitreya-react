@@ -1,5 +1,7 @@
 import React from 'react'
 import { RenderElement } from '../../renderMethods'
+import { TextPreview } from '../Settings/Font'
+import styles from './styles.module.css'
 
 const latexfmt = (...a) => String.raw(...a).replace('\\`', '`');
 
@@ -39,6 +41,7 @@ $$$`,
 
 ]
 
+/*
 const RenderExample = ({text}) => {
   return (
     <>
@@ -58,20 +61,32 @@ const RenderExample = ({text}) => {
     </>
   )
 }
+*/
+
+const RenderExample = ({text}) => (
+  <tr>
+    <TextPreview wrapperElement='td' defaultValue={text} />
+  </tr>
+)
 
 const LatexExamples = (props) => {
   return (
-    <>
-    <h4>Examples: <button onClick={props.onRequestClose}>Close</button></h4>
-    <div style={{fontSize: '1.1em'}}>
-      {examples.map((s, i) => (
-        <div key={`render-example-${i}`} style={{marginBottom: '1rem'}}>
-          <RenderExample text={s} />
-        </div>
-      ))}
+    <div style={{padding: '3mm 0 3mm 0'}}>
+    <div>
+      <span>Examples:</span>
+      <button onClick={props.onRequestClose}>Close</button>
     </div>
-    <button onClick={props.onRequestClose}>Close</button>
-    </>
+    <table className={styles.LatexExamples}>
+      <tbody>
+      {examples.map((s, i) => (
+          <RenderExample key={`render-example-${i}`} text={s} />
+      ))}
+      </tbody>
+    </table>
+    <div>
+      <button onClick={props.onRequestClose}>Close</button>
+    </div>
+    </div>
   )
 }
 

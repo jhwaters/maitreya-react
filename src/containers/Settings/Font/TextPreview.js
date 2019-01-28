@@ -38,11 +38,15 @@ class TextPreview extends React.Component {
   }
 
   static defaultProps = {
-    renderType: 'text'
+    renderType: 'text',
+    wrapperElement: 'div',
   }
 
   constructor(props) {
     super(props)
+    const style = this.props.style || {}
+    this.inputStyle = style.input || {}
+    this.outputStyle = style.output || {}
     this.input = React.createRef()
     this.state = { text: props.defaultValue || '' }
   }
@@ -69,21 +73,19 @@ class TextPreview extends React.Component {
   render() {
     return (
       <>
-      <textarea
-        onChange={this.updatePreview}
-        onKeyDown={onKeyDown}
-        value={this.state.text}
-        rows='3'
-        style={{
-          minWidth: '4in',
-        }}
-      />
-      <div className='document preview-area' style={{
-        fontSize: '1.2em',
-        width: 'fit-content',
-      }}>
-        {this.renderPreview()}
-      </div>
+      <this.props.wrapperElement className='text-preview-input' >
+        <textarea 
+          style={this.inputStyle}
+          onChange={this.updatePreview}
+          onKeyDown={onKeyDown}
+          value={this.state.text}
+        />
+      </this.props.wrapperElement>
+      <this.props.wrapperElement className='text-preview-output' >
+        <div className='document' style={this.outputStyle}>
+          {this.renderPreview()}
+        </div>
+      </this.props.wrapperElement>
       </>
     )
   }

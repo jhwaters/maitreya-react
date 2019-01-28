@@ -5,11 +5,12 @@ import {
   SET_MATH_FONTWEIGHT,
   SET_PAGE_MARGIN,
   UPDATE_GRAPHSTYLE,
+  RESET_GRAPHSTYLE,
 } from '../actions/style'
 
 
 const initialState = {
-  fontFamily: 'Lora',
+  fontFamily: 'serif',
   fontSize: '8pt',
   mathFontSize: '0.9em',
   mathFontWeight: 'normal',
@@ -17,13 +18,17 @@ const initialState = {
   pageOrientation: 'portrait',
   pageMargin: '10mm 10mm 10mm 10mm',
   graph: {
-    asymptoteColor: '#555555',
+    asymptoteColor: '#777777',
+    asymptoteWidth: '0.7mm',
     axisColor: '#222222',
-    axisWidth: '0.4mm',
-    gridColor: '#8899aa',
-    gridWidth: '0.2mm',
-    pathColor: '#cc0077',
-    pathWidth: '0.5mm',
+    axisWidth: '0.3mm',
+    gridColor: '#2255aa',
+    gridWidth: '0.1mm',
+    plotPathColor: '#cc0077',
+    plotPathWidth: '0.5mm',
+    geomPathColor: '#111111',
+    geomPathWidth: '0.5mm',
+    shadedRegionOpacity: '0.2',
   },
 }
 
@@ -46,6 +51,8 @@ const style = function(state=initialState, action) {
     // Graph Style
     case UPDATE_GRAPHSTYLE:
       return {...state, graph: {...state.graph, ...action.payload}}
+    case RESET_GRAPHSTYLE:
+      return {...state, graph: {...initialState.graph}}
 
     default:
       return state

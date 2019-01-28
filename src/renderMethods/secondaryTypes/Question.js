@@ -1,67 +1,88 @@
 import React from 'react'
 import { defaultsDeep } from 'lodash'
-import { setGridAreas } from './setQuestionLayout'
-import { RenderElement } from '../RenderElement'
+import { renderElement } from '../RenderElement'
 
 
 
-const QuestionArea = ({area, content, options}) => {
-  const className = `question-area question-area-${area}`
-  const style = {gridArea: area}
+
+const QuestionLayout = ({
+  content, options={},
+  layout=[['instructions', 'question', 'answer'], 'diagram'], 
+  direction='row'
+}={}) => {
+
+  const className = `question-layout question-layout-${direction}`
+  const newDirection = {row: 'column', column: 'row'}[direction]
+
   return (
-    <div className={className} style={style}>
-      <RenderElement content={content} inherited={options} />
+    <div className={className}>
+      {layout.map((area, i) => {
+        if (Array.isArray(area)) {
+          return (
+            <QuestionLayout key={`region-${i}`} 
+            content={content} options={options}
+            layout={area} direction={newDirection} />
+          )
+        } else {
+          if (content[area]) {
+            return (
+              <div key={area} className={`question-area question-area-${area}`}>
+                {renderElement(content[area], options)}
+              </div>
+            )
+          }
+        }
+        return null
+      })}
     </div>
   )
 }
 
 
-export class Question extends React.Component {
-
-  render() {
-    // Determine options
-    const options = defaultsDeep({}, this.props.data._options || {}, this.props.options)
-    
-    // Determine options to pass to areas
-    let passedOptions = {}
-    for (const k of ['markdown', 'math']) {
-      if (options[k] !== undefined) {
-        passedOptions[k] = options[k]
-      }
-    }
-
-    // Determine visible areas
-    const visibleAreas = Object.keys(this.props.data).filter(area => area[0] !== '_')
-
-    // Determine layout
-    const layoutStyle = {display: 'grid'}
-    try {
-      const layout = options.layout || setGridAreas(visibleAreas)
-      if (typeof layout === 'string') {
-        layoutStyle.gridTemplateAreas = layout
-      } else {
-        layoutStyle.gridTemplateAreas = layout.map(row => `"${row.join(' ')}"`).join(' ')
-      }
-    } catch(e) {
-      console.error(e)
-    }
-
-
-    return (
-      <div className="question-layout" style={layoutStyle}>
-        {visibleAreas.map((area) => {
-          return (
-            <QuestionArea key={area} 
-              area={area} 
-              content={this.props.data[area]} 
-              options={passedOptions} 
-            />
-          )
-        })}
-      </div>
-    )
+function isMultipleChoice(data, options={}) {
+  if (options.isMultipleChoice !== undefined) {
+    return options.isMultipleChoice
   }
+  if (data.answer && typeof data.answer !== 'string') {
+    if (data.answer.choices) {
+      return true
+    }
+  }
+  return false
 }
+
+
+export const Question = ({data, options={}}) => {
+  const opts = defaultsDeep({}, data._options || {}, options)
+  let {instructions, question, diagram} = data
+  const content = {instructions, question, diagram}
+  if (isMultipleChoice(data, opts)) {
+    Object.assign(content, data.multipleChoice)
+    content.answer = {
+      type: 'answerchoices',
+      data: data.answer.choices,
+    }
+  } else {
+    Object.assign(content, data.freeResponse)
+    if (data.answer && data.answer.prompt !== undefined) {
+      if (data.answer.prompt !== null) {
+        content.answer = {
+          type: 'answerblanks',
+          data: typeof data.answer.prompt === 'string' ? [data.answer.prompt] : data.answer.prompt
+        }
+      }
+    } else {
+      if (data.answer !== null) {
+        content.answer = {
+          type: 'answerblanks',
+          data: [({})],
+        }
+      }
+    }
+  }
+  return <QuestionLayout content={content} options={opts}/>
+}
+
 
 export const NumberedQuestion = ({data, options}) => {
   return (
@@ -71,19 +92,20 @@ export const NumberedQuestion = ({data, options}) => {
   )
 }
 
-export const Answer = ({data, options}) => {
+export const AnswerKey = ({data, options={}}) => {
   const letters = 'abcdefg'
-  if (data.answer && data.answer.type === 'answerchoices') {
-    if (data._answerIndex !== undefined) {
-      return letters[data._answerIndex]
-    }
-    if (data._answer.answerIndex !== undefined) {
-      return letters[data._answer.answerIndex]
+  if (isMultipleChoice(data, options)) {
+    if (data.answer.choices && data.answer.correctIndex !== undefined) {
+      return letters[data.answer.correctIndex]
     }
   }
-  if (data._answer !== undefined) {
-    return <RenderElement content={data._answer} inherited={options} />
+  if (data.answer !== undefined && data.answer !== null) {
+    if (data.answer.correct) {
+      return renderElement(data.answer.correct, options)
+    }
+    if (data.answer.type || typeof data.answer === 'string') {
+      return renderElement(data.answer, options)
+    }
   }
-  
-  return <RenderElement content='' inherited={options} />
+  return null
 }

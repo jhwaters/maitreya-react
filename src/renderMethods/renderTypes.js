@@ -1,15 +1,16 @@
 import {
-  Graph,
   Html,
   Markdown,
   Text,
+  VectorGraphic,
   Vega,
   VegaLite
 } from './primaryTypes'
 
 import {
-  Answer,
+  AnswerBlanks,
   AnswerChoices,
+  AnswerKey,
   Header,
   JsonML,
   List,
@@ -18,10 +19,10 @@ import {
 } from './secondaryTypes'
 
 export const renderTypes = {
-  answer: Answer,
+  answerkey: AnswerKey,
+  answerblanks: AnswerBlanks,
   answerchoices: AnswerChoices,
   //'answer-choices': AnswerChoices,
-  graph: Graph,
   header: Header,
   html: Html,
   jsonml: JsonML,
@@ -30,6 +31,7 @@ export const renderTypes = {
   'question-nonumber': Question,
   question: NumberedQuestion,
   text: Text,
+  vectorgraphic: VectorGraphic,
   vega: Vega,
   'vega-lite': VegaLite,
 }

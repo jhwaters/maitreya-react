@@ -1,3 +1,3 @@
-import { RenderElement } from './RenderElement'
+import { RenderElement, renderElement } from './RenderElement'
 
-export { RenderElement }
+export { RenderElement, renderElement }

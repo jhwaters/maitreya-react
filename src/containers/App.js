@@ -41,7 +41,7 @@ for (const q in examplequestions) {
   const n = examplequestions[q].register().name
   questionBank[n] = examplequestions[q]
 }
-for (const q in demogenerators) {
+for (const q of ['PlotStyling', 'QuadTreePlotTest']) {
   const n = `_ ${demogenerators[q].register().name}`
   questionBank[n] = demogenerators[q]
 }
@@ -49,14 +49,14 @@ for (const q in demogenerators) {
 
 ReactModal.setAppElement('#root')
 Object.assign(ReactModal.defaultStyles.content, {
-  borderRadius: '0',
+  borderRadius: '4px',
   borderColor: '#999',
-  background: 'white',
+  background: '#eee',
   padding: '5mm',
-  top: '15px',
-  left: '15px',
-  right: '15px',
-  bottom: '15px',
+  top: '10px',
+  left: '10px',
+  right: '10px',
+  bottom: '10px',
 })
 Object.assign(ReactModal.defaultStyles.overlay, {
   background: 'rgba(100,100,100,0.2)',
@@ -180,6 +180,7 @@ class AppWrapper extends React.Component {
         <ReactModal
           isOpen={this.state.modal === 'Notes'}
           onRequestClose={this.closeModal}
+          style={{content: {backgroundColor: 'white'}}}
         >
           <Notes onRequestClose={this.closeModal} />
         </ReactModal>
@@ -194,7 +195,6 @@ const mapStateToProps = state => ({
   questionTypes: questionBank,
   statusBar: "",
   fontFamilyUI: state.config.fontFamilyUI,
-
 })
 
 const mapDispatchToProps = dispatch => ({

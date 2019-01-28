@@ -8,7 +8,7 @@ class SettingsPage extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {showing: 'graph'}
+    this.state = {showing: 'none'}
   }
 
   showFontSettings = () => {
@@ -29,22 +29,29 @@ class SettingsPage extends React.Component {
   render() {
     return (
       <div className={styles.SettingPage}>
-        <div className={styles.SettingPageHeader}>
-          <span>Settings </span>
-          <button onClick={this.props.onRequestClose}>Close</button>
-        </div>
 
-        <div className={styles.SettingNavArea}>
-          <button
-            className={styles.SettingNavButton}
-            onClick={this.showFontSettings}
-            disabled={this.state.showing === 'font'}
-          >Fonts</button>
-          <button
-            className={styles.SettingNavButton}
-            onClick={this.showGraphSettings}
-            disabled={this.state.showing === 'graph'}
-          >Graphs</button>
+        <div className={styles.LeftBar}>
+          <div>
+            <span className={styles.Title}>Settings</span>
+          </div>
+          
+          <div className={styles.NavArea}>
+            <button
+              className={styles.NavButton}
+              onClick={this.showFontSettings}
+              disabled={this.state.showing === 'font'}
+            >Fonts</button>
+            <button
+              className={styles.NavButton}
+              onClick={this.showGraphSettings}
+              disabled={this.state.showing === 'graph'}
+            >Graphs</button>
+          </div>
+
+          <div>
+            <button onClick={this.props.onRequestClose}>Close</button>
+          </div>
+          
         </div>
         
         <div className={styles.SettingSection}>

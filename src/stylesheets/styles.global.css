@@ -3,7 +3,7 @@
 @import './page.global.css';
 @import './katex.global.css';
 @import './document.global.css';
-@import './plots.global.css';
+@import './vectorgraphic.scss';
 
 
 body {
@@ -71,6 +71,25 @@ pre, code {
   border: 1px solid #ccc;
   background-color: white;
   padding: 1cm;
+  border-radius: 3px;
+}
+
+.text-preview-output > * {
+  margin: 0;
+}
+
+.text-preview-input > textarea {
+  min-width: 4in;
+  padding: 2mm;
+  margin: 0;
+}
+
+.text-preview-output {
+  border: 1px solid #ccc;
+  background-color: white;
+  padding: 2mm;
+  width: fit-content;
+  border-radius: 3px;
 }
 
 
