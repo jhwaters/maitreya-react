@@ -5,20 +5,22 @@
   flex-flow: row wrap;
 }
 
-.Settings {
-  min-width: 8cm;
+.SettingTable th {
+  text-align: center;
+  font-weight: bold;
 }
 
-.SettingTable {
-  display: flex;
-  flex-flow: column nowrap;
-}
+.SettingTable input[type=range] { width: 2cm }
 
-.SettingTable > div {
-  display: grid;
-  grid-template-columns: 2cm 2cm 2cm;
-}
+.SettingTable * > tr > td:nth-of-type(1) { width: 2cm }
+.SettingTable * > tr > td:nth-of-type(2) { width: 1cm }
+.SettingTable * > tr > td:nth-of-type(3) { width: 2cm }
 
 .StyleSetting {
   margin: 5mm 0;
+}
+
+.Preview {
+  margin-top: 5mm;
+  margin-left: 1cm;
 }

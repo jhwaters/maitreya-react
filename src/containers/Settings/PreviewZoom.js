@@ -9,14 +9,14 @@ class PreviewZoom extends React.Component {
   constructor(props) {
     super(props)
     this.selection = React.createRef()
-    this.default = 100
+    this.default = 110
     this.setPreviewZoom(this.default)
   }
 
   setPreviewZoom(perc) {
     const scale = perc / 100.0
     
-    const transform = `matrix(${[scale, 0, 0, scale, 0, (perc-100)*10.8].join(',')})`
+    const transform = `matrix(${[scale, 0, 0, scale, 0, 0].join(',')})`
     document.body.style.setProperty('--previewInnerTransform', transform)
   }
 

@@ -1,24 +1,29 @@
-import { MarkerDefs } from './Markers'
+import { MarkerDefs } from './MarkerDefs'
 import { Grid, CartesianPlane } from './CartesianPlane'
-import { Layer, Path, Text } from './Base'
-import {
-  Point, Hole, Asymptote, ShadedRegion,
-  Polynomial, Rational,
-} from './Plot'
-import { Segment, Ray, Line, Circle, Polygon } from './Geometry'
-import { Rotate } from './other'
+import { 
+  Path, ScatterPlot, Asymptote,
+  GeomSegment, GeomRay, GeomLine, 
+  ShadedRegion, Polygon 
+} from './Paths'
+import { Circle } from './Geometry'
+import { Layer, Text, Rotate } from './other'
+import { Mark, Point, Hole } from './Marks'
+import { PolynomialFunction, RationalFunction } from './Functions'
+import { Transforms } from './Transforms'
 
 export {
   MarkerDefs,
   
-  Path, Layer, Text,
+  Layer, Text, Rotate,
 
   CartesianPlane, Grid,
 
-  Point, Hole, Asymptote, ShadedRegion,
-  Polynomial, Rational,
+  Transforms,
 
-  Segment, Ray, Line, Circle, Polygon,
+  Point, Hole, Mark,
+  
+  PolynomialFunction, RationalFunction,
 
-  Rotate,
+  Path, ScatterPlot, Asymptote, GeomSegment, GeomRay, GeomLine, Circle, Polygon, ShadedRegion,
+
 }

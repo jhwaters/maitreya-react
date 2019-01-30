@@ -1,56 +1,6 @@
 import React from 'react'
-import {Path, Layer} from './Base'
-import { pathFromPoints } from './tools'
+import { Path, Asymptote, Point, Hole } from '.'
 
-export const Point = (props) => {
-  const {x, y, coords, ...otherprops} = props
-  const d = `M${coords ? `${coords[0]},${coords[1]}` : `${x},${y}`}z`
-  return (
-    <path className='vg-point'
-      vectorEffect='non-scaling-stroke'
-      d={d}
-      {...otherprops}
-    />
-  )
-}
-
-export const Hole = (props) => {
-  const {x, y, coords, inner, outer} = props
-  const d = `M${coords ? `${coords[0]},${coords[1]}` : `${x},${y}`}z`
-  return (
-    <>
-      <path key='ext' className='vg-hole'
-        vectorEffect='non-scaling-stroke'
-        d={d}
-        {...outer}
-      />
-    </>
-  )
-}
-
-export const ShadedRegion = (props) => {
-  const {points, ...otherprops} = props
-  return (
-    <path className='vg-shaded-region' 
-      vectorEffect='non-scaling-stroke'
-      d={pathFromPoints(points)}
-      {...otherprops}
-    />
-  )
-}
-
-export const Asymptote = (props) => {
-  const {points, otherprops} = props
-  return (
-    <path className='vg-asymptote'
-      vectorEffect='non-scaling-stroke'
-      d={pathFromPoints(points)}
-      {...otherprops}
-    />
-  )
-}
-
-//export const Path = (props) => <Base.Path {...{className: 'vg-path', ...props}} />
 
 const calcPath = function(f, domain, step=0.1) {
   let path = []
@@ -63,7 +13,7 @@ const calcPath = function(f, domain, step=0.1) {
   return path
 }
 
-export const Polynomial = (props) => {
+export const PolynomialFunction = (props) => {
   const { 
     coefficients, domain, step=0.1,
     ...otherprops
@@ -80,16 +30,17 @@ export const Polynomial = (props) => {
   return <Path points={calcPath(f, domain, step)} {...otherprops}/>
 }
 
-export const Rational = (props) => {
+export const RationalFunction = (props) => {
   const {
-    roots=[], holes=[], asymptotes=[], numerCoeff=1, denomCoeff=1, 
-    domain, step=0.1, range=[-1000,1000],
-    ...otherprops
+    roots=[], holes=[], asymptotes=[], numerLC=1, denomLC=1, 
+    domain, step=0.1, range=[-1000,1000], 
+    renderAsymptotes=true, renderRoots=true, renderHoles=true,
+    role=[], style
   } = props
 
   const f = (x) => {
-    let num = numerCoeff
-    let den = denomCoeff
+    let num = numerLC
+    let den = denomLC
     for (const r of roots) {
       num *= (x - r)
     }
@@ -146,20 +97,25 @@ export const Rational = (props) => {
   }
 
   const vas = asymptotes.map(x => [{x: x, y: range[0]}, {x: x, y: range[1]}])
-  let ha = null
+  let ha
   if (asymptotes.length > roots.length) {
     ha = [{x: domain[0], y: 0}, {x: domain[1], y: 0}]
   } else if (asymptotes.length === roots.length) {
-    ha = [{x: domain[0], y: numerCoeff/denomCoeff}, {x: domain[1], y: numerCoeff/denomCoeff}]
+    ha = [{x: domain[0], y: numerLC/denomLC}, {x: domain[1], y: numerLC/denomLC}]
   }
 
+  const classNames = ['vg-rational-function']
+
+  if (style) classNames.push(`vg-style-${style}`)
+
+  const roles = ['function', ...role]
   return (
-    <g className='vg-function vg-rational'>
-      {ha ? <Asymptote key='hasym' points={ha} /> : null}
-      {vas.map(p => <Asymptote key={`asym${p[0].x}`} points={p} />)}
-      {paths.map(p => <Path key={`path${p[0].x}`} points={p} {...otherprops} />)}
-      {roots.map(x => <Point key={`root${x}`} x={x} y={f(x)} />)}
-      {holes.map(x => <Hole key={`hole${x}`} x={x} y={f(x)} />)}
+    <g className={classNames.join(' ')}>
+      {renderAsymptotes && ha ? <Asymptote key='hasym' points={ha} /> : null}
+      {renderAsymptotes ? vas.map(p => <Asymptote key={`asym${p[0].x}`} points={p} />) : null}
+      {paths.map(p => <Path key={`path${p[0].x}`} points={p} role={roles} />)}
+      {renderRoots ? roots.map(x => <Point key={`root${x}`} x={x} y={f(x)} />): null}
+      {renderHoles ? holes.map(x => <Hole key={`hole${x}`} x={x} y={f(x)} />) : null}
     </g>
   )
 }

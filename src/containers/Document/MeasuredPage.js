@@ -9,8 +9,8 @@ import { portrait, landscape } from './pagesize'
 
 class MeasuredPage extends React.Component {
   static propTypes = {
-    headerID: PropTypes.string || PropTypes.number,
-    footerID: PropTypes.string || PropTypes.number,
+    headerID: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    footerID: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     contentIDs: PropTypes.array.isRequired,
     content: PropTypes.object.isRequired,
     pageSize: PropTypes.string.isRequired,

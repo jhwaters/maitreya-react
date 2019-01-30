@@ -1,12 +1,11 @@
 import React from 'react'
-import { JsonML } from './JsonML'
+import { renderElement } from '..'
 
 export const List = ({data, options}) => {
-
+  const {type='lower-roman', spaceAfterItem='0', items} = data
   return (
-    <JsonML 
-      data={['ol', {className: 'list-auto'}, ...data.map(d => ['li', {}, d])]} 
-      options={options}
-    />
+    <ol style={{listStyleType: type}}>
+      {items.map((elem, i) => <li key={i} style={{marginBottom: spaceAfterItem}}>{renderElement(elem, options)}</li>)}
+    </ol>
   )
 }

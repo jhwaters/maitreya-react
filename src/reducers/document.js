@@ -6,6 +6,7 @@ import {
   SET_DOCUMENT_STARTNUMBERING,
   ADD_PAGEBREAK_BEFORE,
   DELETE_ELEMENT,
+  CLEAR_PAGEBREAKS,
 } from '../actions/document'
 
 
@@ -93,7 +94,8 @@ const document = function(state=initialState, action) {
         }
       }
       return state
-      
+    case CLEAR_PAGEBREAKS:
+      return {...state, pagebreaks: []}
       
     
     default:

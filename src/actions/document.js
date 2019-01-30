@@ -5,6 +5,7 @@ export const UPDATE_ELEMENT = 'UPDATE_ELEMENT'
 export const DELETE_ELEMENT = 'DELETE_ELEMENT'
 export const SET_DOCUMENT_STARTNUMBERING = 'SET_DOCUMENT_STARTNUMBERING'
 export const ADD_PAGEBREAK_BEFORE = 'ADD_PAGEBREAK_BEFORE' // need to come up with a better way to do this
+export const CLEAR_PAGEBREAKS = 'CLEAR_PAGEBREAKS'
 
 let elemID = 0
 
@@ -48,6 +49,10 @@ export const setDocumentStartNumbering = (n) => ({
 export const addPageBreakBefore = (id) => ({
   type: ADD_PAGEBREAK_BEFORE,
   payload: id
+})
+
+export const clearPageBreaks = () => ({
+  type: CLEAR_PAGEBREAKS
 })
 
 

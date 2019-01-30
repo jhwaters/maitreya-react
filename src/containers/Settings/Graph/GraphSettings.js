@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { resetGraphStyle } from '../../../actions/style'
 import {
-  PlotPathColor, PlotPathWidth,
+  PlotPathColor, PlotPathWidth, Plot2PathColor, PlotColorSwap,
   GeomPathColor, GeomPathWidth,
   AsymptoteColor, AsymptoteWidth,
   AxisColor, AxisWidth,
@@ -40,31 +40,36 @@ class GraphSettings extends React.Component {
     if (this.state.style === 'xy-plot') {
       return (
         <>
-          <div>
-            <div>Graph</div>
-            <div><PlotPathColor/></div>
-            <div><PlotPathWidth/></div>
-          </div>
-          <div>
-            <div>Asymptote</div>
-            <div><AsymptoteColor/></div>
-            <div><AsymptoteWidth/></div>
-          </div>
-          <div>
-            <div>Fill Opacity</div>
-            <div><ShadedRegionOpacity /></div>
-          </div>
+          <tr>
+            <td>Primary</td>
+            <td><PlotPathColor/></td>
+            <td><PlotPathWidth/></td>
+          </tr>
+          <tr>
+            <td>Secondary</td>
+            <td><Plot2PathColor/></td>
+            <td><PlotColorSwap>Swap Colors</PlotColorSwap></td>
+          </tr>
+          <tr>
+            <td>Asymptote</td>
+            <td><AsymptoteColor/></td>
+            <td><AsymptoteWidth/></td>
+          </tr>
+          <tr>
+            <td colSpan='2'>Fill</td>
+            <td><ShadedRegionOpacity /></td>
+          </tr>
         </>
       )
     }
     if (this.state.style === 'geom') {
       return (
         <>
-          <div>
-            <div>Objects</div>
-            <div><GeomPathColor/></div>
-            <div><GeomPathWidth/></div>
-          </div>
+          <tr>
+            <td>Path</td>
+            <td><GeomPathColor/></td>
+            <td><GeomPathWidth/></td>
+          </tr>
         </>
       )
     }
@@ -78,35 +83,43 @@ class GraphSettings extends React.Component {
           <h3>Graph Style</h3>
           <button onClick={this.resetToDefaults}>Reset to Defaults</button>
           
-          <div className={styles.SettingTable}>
+          <table className={styles.SettingTable}>
 
-            <div>
-              <div></div>
-              <div>Color</div>
-              <div>Thickness</div>
-            </div>
-            <div>
-              <div>Axis</div>
-              <div><AxisColor/></div>
-              <div><AxisWidth/></div>
-            </div>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Color</th>
+                <th>Thickness</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Axis</td>
+                <td><AxisColor/></td>
+                <td><AxisWidth/></td>
+              </tr>
 
-            <div>
-              <div>Grid</div>
-              <div><GridColor/></div>
-              <div><GridWidth/></div>
-            </div>
-            <div className={styles.StyleSetting}>
-              Style:
-              <select onChange={this.changeStyle} value={this.state.style}>
-                <option value='xy-plot'>xy-plot</option>
-                <option value='geom'>geometry</option>
-              </select>
-            </div>
+              <tr>
+                <td>Grid</td>
+                <td><GridColor/></td>
+                <td><GridWidth/></td>
+              </tr>
+              <tr>
+                <td colSpan='3' >
+                  <div style={{margin: '5mm 0'}}>
+                    <span>Editing style for </span>
+                    <select onChange={this.changeStyle} value={this.state.style}>
+                      <option value='geom'>geometry</option>
+                      <option value='xy-plot'>xy-plot</option>
+                    </select>
+                  </div>
+                </td>
+              </tr>
 
-            {this.renderStyleSettings()}
-          </div>
+              {this.renderStyleSettings()}
+            </tbody>
 
+          </table>
         </div>
         <div className={styles.Preview}>
           <div className='document preview-area'>

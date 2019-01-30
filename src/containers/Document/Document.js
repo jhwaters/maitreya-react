@@ -10,7 +10,8 @@ import Scratch from './scratchpage'
 
 
 const Document = (props) => {
-  const len = props.contentIDs.length
+  const len = props.contentIDs.length - props.hidden
+  const visibleIDs = props.contentIDs.slice(0,len)
   let prev = 0
   let slices = []
   for (const i of props.pagebreaks) {
@@ -20,7 +21,7 @@ const Document = (props) => {
     }
   }
   slices.push([prev])
-  const pages = slices.map(s => props.contentIDs.slice(...s))
+  const pages = slices.map(s => visibleIDs.slice(...s))
 
   return (
     <div className='document'>
@@ -48,6 +49,7 @@ const mapStateToProps = state => ({
   pagebreaks: state.document.pagebreaks,
   showAnswerKey: state.config.showAnswerKey,
   style: state.style,
+  hidden: state.config.numberHidden,
 })
 
 export default connect(mapStateToProps)(Document)

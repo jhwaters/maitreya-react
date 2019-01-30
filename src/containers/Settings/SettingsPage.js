@@ -8,7 +8,7 @@ class SettingsPage extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {showing: 'none'}
+    this.state = {showing: 'font'}
   }
 
   showFontSettings = () => {

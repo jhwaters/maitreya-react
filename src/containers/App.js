@@ -15,6 +15,7 @@ import { CheckStateButton } from './Debug'
 import SettingsPage, {
   AllowEditingToggle,
   AnswerKeyToggle,
+  FixPagination,
   FontFamily,
   FontSize,
   PageMargin,
@@ -41,7 +42,7 @@ for (const q in examplequestions) {
   const n = examplequestions[q].register().name
   questionBank[n] = examplequestions[q]
 }
-for (const q of ['PlotStyling', 'QuadTreePlotTest']) {
+for (const q in demogenerators) {
   const n = `_ ${demogenerators[q].register().name}`
   questionBank[n] = demogenerators[q]
 }
@@ -125,13 +126,15 @@ class AppWrapper extends React.Component {
         {/* customTitleBar ? <TitleBar /> : null */}
         <TopBar>
           <button onClick={window.print}>Print / PDF</button>
+          <button onClick={this.openSettings}>Settings</button>
           <span style={toplabel}>Answer Key:</span><AnswerKeyToggle />
           <span style={toplabel}>Start Numbering At:</span><StartNumbering />
           <span style={toplabel}>Font:</span><FontFamily/><FontSize />
           <span style={toplabel}>Margins:</span><PageMargin />
           <span style={toplabel}>Zoom:</span><PreviewZoom />
           <span style={toplabel}>Allow Editing:</span><AllowEditingToggle />
-          
+          <div style={{width: '3mm'}} />
+          <FixPagination/>
         </TopBar>
         <Preview>
           <Document/>
@@ -146,7 +149,6 @@ class AppWrapper extends React.Component {
           <button onClick={this.openCustomQuestion}>Custom Question</button>
           <button onClick={this.props.removeLast}>Remove Last</button>
           <button onClick={this.props.clearAll}>Clear All</button>
-          <button onClick={this.openSettings}>Settings</button>
           <div style={{height: '1in'}}></div>
           <button onClick={() => this.setState({modal: 'Notes'})}>Notes</button>
           <CheckStateButton>Log State</CheckStateButton>
@@ -180,7 +182,16 @@ class AppWrapper extends React.Component {
         <ReactModal
           isOpen={this.state.modal === 'Notes'}
           onRequestClose={this.closeModal}
-          style={{content: {backgroundColor: 'white'}}}
+          style={{
+            content: {
+              width: '4in',
+              top: '1in',
+              left: '1in',
+              right: 'unset',
+              bottom: 'unset',
+              backgroundColor: 'white',
+            }
+          }}
         >
           <Notes onRequestClose={this.closeModal} />
         </ReactModal>

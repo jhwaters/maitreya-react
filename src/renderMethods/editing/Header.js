@@ -27,8 +27,8 @@ export default class Header extends DefaultEditor {
     const inputStyle = {
       width: '100%',
       borderStyle: 'dashed',
-      fontSize: '12pt',
-      fontFamily: 'var(--doc-font-family, sans-serif)',
+      //fontSize: '0.8em',
+      //fontFamily: 'var(--doc-font-family, monospace)',
       margin: '1mm',
       padding: '1mm',
     }

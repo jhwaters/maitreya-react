@@ -36,6 +36,12 @@ export class Randomizer {
     }
   }
 
+  shuffleRange(start, end) {
+    let range = []
+    for (let i = start; i <= end; i++) range.push(i);
+    return this.shuffle(range)
+  }
+
   choice(array) {
     return Random.pick(this.engine, array)
   }
@@ -44,14 +50,15 @@ export class Randomizer {
     return Random.sample(this.engine, pop, size)
   }
 
+  sampleRange(start, end, size) {
+    let range = []
+    for (let i = start; i <= end; i++) range.push(i);
+    return this.sample(range, size)
+  }
+
   poprandom(array) {
     const i = this.randint(0,array.length-1)
-    const v = array[i]
-    const remaining = [...array.slice(0,i), ...array.slice(i+1)]
-    return {
-      popped: v,
-      remaining: remaining
-    }
+    return array.splice(i,1)[0]
   }
 }
 

@@ -1,28 +1,33 @@
 import React from 'react'
 import { 
-  CartesianPlane, Grid, Path, Text,
+  CartesianPlane, Path,
   Asymptote, Point, Hole, ShadedRegion,
+  RationalFunction, Transforms,
 
-  Circle, Polygon, Ray, Line, Segment,
+  Circle, Polygon, GeomRay, GeomLine, GeomSegment,
 } from '../../../renderMethods/primaryTypes/VG'
 
 
 export const PreviewXYPlot = () => {
   
-  const g = (x) => 1.2*(x+1) - 4
+  
+  const vasymptotes = [-3]
+  const holes = [-5]
+  const hasymptotes = [2]
 
-  const f = (x) => {
-    return 0.03*(x+8)*(x+1)*(x-9) + g(x)
-  }
+
+  const g = (x) => (x+2)*(x-8)/2 + (x+2)/5 + 5
+
+  const f = x => 2*Math.sin(x*Math.PI/4) + 7
 
   const regionTop = []
   const regionBottom = []
   const fpoints = []
   const gpoints = []
-  const step = 0.2
+  const step = 0.3
 
   let x = -11
-  while (x < -1) {
+  while (x <= -2) {
     const fpt = ({x, y: f(x)})
     const gpt = ({x, y: g(x)})
     fpoints.push(fpt)
@@ -30,38 +35,48 @@ export const PreviewXYPlot = () => {
     x += step
   }
 
-  x = -1
-  while (x <= 9) {
+  x = -2
+  while (x <= 8) {
     const fpt = ({x, y: f(x)})
     const gpt = ({x, y: g(x)})
     fpoints.push(fpt)
     gpoints.push(gpt)
-    regionTop.push(gpt)
-    regionBottom.push(fpt)
-    x += 0.2
+    regionTop.push(fpt)
+    regionBottom.push(gpt)
+    x += step
   }
 
-  while (x < 11) {
+  x = 8
+  while (x <= 11) {
     const fpt = ({x, y: f(x)})
     const gpt = ({x, y: g(x)})
     fpoints.push(fpt)
     gpoints.push(gpt)
     x += step
   }
+
   
+
   const region = [...regionBottom, ...regionTop.reverse()]
-  const points = [-1, 9].map(x => ({x, y: f(x)}))
-  const holes = [-5].map(x => ({x, y: f(x)}))
-  const vasymptotes = [-8]
 
   return (
     <CartesianPlane span={[-10,-10,10,10]} autogrid={true} width="3in">
+      {vasymptotes.map(p => <Asymptote key={`va-${p}`} points={[{x: p, y: -12}, {x: p, y: 12}]} />)}
+      {hasymptotes.map(p => <Asymptote key={`ha-${p}`} points={[{x: -12, y: p}, {x: 12, y: p}]} />)}
+      <Transforms list={[{type: 'translate', params: {x: 0, y: 2}}]}>
+        <RationalFunction 
+          style={'xyplot2'}
+          numerLC={2}
+          asymptotes={vasymptotes} 
+          holes={holes} 
+          domain={[-11,-3]} renderAsymptotes={false}
+        />
+      </Transforms>
       <ShadedRegion points={region} />
       <Path points={fpoints} />
       <Path points={gpoints} />
-      {vasymptotes.map(p => <Asymptote key={`va${p}`} points={[{x: p, y: -12}, {x: p, y: 12}]} />)}
-      {points.map(p => <Point key={`pt${p.x}`} {...p} />)}
-      {holes.map(p => <Hole key={`hole${p.x}`} {...p} />)}
+      <Point coords={[-2,5]} />
+      <Point coords={[8,7]} />
     </CartesianPlane>
   )
 }
@@ -80,9 +95,9 @@ export const PreviewGeom = () => {
     <CartesianPlane span={[0,0,20,20]} style='geom' autogrid={true} width='3in'>
       <Polygon vertices={poly} />
       <Circle {...circ} />
-      <Ray endpoints={ray} />
-      <Line endpoints={line} />
-      <Segment endpoints={seg} />
+      <GeomRay points={ray} />
+      <GeomLine points={line} />
+      <GeomSegment points={seg} />
     </CartesianPlane>
   )
 }

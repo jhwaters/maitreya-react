@@ -62,8 +62,8 @@ export const Grid = (props) => {
   const {span, step=[1,1], origin=[0,0]} = props
   const axis = props.axis !== undefined ? props.axis : [...origin]
 
-  const x = {span: [span[0], span[2]], step: step[0], origin: origin[0]}
-  const y = {span: [span[1], span[3]], step: step[1], origin: origin[1]}
+  const x = {span: [+span[0], +span[2]], step: +step[0], origin: +origin[0]}
+  const y = {span: [+span[1], +span[3]], step: +step[1], origin: +origin[1]}
 
   const xvals = x.step ? makesrange(...x.span, x.step, x.origin) : []
   const yvals = y.step ? makesrange(...y.span, y.step, y.origin) : []
@@ -83,9 +83,13 @@ export const Grid = (props) => {
 
 
 let clipCounter = 0
+
 export const CartesianPlane = (props) => {
   const {span, autogrid=false, padding, style='xy-plot', ...otherprops} = props
-  const [x0, y0, x1, y1] = span
+  const x0 = +span[0]
+  const x1 = +span[2]
+  const y0 = +span[1]
+  const y1 = +span[3]
   const xpad = (x1 - x0) * .1
   const ypad = (y1 - y0) * .1
   const clipPadX = padding === undefined ? (x1 - x0) * .005 : padding

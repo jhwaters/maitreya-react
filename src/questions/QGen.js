@@ -6,7 +6,7 @@ let randomSeedGenerator = new Randomizer()
 
 class QGen {
   constructor(props={}) {
-    this.kwds = props.params || {}
+    this.params = props.params || {}
     //this.randomSeed = props.randomSeed || math.randomInt(0, math.pow(2,32))
     this.randomSeed = props.randomSeed || randomSeedGenerator.randint(0, Math.pow(2, 32)-1)
     this.random = new Randomizer(this.randomSeed)
@@ -23,12 +23,10 @@ class QGen {
 
   _specialCaseValues(k, v) {
     if (Array.isArray(v)) {
-      if (k === 'answerspace') {
+      if (k === 'answer') {
         return {type: 'answerchoices', data: v}
       }
-      if (k[0] === '_') {
-        return {type: 'list', data: v}
-      }      
+      return {type: 'list', data: {items: v}}  
     }
     return v
   }
@@ -43,7 +41,15 @@ class QGen {
   }
 
   _getParams() {
-    return defaultsDeep({}, this.params, this.constructor.defaults)
+    let result = ({})
+    for (const k in this.constructor.params) {
+      if (this.params[k] !== undefined) {
+        result[k] = this.params[k]
+      } else {
+        result[k] = this.constructor.params[k].default
+      }
+    }
+    return result
   }
 
   output() {

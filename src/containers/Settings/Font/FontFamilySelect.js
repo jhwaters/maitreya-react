@@ -6,7 +6,6 @@ import { setDocumentFontFamily } from '../../../actions/style'
 
 const GoogleFonts = [
   {family: 'Computer Modern Serif'},
-  //{family: 'Inconsolata'},
   {family: 'Lora'},
   {family: 'Source Sans Pro'},
 ]

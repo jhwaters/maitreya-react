@@ -28,7 +28,7 @@ export const renderElement = function(content, inherited) {
       return renderAs('text', content, inherited)
     }
     if (isArray(content)) {
-      return renderAs('list', content, inherited)
+      return renderAs('list', {items: content}, inherited)
     }
     let {type, data, options} = content
     if (!type) {

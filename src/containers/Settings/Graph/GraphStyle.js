@@ -81,7 +81,6 @@ class Opacity extends GraphStyle {
 }
 
 
-
 const mapDispatchToProps = dispatch => ({
   updateGraphStyle: (props) => dispatch(updateGraphStyle(props))
 })
@@ -100,6 +99,7 @@ function createComponent(base, propertyName) {
 
 export const PlotPathColor = createComponent(Color, 'plotPathColor')
 export const PlotPathWidth = createComponent(Width, 'plotPathWidth')
+export const Plot2PathColor = createComponent(Color, 'plot2PathColor')
 export const GeomPathColor = createComponent(Color, 'geomPathColor')
 export const GeomPathWidth = createComponent(Width, 'geomPathWidth')
 export const AsymptoteColor = createComponent(Color, 'asymptoteColor')
@@ -109,3 +109,49 @@ export const AxisWidth = createComponent(Width, 'axisWidth')
 export const GridColor = createComponent(Color, 'gridColor')
 export const GridWidth = createComponent(Width, 'gridWidth')
 export const ShadedRegionOpacity = createComponent(Opacity, 'shadedRegionOpacity')
+
+
+
+
+class SwapButton extends React.Component {
+  static propTypes = {
+    current1: PropTypes.string.isRequired,
+    current2: PropTypes.string.isRequired,
+    propertyName1: PropTypes.string.isRequired,
+    propertyName2: PropTypes.string.isRequired,
+    updateGraphStyle: PropTypes.func.isRequired,
+  }
+
+  constructor(props) {
+    super(props)
+    this.cssName1 = `--vg-${kebabCase(props.propertyName1)}`
+    this.cssName2 = `--vg-${kebabCase(props.propertyName2)}`
+  }
+
+  doSwap = () => {
+    setCss(this.cssName1, this.current2)
+    setCss(this.cssName2, this.current1)
+    this.props.updateGraphStyle({
+      [this.props.propertyName1]: this.props.current2,
+      [this.props.propertyName2]: this.props.current1,
+    })
+  }
+
+  render() {
+    return (
+      <button onClick={this.doSwap}>{this.props.children}</button>
+    )
+  }
+}
+
+export const PlotColorSwap = connect(
+  state => ({
+    current1: state.style.graph.plotPathColor, 
+    current2: state.style.graph.plot2PathColor,
+    propertyName1: 'plotPathColor',
+    propertyName2: 'plot2PathColor'
+  }),
+  dispatch => ({
+    updateGraphStyle: updates => dispatch(updateGraphStyle(updates)),
+  })
+)(SwapButton)

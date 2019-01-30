@@ -3,44 +3,91 @@ import * as svg from './tools/svgplot'
 import { createTree } from './tools/QuadTree'
 
 
-export class VG extends QGen {
+export class RationalPlot extends QGen {
   static info = {
-    name: 'VG',
-    description: 'test vector graphics'
+    name: 'RationalFunction',
+    description: 'test vectorgraphic RationalFunction'
   }
 
   generate(params) {
-    
+    const rd = this.random
 
-    return {
-      answer: null,
-      question: 'Rational:',
-      diagram: {
-        type: 'vectorgraphic',
-        data: [
-          'CartesianPlane',
-          {span: [-10,-10,10,10], autogrid: true, height: '6in'},
-          [
-            'Circle',
-            {cx: 0, cy: 0, r: 8, style: {fill: 'blue'}}
-          ]
-        ]
+    const inv = rd.choice([true, false])
+
+    const numRoots = rd.randint(0,2)
+    const numAsymptotes = rd.randint(1,3)
+    const numHoles = rd.randint(0,2)
+    const total = numRoots + numAsymptotes + numHoles
+    const values = rd.sampleRange(-9,9,total)
+    const roots = values.slice(0,numRoots)
+    const asymptotes = values.slice(numRoots, numRoots+numAsymptotes)
+    const holes = values.slice(numRoots+numAsymptotes)
+    const domain = [-11,11]
+
+    const [x, y] = inv ? ['y', 'x'] : ['x', 'y']
+
+    let num = ''
+    let den = ''
+
+    for (const r of [...roots, ...holes].sort((a,b) => b-a)) {
+      if (r === 0) {
+        num = `${x}${num}`
+      } else if (r > 0) {
+        num = `${num}(${x}-${r})`
+      } else {
+        num = `${num}(${x}+${-r})`
       }
     }
+
+    for (const r of [...asymptotes, ...holes].sort((a,b) => b-a)) {
+      if (r === 0) {
+        den = `${x}${den}`
+      } else if (r > 0) {
+        den = `${den}(${x}-${r})`
+      } else {
+        den = `${den}(${x}+${-r})`
+      }
+    }
+
+    if (num === '') num = '1'
+    if (den === '') den = '1'
+
+    const graph = {
+      type: 'vectorgraphic',
+      data: [
+        'CartesianPlane',
+        {span: [-10,-10,10,10], autogrid: true, height: '2in'},
+        [
+          'Transforms',
+          {list: [inv ? 'invertXY' : 'none']},
+          [
+            'RationalFunction',
+            {roots, holes, asymptotes, domain}
+          ]
+        ]
+      ]
+    }
+
+    return {
+      question: `The graph of $$\\displaystyle ${y} = \\frac{${num}}{${den}}$$`,
+      diagram: graph,
+    }
+
+
   }
 }
 
 export class PolynomialPlot extends QGen {
   static info = {
-    name: 'Polynomial plot',
-    description: 'Plot polynomial by coefficients'
+    name: 'PolynomialFunction',
+    description: 'test vectorgraphic PolynomialFunction'
   }
 
   generate(params) {
     const rd = this.random
 
     const deg = rd.randint(2,7)
-    const inv = false
+    const inv = rd.choice([true, false])
     let coeffs = rd.sample([-5,-4,-3,-2,-1,0,1,2,3,4,5], deg+1)
     const denom = rd.randint(2, 21)
     
@@ -66,13 +113,18 @@ export class PolynomialPlot extends QGen {
       }
     }
 
+    const transform = inv ? 'invertXY' : 'none'
 
     const graph = [
       'CartesianPlane',
-      {span: [-10,-10,10,10], autogrid: true},
+      {span: [-10,-10,10,10], autogrid: true, width: '2in'},
       [
-        'Polynomial',
-        {coefficients: coeffs.map(c => c/denom), domain: [-10,10]}
+        'Transforms',
+        {list: [transform]},
+        [
+          'PolynomialFunction',
+          {coefficients: coeffs.map(c => c/denom), domain: [-11,11]}
+        ]
       ]
     ]
 
@@ -94,7 +146,7 @@ export class PolynomialPlot extends QGen {
 export class PlotStyling extends QGen {
   static info = {
     name: 'Plot Style',
-    description: 'Plot with custom style'
+    description: 'test applying custom styling to vectorgraphic'
   }
 
   generate(params) {
@@ -212,7 +264,6 @@ export class FontTest extends QGen {
     const question = [
       '_y = ax^2^ + bx +c_', 
       '$$y = ax^2 + bx + c$$',
-      '_IJK_ $$IJK$$',
     ].join('  \n')
 
     return {
@@ -235,29 +286,42 @@ export class QuadTreePlotTest extends QGen {
     //const f4 = ({x, y}) => Math.pow(Math.cos(x*x), 1)
 
     
-    let q = createTree(pt => f1(pt) - f2(pt), -7, -7, 14, 8, 7)
+    let points = createTree(pt => f1(pt) - f2(pt), -7, -7, 14, 8, 7)
+
+    /*
     const marker = ({x, y}) => ['circle', {cx: x, cy: y, r: '0.1'}]
 
     const graph = svg.cartesianPlane(
       {span: [-7,-7,7,7], autogrid: true, height: '5in', width: '5in'},
       [
         'g', {style: {fill: 'rgba(200,0,100,0.3)'}},
-        ...q.map(marker),
+        ...points.map(marker),
       ]
     )
+    */
+   const graph = [
+     'CartesianPlane',
+     {span: [-7,-7,7,7], autogrid: true, width: '2.5in'},
+     [
+       'ScatterPlot',
+       { points }
+     ]
+   ]
+
+
 
     return {
       answer: null,
       question: "The graph of $$\\sin(x^2) = \\cos(y^2)$$:",
       diagram: {
-        type: 'jsonml',
+        type: 'vectorgraphic',
         data: graph,
       }
     }
   }
 }
 
-export class MdTest extends QGen {
+class MdTest extends QGen {
 
   static info = {
     name: 'Formatting Test',
@@ -327,39 +391,48 @@ ${'```'}
 
 export class VegaLite extends QGen {
   static info = {
-    name: 'Vega Lite Test',
-    description: 'Test Vega-Lite rendering'
+    name: 'Vega Lite',
+    description: 'test vega-lite render type'
   }
 
   generate(params) {
     let points = []
-    for (let x = -3; x <= 3; x++) {
-      points.push({x: x, y: x*x})
+
+    const f = x => ({x: x, y: 6*x - x*x, function: 'f'})
+    const g = x => ({x: x, y: 5*Math.sin(x), function: 'g'})
+
+    let t = 0
+    while (t <= 7) {
+      points.push(f(t))
+      points.push(g(t))
+      t += 0.2
     }
+
     const diagram2 = {
-      "data": {"values": points},
-      "mark": {
-        'type': 'line', 
-        'interpolate': 'monotone',
+      data: { values: points },
+      mark: {
+        type: 'line', 
+        interpolate: 'monotone',
       },
       "encoding": {
-        'x': {
-          'field': 'x', 
-          'type': 'quantitative',
+        x: {
+          field: 'x', 
+          type: 'quantitative',
         },
-        'y': {
-          'field': 'y', 
-          'type': 'quantitative',
+        y: {
+          field: 'y', 
+          type: 'quantitative',
         },
-        axisX: {
-          titleFont: 'Lora'
-        },
+        color: {
+          field: 'function',
+          type: 'nominal'
+        }
       },
     }
 
     return {
       answer: null,
-      instructions: 'Rendered with Vega-Lite:',
+      instructions: 'The graphs of $$f(x) = - x^2 + 6x$$ and $$g(x) = 5\\sin(x)$$',
       diagram: {
         type: 'vega-lite',
         data: diagram2,
@@ -368,7 +441,7 @@ export class VegaLite extends QGen {
   }
 }
 
-export class VegaTest extends QGen {
+class VegaTest extends QGen {
   static info = {
     name: 'Vega Test',
     description: 'Test Vega rendering'

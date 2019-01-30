@@ -1,14 +1,14 @@
+html, body { margin: 0 }
 @page { margin: 0 }
-body { margin: 0 }
 
 
 /** For screen preview **/
 @media screen {
-  html, body { background-color: #aaa; }
+  html, body { background: #aaa; }
   .page-outer {
     background: white;
     box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
-    margin: 3mm auto;
+    margin: 5mm;
   }
   .page-overflowing {
     outline: 4px dotted red;
@@ -16,6 +16,9 @@ body { margin: 0 }
 }
 
 @media print {
+  html, body, #root {
+    overflow: visible;
+  }
   .document {
     position: absolute;
   }

@@ -2,8 +2,12 @@ import React from 'react'
 import { RenderElement } from '../RenderElement'
 
 export const AnswerChoices = ({data, options}) => {
+  const classNames = ['answerchoice-list']
+  if (options.answerchoices && options.answerchoices.listDirection === 'horizontal') {
+    classNames.push('answerchoice-list-horizontal')
+  }
   return (
-    <ol className='answerchoice-list' type='a'>
+    <ol className={classNames.join(' ')} type='a'>
       {data.map((d,i) => (
         <li key={`choice-${i}`}
           className='answerchoice-item'>

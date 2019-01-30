@@ -22,13 +22,14 @@ const initialState = {
     asymptoteWidth: '0.7mm',
     axisColor: '#222222',
     axisWidth: '0.3mm',
-    gridColor: '#2255aa',
+    gridColor: '#888888',
     gridWidth: '0.1mm',
-    plotPathColor: '#cc0077',
+    plotPathColor: '#ff2600',
+    plot2PathColor: '#0044cc',
     plotPathWidth: '0.5mm',
-    geomPathColor: '#111111',
+    geomPathColor: '#009955',
     geomPathWidth: '0.5mm',
-    shadedRegionOpacity: '0.2',
+    shadedRegionOpacity: '0.3',
   },
 }
 
