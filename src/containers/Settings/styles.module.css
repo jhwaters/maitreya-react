@@ -48,7 +48,7 @@
 
 .NavButton, .NavButton:hover, .NavButton:disabled,
 .NavButton.active, .NavButton:focus {
-  color: #aaa;
+  color: var(--ui-border-2, #aaa);
   display: inline-block;
   font-size: inherit;
   font-weight: inherit;
@@ -62,10 +62,10 @@
 }
 
 .NavButton:hover {
-  color: #555
+  color: var(--ui-fg-0, #555);
 }
 
 .NavButton:disabled {
-  color: #222;
+  color: var(--ui-fg-1, #222);
 }
 

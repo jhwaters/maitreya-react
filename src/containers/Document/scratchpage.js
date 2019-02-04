@@ -1,30 +1,39 @@
 import React from 'react'
 import Page from './Page'
-import { RenderElement } from '../../renderMethods'
+import { renderJson } from '../../renderJson'
 import { includes } from 'lodash'
-import {
-  CartesianPlane, Path, Text,
-} from '../../renderMethods/primaryTypes/VG'
 
+
+
+const graph = [
+  'ABVG',
+  [
+    'CoordinatePlane', {span: [-10,-10,10,10], height: '3in'},
+
+    [
+      'Layer', { style: 'function-1' },
+      ['PolynomialFunction', {coefficients: [9, 0, -1], domain: [-10,10]}],
+      ['RationalFunction', {
+        holes: [-5],
+        roots: [-3], asymptotes: [4], domain: [-10,10]
+      }],
+    ],
+    [
+      'Layer', {style: 'function-2'},
+      ['Ray', {points: [[0,0], [7,-3]]}],
+      ['FillRegion', {points: [[-9,9], [-3,9], [-5,5]]}],
+    ]
+  ]
+]
 
 
 const Scratch = () => {
-  const style = {
-    display: 'flex',
-  }
+
 
   return (
     <Page>
-
-      <CartesianPlane span={[-5,-5,10,10]} autogrid={true} width='4in'
-        style={{'--cartesianTranslate': 'translate(0,5)'}}
-      >
-        <g>
-          <Text x='1' y='8' style={{
-            fontSize: '2px', 
-          }}>Hello!</Text>
-        </g>
-      </CartesianPlane>
+      <h1>Scratch Page</h1>
+      {renderJson(graph)}
     </Page>
   )
 }

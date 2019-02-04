@@ -18,6 +18,7 @@ import SettingsPage, {
   FixPagination,
   FontFamily,
   FontSize,
+  GUImode,
   PageMargin,
   PreviewZoom,
   StartNumbering
@@ -33,26 +34,32 @@ import {
 } from '../actions/document'
 
 import {
-  examplequestions, demogenerators
+  examplequestions, transformations, demogenerators, picofermi
 } from '../questions'
 
 
 let questionBank = {}
-for (const q in examplequestions) {
-  const n = examplequestions[q].register().name
-  questionBank[n] = examplequestions[q]
+for (const set of [examplequestions, transformations]) {
+  for (const q in set) {
+    const n = set[q].register().name
+    questionBank[n] = set[q]
+  }
 }
-for (const q in demogenerators) {
-  const n = `_ ${demogenerators[q].register().name}`
-  questionBank[n] = demogenerators[q]
+
+for (const set of [demogenerators, picofermi]) {
+  for (const q in set) {
+    const n = '_ ' + set[q].register().name
+    questionBank[n] = set[q]
+  }
 }
+
 
 
 ReactModal.setAppElement('#root')
 Object.assign(ReactModal.defaultStyles.content, {
   borderRadius: '4px',
-  borderColor: '#999',
-  background: '#eee',
+  borderColor: 'var(--ui-border-1, #999)',
+  background: 'var(--ui-bg-1, #eee)',
   padding: '5mm',
   top: '10px',
   left: '10px',
@@ -60,7 +67,7 @@ Object.assign(ReactModal.defaultStyles.content, {
   bottom: '10px',
 })
 Object.assign(ReactModal.defaultStyles.overlay, {
-  background: 'rgba(100,100,100,0.2)',
+  background: 'rgba(10,10,10,0.3)',
 })
 
 
@@ -128,7 +135,7 @@ class AppWrapper extends React.Component {
           <button onClick={window.print}>Print / PDF</button>
           <button onClick={this.openSettings}>Settings</button>
           <span style={toplabel}>Answer Key:</span><AnswerKeyToggle />
-          <span style={toplabel}>Start Numbering At:</span><StartNumbering />
+          <span style={toplabel}>Start Numbers:</span><StartNumbering />
           <span style={toplabel}>Font:</span><FontFamily/><FontSize />
           <span style={toplabel}>Margins:</span><PageMargin />
           <span style={toplabel}>Zoom:</span><PreviewZoom />
@@ -150,6 +157,7 @@ class AppWrapper extends React.Component {
           <button onClick={this.props.removeLast}>Remove Last</button>
           <button onClick={this.props.clearAll}>Clear All</button>
           <div style={{height: '1in'}}></div>
+          <GUImode/>
           <button onClick={() => this.setState({modal: 'Notes'})}>Notes</button>
           <CheckStateButton>Log State</CheckStateButton>
         </SideBar>
@@ -160,12 +168,16 @@ class AppWrapper extends React.Component {
           onRequestClose={this.closeModal}
           style={{
             content: {
-              top: 0,
+              top: '0',
               bottom: 0,
               left: 0,
               right: 0,
               padding: 0,
             },
+            overlay: {
+              background: 'none',
+              backgroundColor: 'none',
+            }
           }}
         >
           <SettingsPage onRequestClose={this.closeModal}/>
@@ -189,7 +201,8 @@ class AppWrapper extends React.Component {
               left: '1in',
               right: 'unset',
               bottom: 'unset',
-              backgroundColor: 'white',
+              color: 'black',
+              backgroundColor: 'var(--ui-page, white)',
             }
           }}
         >

@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { RenderElement } from '../../renderMethods'
+import { RenderJson } from '../../renderJson'
 import { addToDocument } from '../../actions/document'
 import LatexExamples from './LatexExamples'
 import GraphMaker from './GraphMaker'
@@ -32,6 +32,24 @@ function onKeyDown(evt) {
     }
   }
 }
+
+const jsonExample = `{
+  "instructions": "Use the table to answer the question.",
+  "question": "What is the value of $$g(f(2))$$?",
+  "answer": {
+    "choices": [1, 2, 3, 4, 5],
+    "correctIndex": 3
+  },
+  "diagram": [
+    "Table", {"align":"c|c|c"},
+    ["TRow", {"border":"bottom"}, "$$x$$", "$$f(x)$$", "$$g(x)$$"],
+    ["TRow", 1, 3, 2],
+    ["TRow", 2, 5, 1],
+    ["TRow", 3, 4, 5],
+    ["TRow", 4, 2, 3],
+    ["TRow", 5, 1, 4]
+  ]
+}`
 
 
 class CustomQuestion extends React.Component {
@@ -74,6 +92,9 @@ class CustomQuestion extends React.Component {
   }
 
   updateInputType = (evt) => {
+    this.setState({inputType: evt.target.value})
+
+    /*
     const inputType = evt.target.value
     const data = this.getDataFromState()
     if (data) {
@@ -100,32 +121,33 @@ class CustomQuestion extends React.Component {
     } else {
       this.setState({inputType})
     }
+    */
   }
 
   getDataFromState() {
     if (this.state.inputType === 'manual') {
-      let data = {}
+      const content = {}
       for (const k of ['instructions', 'question', 'answer']) {
         if (this.state[k]) {
-          data[k] = this.state[k]
+          content[k] = this.state[k]
         }
       }
       if (this.state.diagram) {
-        data.diagram = this.state.diagram
+        content.diagram = this.state.diagram
       }
-      return data
+      return content
     } else if (this.state.inputType === 'json') {
       try {
-        const data = JSON.parse(this.state.json)
-        return data
+        const content = JSON.parse(this.state.json)
+        return content
       } catch(e) {
       }
     }
   }
 
   addQuestion = () => {
-    const data = this.getDataFromState()
-    this.props.addToDocument({type: 'question', data})
+    const props = {content: this.getDataFromState()}
+    this.props.addToDocument(['NumberedQuestion', props])
     this.props.onRequestClose()
   }
 
@@ -166,7 +188,8 @@ class CustomQuestion extends React.Component {
     } else {
       return (
         <>
-          <p>Enter JSON:</p>
+          <button onClick={this.setJsonExample}>See example</button>
+          <p>Paste JSON:</p>
           <textarea 
             value={this.state.json}
             onChange={this.updateJSON}
@@ -180,24 +203,29 @@ class CustomQuestion extends React.Component {
     }
   }
 
+  setJsonExample = () => {
+    const json = jsonExample
+    this.setState({ json })
+  }
+
   renderPreview() {
-    const data = this.getDataFromState()
+    const content = this.getDataFromState()
     const previewStyle = {
       margin: '2mm',
       width: 'fit-content',
       fontSize: '1.2em',
       minWidth: '3in',
     }
-
+    const props = { content }
     return (
       <>
       <p>Question</p>
       <div className='document preview-area' style={previewStyle}>
-        {data ? <RenderElement content={{type: 'question-nonumber', data}} /> : null}
+        {content ? <RenderJson json={['Question', props]} /> : null}
       </div>
       <p>Answer</p>
       <div className='document preview-area' style={previewStyle}>
-        {data ? <RenderElement content={{type: 'answerkey',  data}} /> : null}
+        {content ? <RenderJson json={['AnswerKey', props]} /> : null}
       </div>
       </>
     )
@@ -235,7 +263,8 @@ class CustomQuestion extends React.Component {
         onRequestClose={this.closeModal}
         style={{
           content: {
-            backgroundColor: 'white',
+            backgroundColor: 'var(--ui-page, white)',
+            color: 'black',
             //top: '0',
             //bottom: '0',
             //borderTop: 'none',

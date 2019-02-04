@@ -51,7 +51,7 @@ class MeasuredPage extends React.Component {
   }
 
   onOverflow() {
-    this.props.addPageBreakBefore(this.props.contentIDs[this.props.contentIDs.length-1])
+    this.props.addPageBreakBefore(+this.props.contentIDs[this.props.contentIDs.length-1].split('.')[1])
   }
 
   getPageSize()  {
@@ -79,7 +79,7 @@ class MeasuredPage extends React.Component {
     if (this.props.pageNumber in this.props.headers) {
       return this.props.pageNumber
     }
-    return 'default'
+    return 0
   }
 
   render() {
@@ -92,19 +92,26 @@ class MeasuredPage extends React.Component {
     const outerstyle = this.getOuterStyle()
     const innerstyle = this.getInnerStyle()
     const headerID = this.getHeaderID()
+
     return (
       <div className={outerclassname} ref={this.outer} style={outerstyle}>
         <div className='page-inner' ref={this.inner} style={innerstyle}>
-          <TopLevelElement key={`header-${headerID}`}
+          <TopLevelElement key={headerID}
             id={`header.${headerID}`}
-            element={this.props.headers[headerID]}
+            json={this.props.headers[headerID]}
           />
-          {this.props.contentIDs.map((id) => (
-            <TopLevelElement key={`contentElement-${id}`}
-              element={this.props.content[id]}
-              id={id}
-            />
-          ))}
+          <div className='page-content'>
+            {this.props.contentIDs.map((id) => {
+              const contentID = id.split('.')[1]
+              const json = this.props.content[+contentID]
+              return (
+                <TopLevelElement key={id}
+                  json={json}
+                  id={id}
+                />
+              )
+            })}
+          </div>
         </div>
       </div>
     )

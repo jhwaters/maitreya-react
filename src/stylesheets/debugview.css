@@ -1,0 +1,29 @@
+
+.debug-view .question-wrapper:hover .question-layout {
+  padding: 1px;
+  margin: 1px;
+}
+
+.debug-view .question-wrapper:hover .question-layout-column {
+  border: 2px dashed green;
+}
+
+.debug-view .question-wrapper:hover .question-layout-row {
+  border: 2px dashed orangered;
+}
+
+.debug-view .question-wrapper:hover .question-area-instructions {
+  background-color: gold;
+}
+
+.debug-view .question-wrapper:hover .question-area-question {
+  background-color: lightskyblue;
+}
+
+.debug-view .question-wrapper:hover .question-area-answer {
+  background-color: lightsalmon;
+}
+
+.debug-view .question-wrapper:hover .question-area-diagram {
+  background-color: lightgreen;
+}

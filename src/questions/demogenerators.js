@@ -52,24 +52,25 @@ export class RationalPlot extends QGen {
     if (num === '') num = '1'
     if (den === '') den = '1'
 
-    const graph = {
-      type: 'vectorgraphic',
-      data: [
-        'CartesianPlane',
-        {span: [-10,-10,10,10], autogrid: true, height: '2in'},
+    const transform = inv ? 'invertXY' : 'none'
+
+    const graph = [
+      'ABVG',
+      [
+        'CoordinatePlane',
+        {span: [-10,-10,10,10], height: '2in'},
         [
-          'Transforms',
-          {list: [inv ? 'invertXY' : 'none']},
+          'Layer', { transform },
           [
             'RationalFunction',
             {roots, holes, asymptotes, domain}
           ]
         ]
       ]
-    }
+    ]
 
     return {
-      question: `The graph of $$\\displaystyle ${y} = \\frac{${num}}{${den}}$$`,
+      question: `The graph of $$$ ${y} = \\frac{${num}}{${den}} $$$`,
       diagram: graph,
     }
 
@@ -116,11 +117,9 @@ export class PolynomialPlot extends QGen {
     const transform = inv ? 'invertXY' : 'none'
 
     const graph = [
-      'CartesianPlane',
-      {span: [-10,-10,10,10], autogrid: true, width: '2in'},
+      'CoordinatePlane', {span: [-10,-10,10,10], width: '2in'},
       [
-        'Transforms',
-        {list: [transform]},
+        'Layer', { transform },
         [
           'PolynomialFunction',
           {coefficients: coeffs.map(c => c/denom), domain: [-11,11]}
@@ -128,14 +127,11 @@ export class PolynomialPlot extends QGen {
       ]
     ]
 
-    const question = `The graph of a $$\\displaystyle ${w} = \\frac{1}{${denom}}(${tex})$$`
+    const question = `The graph of $$$ ${w} = \\frac{1}{${denom}}(${tex})$$$`
 
     return {
       question: question,
-      diagram: {
-        type: 'vectorgraphic',
-        data: graph,
-      },
+      diagram: ['ABVG', graph],
       answer: {
         prompt: null,
       }
@@ -189,40 +185,31 @@ export class PlotStyling extends QGen {
     return {
       answer: {prompt: null},
       question: 'The graph of $$(x,y) = (9\\sin(t), 9\\cos(1.17t))$$ for $$-36 \\leq t \\leq 36$$:',
-      diagram: {
-        type: 'vectorgraphic', 
-        data: [
-          'CartesianPlane', 
+      diagram: ['ABVG', 
+        [
+          'CoordinatePlane', 
           {
             span: [-10,-10,10,10], 
-            autogrid: false,
             height: '3in',
           },
           [
-            'Layer', {},
-            [
-              'Layer',
-              {style: {'--vg-path-color': 'hsl(340,70%,60%)'}},
-              ['Path', {points: path4}],
-            ],
-            [
-              'Layer',
-              {style: {'--vg-path-color': 'hsl(30,90%,50%)'}},
-              ['Path', {points: path3}],
-            ],
-            [
-              'Layer',
-              {style: {'--vg-path-color': 'hsl(80,90%,40%)'}},
-              ['Path', {points: path2}],
-            ],
-            [
-              'Layer',
-              {style: {'--vg-path-color': 'hsl(170,90%,40%)'}},
-              ['Path', {points: path1}],
-            ]
+            'Layer', {strokeColor: 'hsl(340,70%,60%)'},
+            ['Path', {points: path4}],
+          ],
+          [
+            'Layer', {strokeColor: 'hsl(30,90%,50%)'},
+            ['Path', {points: path3}],
+          ],
+          [
+            'Layer', {strokeColor: 'hsl(80,90%,40%)'},
+            ['Path', {points: path2}],
+          ],
+          [
+            'Layer', {strokeColor: 'hsl(170,90%,40%)'},
+            ['Path', {points: path1}],
           ]
         ]
-      }
+      ]
     }
   }
 }
@@ -286,25 +273,14 @@ export class QuadTreePlotTest extends QGen {
     //const f4 = ({x, y}) => Math.pow(Math.cos(x*x), 1)
 
     
-    let points = createTree(pt => f1(pt) - f2(pt), -7, -7, 14, 8, 7)
+    let points = createTree(pt => f1(pt) - f2(pt), -5, -5, 10, 8, 6)
 
-    /*
-    const marker = ({x, y}) => ['circle', {cx: x, cy: y, r: '0.1'}]
-
-    const graph = svg.cartesianPlane(
-      {span: [-7,-7,7,7], autogrid: true, height: '5in', width: '5in'},
-      [
-        'g', {style: {fill: 'rgba(200,0,100,0.3)'}},
-        ...points.map(marker),
-      ]
-    )
-    */
    const graph = [
-     'CartesianPlane',
-     {span: [-7,-7,7,7], autogrid: true, width: '2.5in'},
+     'CoordinatePlane',
+     {span: [-5,-5,5,5], height: '3in'},
      [
-       'ScatterPlot',
-       { points }
+       'Layer', {strokeWidth: '0.08mm'},
+       ['ScatterPlot', { points }]
      ]
    ]
 
@@ -313,10 +289,9 @@ export class QuadTreePlotTest extends QGen {
     return {
       answer: null,
       question: "The graph of $$\\sin(x^2) = \\cos(y^2)$$:",
-      diagram: {
-        type: 'vectorgraphic',
-        data: graph,
-      }
+      diagram: [
+        'ABVG', graph
+      ],
     }
   }
 }
@@ -433,10 +408,7 @@ export class VegaLite extends QGen {
     return {
       answer: null,
       instructions: 'The graphs of $$f(x) = - x^2 + 6x$$ and $$g(x) = 5\\sin(x)$$',
-      diagram: {
-        type: 'vega-lite',
-        data: diagram2,
-      }
+      diagram: ['VegaLite', diagram2],
     }
   }
 }
@@ -451,9 +423,7 @@ class VegaTest extends QGen {
     return {
       answer: null,
       instructions: "Rendered with Vega:",
-      diagram: {
-        type: 'vega',
-        data: {
+      diagram: ['Vega', {
           "$schema": "https://vega.github.io/schema/vega/v4.json",
           "width": 500,
           "height": 200,
@@ -560,8 +530,7 @@ class VegaTest extends QGen {
             }
           ]
         }
-        
-      }
+      ]
     }
   }
 }

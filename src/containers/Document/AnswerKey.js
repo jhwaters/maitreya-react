@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Page from './Page'
-import { RenderElement } from '../../renderMethods'
+import { RenderJson } from '../../renderJson'
 
 
 const AnswerKey = (props) => {
@@ -11,10 +11,10 @@ const AnswerKey = (props) => {
       <div className='answerkey'>
         {props.contentIDs.map(id => {
           const element = props.content[id]
-          if (element.type === 'question') {
+          if (element[0] === 'NumberedQuestion') {
             return (
               <div key={`answer-${id}`} className='answerkey-item'>
-                <RenderElement content={{...element, type: 'answerkey'}} />
+                <RenderJson json={['AnswerKey', ...element.slice(1)]} />
               </div>
             )
           } else {

@@ -4,10 +4,10 @@ html, body { margin: 0 }
 
 /** For screen preview **/
 @media screen {
-  html, body { background: #aaa; }
+  body { background: var(--ui-border-0, #ccc); }
   .page-outer {
-    background: white;
-    box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
+    background: var(--ui-page, white);
+    box-shadow: 0 .5mm 2mm rgba(0,0,0,.5);
     margin: 5mm;
   }
   .page-overflowing {
@@ -21,6 +21,7 @@ html, body { margin: 0 }
   }
   .document {
     position: absolute;
+    overflow: visible;
   }
   .page-outer {
     page-break-inside: avoid;

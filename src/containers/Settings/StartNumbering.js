@@ -3,17 +3,13 @@ import { connect } from 'react-redux'
 import { setDocumentStartNumbering } from '../../actions/document'
 
 class StartNumbering extends React.Component {
-  constructor(props) {
-    super(props)
-    this.input = React.createRef()
-  }
 
   setCSSVariable(n) {
     document.body.style.setProperty('--doc-startnumber', n-1)
   }
 
-  setNumbering = () => {
-    const startat = this.input.current.value
+  setNumbering = evt => {
+    const startat = evt.target.value
     if (startat) {
       this.setCSSVariable(startat)
       this.props.setDocumentStartNumbering(startat)
@@ -21,36 +17,22 @@ class StartNumbering extends React.Component {
   }
 
   render() {
-    if (this.props.applyButton) {
-      return (
-        <>
-          <input 
-            type='number' 
-            min='1' 
-            ref={this.input} 
-            style={{width: '2rem'}}></input>
-          <button onClick={this.setNumbering}>Apply</button>
-        </>
-      )
-    } else {
-      return (
-        <>
-          <input 
-            onChange={this.setNumbering}
-            type='number' 
-            defaultValue='1'
-            min='1' 
-            ref={this.input} 
-            style={{width: '2rem'}}></input>
-        </>
-      )
-    }
+    return (
+      <input 
+        onChange={this.setNumbering}
+        type='number' 
+        min='1'
+        value={this.props.current}
+      />
+    )
   }
 }
 
-
+const mapStateToProps = state => ({
+  current: state.document.startNumbering,
+})
 const mapDispatchToProps = dispatch => ({
   setDocumentStartNumbering: (n) => dispatch(setDocumentStartNumbering(n)),
 })
 
-export default connect(null, mapDispatchToProps)(StartNumbering)
+export default connect(mapStateToProps, mapDispatchToProps)(StartNumbering)

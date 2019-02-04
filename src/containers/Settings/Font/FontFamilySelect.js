@@ -5,14 +5,14 @@ import { setDocumentFontFamily } from '../../../actions/style'
 
 
 const GoogleFonts = [
-  {family: 'Computer Modern Serif'},
-  {family: 'Lora'},
+  {family: 'CMU Serif'},
+  {family: 'IBM Plex Serif'},
   {family: 'Source Sans Pro'},
 ]
 
 const BrowserFonts = [
-  {label: 'Serif (browser default)', family: 'serif'},
-  {label: 'Sans-serif (browser default)', family: 'sans-serif'},
+  {label: 'serif', family: 'serif'},
+  {label: 'sans-serif', family: 'sans-serif'},
 ]
 
 function fontSort(a, b) {
@@ -90,11 +90,18 @@ class FontFamilySelect extends React.Component {
     this.props.setDocumentFontFamily(fontFamily)
   }
 
+  setFromPrompt = () => {
+    const customFamily = window.prompt(`Enter Font Name
+(this should be the name of a font installed on your computer)`)
+    this.setFontFamily(customFamily)
+  }
+
   onChange = (evt) => {
     const value = evt.target.value
-    const fontFamily = value.slice(0,7) === '_LOCAL_' ? value.slice(8) : value
-    if (fontFamily) {
-      this.setFontFamily(fontFamily)
+    if (value === '__CUSTOM__') {
+      this.setFromPrompt()
+    } else {
+      this.setFontFamily(value)
     }
   }
 
@@ -105,6 +112,7 @@ class FontFamilySelect extends React.Component {
           value={this.props.current}
           onChange={this.onChange}
         >
+          <option value="__CUSTOM__">Custom</option>
           {this.fontList().map((f) => renderFontOption(f))}
         </select>
       </>

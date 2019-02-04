@@ -29,81 +29,6 @@ function randomPolynomial(props={}) {
 }
 
 
-class TransformTracker {
-	// y = a * f( (x - h)/b ) + k
-	constructor(parent) {
-		this.parent = parent
-		this.a = fraction(1)
-		this.b = fraction(1)
-		this.h = 0
-		this.k = 0
-	}
-
-	translateX(n) { this.h += n }
-	translateY(n) { this.k += n }
-	scaleX(n) { this.b = this.b.mul(n) }
-	scaleY(n) { this.a = this.a.mul(n) }
-	
-	shiftH(n) { this.translateX(n) }
-	shiftV(n) { this.translateY(n) }
-	stretchH(n) { this.scaleX(n) }
-	stretchV(n) { this.scaleY(n) }
-	compressH(n) { this.scaleX(fraction(1,n)) }
-	compressV(n) { this.scaleY(fraction(1,n)) }
-	reflectH() { this.b = -this.b }
-	reflectV() { this.a = -this.a }
-
-	f() {
-		const parent = {
-			'abs': x => Math.abs(x),
-			'cubic': x => x*x*x,
-			'exp2': x => Math.pow(2,x),
-			'log2': x => Math.log2(x),
-			'quad': x => x*x,
-			'sqrt': x => Math.sqrt(x),
-		}[this.parent]
-		const {a, b, h, k} = this
-		return x => a * parent(x/b - h/b) + k 
-	}
-
-	toLatex() {
-		Polynomial.setField('Q')
-		const {parent, a, b, h, k} = this
-		const inner = new Polynomial([fraction(-h).div(b), fraction(1).div(b)]).toLatex()
-		const kStr = k === 0 ? '' : k < 0 ? k.toString() : '+' + k.toString()
-		const aStr = a == 1 ? '' : a == -1 ? '-' : a.toString()
-		if (parent === 'sqrt') {
-			return `${aStr}\\sqrt{${inner}}${kStr}`
-		}
-		if (parent === 'quad') {
-			if (b == 1 && h === 0) {
-				return `${aStr}x^2${kStr}`
-			}
-			return `${aStr}(${inner})^2${kStr}`
-		}
-		if (parent === 'cubic') {
-			if (b == 1 && h === 0) {
-				return `${aStr}x^3${kStr}`
-			}
-			return `${aStr}(${inner})^3${kStr}`
-		}
-		if (parent === 'abs') {
-			return `${aStr}|${inner}|${kStr}`
-		}
-		if (parent === 'exp2') {
-			if (aStr) {
-				return `${aStr} \\cdot 2^{${inner}}${kStr}`
-			}
-			return `${aStr}2^{${inner}}${kStr}`
-		}
-		if (parent === 'log2') {
-			return `${aStr}\\log_{2}(${inner})${kStr}`
-		}
-	}
-}
-
-
-
 
 /***********************
 
@@ -121,7 +46,7 @@ export class SolveQuadratic extends QGen {
 	}
 
 	static options = {
-		layout: [['instructions', 'question'], ['answer', 'diagram']]
+		singleColumn: true,
 	}
 
 
@@ -157,7 +82,7 @@ export class FactorQuadraticHard extends QGen {
 	}
 
 	static options = {
-		layout: [['instructions', 'question'], ['answer', 'diagram']],
+		singleColumn: true,
 	}
 
 	generate(params) {
@@ -265,8 +190,8 @@ export class RationalGraph extends QGen {
 		
 
 		const graph = [
-			'CartesianPlane',
-			{span: [-10,-10,10,10], autogrid: true, height: '2.2in'},
+			'CoordinatePlane',
+			{span: [-10,-10,10,10], height: '2.2in'},
 			[
 				'RationalFunction',
 				{
@@ -307,10 +232,7 @@ export class RationalGraph extends QGen {
 			freeResponse: {
 				instructions: 'Write the equation that best describes the graph shown.'
 			},
-			diagram: {
-				type: 'vectorgraphic',
-				data: graph,
-			},
+			diagram: ['ABVG', graph],
 			answer: {
 				correct: fmtAns(answer),
 				choices: choices,
@@ -323,10 +245,10 @@ export class RationalGraph extends QGen {
 
 
 
-export class FindIntervals extends QGen {
+export class IncreasingIntervals extends QGen {
 	static info = {
-		name: 'Intervals - Either',
-		description: 'Identify intervals over which a graph is increasing or decreasing'
+		name: 'Increasing Intervals',
+		description: 'Identify intervals over which a graph is increasing'
 	}
 
 	static params = {
@@ -337,7 +259,7 @@ export class FindIntervals extends QGen {
 				{value: 'inc', label: 'increasing'}, 
 				{value: 'dev', label: 'decreasing'}
 			],
-			default: ['inc', 'dec'],
+			default: ['inc'],
 		},
 		style: {
 			label: 'Graph style',
@@ -437,15 +359,14 @@ export class FindIntervals extends QGen {
 
 		const effects = params.style === 'smooth' ? {interpolate: 'cubic-h'} : {}
 		const markers = params.points ? {mid: 'point'} : undefined
+		const interpolate = params.style === 'smooth' ? 'cubic-h' : null
 		
 		const diagram = [
-			"CartesianPlane",
-			{
-				span: [-10,yRange[0]-1,10,yRange[1]+1], 
-				autogrid: true,
-				height: '1.3in', 
-			},
-			["Path", { points, effects, markers }]
+			'ABVG',
+			[
+				'CoordinatePlane', {span: [-10,yRange[0]-1,10,yRange[1]+1], height: '1.4in'},
+				['Path', { points, interpolate }]
+			]
 		]
 		
 		const fullName = {inc: 'increasing', dec: 'decreasing'}[toFind]
@@ -462,78 +383,15 @@ export class FindIntervals extends QGen {
 		const choices = rd.shuffle([answer, ...wrongs], answerIndex).map(fmtAns)
 
 		return ({
-			question: `Determine the intervals over which the function is ***${fullName}***.`,
-			diagram: {
-				type: 'vectorgraphic',
-				data: diagram,
-			},
+			instructions: `Determine the intervals over which the function is ***${fullName}***.`,
+			diagram: diagram,
 			answer: {
 				correct: fmtAns(answer),
 				choices: choices,
 				correctIndex: answerIndex,
-				prompt: [{width: '2in'}]
+				prompt: ['EmptySpace', {width: '2in'}]
 			}
 		})
-	}
-}
-
-export class IncreasingIntervals extends FindIntervals {
-	static info = {
-		name: 'Intervals - Increasing',
-		description: 'Identify intervals over which a graph is increasing',
-	}
-
-	static params = {
-		toFind: {
-			label: 'Type of interval to find',
-			type: 'multipleselect',
-			options: [
-				{value: 'inc', label: 'increasing'}, 
-				{value: 'dev', label: 'decreasing'}
-			],
-			default: ['inc'],
-		},
-		style: {
-			label: 'Graph style',
-			type: 'select',
-			options: ['jagged', 'smooth'],
-			default: 'smooth'
-		},
-		points: {
-			label: 'Mark points',
-			type: 'bool',
-			default: false,
-		}
-	}
-}
-
-export class DecreasingIntervals extends FindIntervals {
-	static info = {
-		name: 'Intervals - Decreasing',
-		description: 'Identify intervals over which a graph is decreasing',
-	}
-
-	static params = {
-		toFind: {
-			label: 'Type of interval to find',
-			type: 'multipleselect',
-			options: [
-				{value: 'inc', label: 'increasing'}, 
-				{value: 'dev', label: 'decreasing'}
-			],
-			default: ['dec'],
-		},
-		style: {
-			label: 'Graph style',
-			type: 'select',
-			options: ['jagged', 'smooth'],
-			default: 'smooth'
-		},
-		points: {
-			label: 'Mark points',
-			type: 'bool',
-			default: false,
-		}
 	}
 }
 
@@ -612,12 +470,6 @@ export class RationalZeroTheorem extends QGen {
 		description: 'State possible rational zeros for a polynomial function.'
 	}
 
-	static options = {
-		answerchoices: {
-			listDirection: 'horizontal'
-		}
-	}
-
 	generate(params) {
 		const rd = this.random
 		let primes = rd.sample([1, 2, 3, 5, 7, 11], 4)
@@ -693,6 +545,7 @@ export class RationalZeroTheorem extends QGen {
 				correct: allPossibleZeros.map(s => `$$${fraction(s).toLatex()}$$`).join(', '),
 				choices: [...shuffled.map(s => `$$\\displaystyle ${fraction(s).toLatex()}$$`), 'None of these'],
 				correctIndex: correctIndex,
+				listDirection: 'horizontal',
 			},
 			freeResponse: {
 				instructions: "List all possible rational zeros of the function (according to the _Rational Zero Theorem_)."
@@ -702,150 +555,120 @@ export class RationalZeroTheorem extends QGen {
 }
 
 
-export class MatchTransformations extends QGen {
+export class GraphLinearInequalities extends QGen {
 	static info = {
-		name: 'Match Transformations',
-		description: 'Match equations with graphs'
+		name: 'Graph Inequalities',
+		description: 'Graph the solution to a system of two linear inequalities',
 	}
 
-	static params = {
-		parents: {
-			label: 'Allowed Parent Functions',
-			type: 'multipleselect',
-			options: [
-				{value: 'sqrt', label: 'Square root'},
-				{value: 'quad', label: 'Quadratic'},
-				{value: 'abs', label: 'Absolute value'},
-				{value: 'cubic', label: 'Cubic'},
-				{value: 'exp2', label: 'Exponential'},
-				{value: 'log2', label: 'Logarithm'},
-			],
-			default: ['sqrt', 'quad', 'abs', 'cubic', 'exp2', 'log2'],
-		}
-	}
 
 	static options = {
-		layout: ['instructions', 'question', ['answer', 'diagram']]
+		singleColumn: true,
 	}
 
 	generate(params) {
 		const rd = this.random
-
-		/*
-		const parents = params.parents ? params.parents : [
-			'abs', 'quad', 'sqrt', 'cubic',
-			'exp2', 
-			'log2',
-		]
-		*/
-		const parent = rd.choice(params.parents)
-
-		const transforms = ['up', 'down', 'left', 'right', 'flipDown', 'flipLR']
 		
-		let eqns = []
-		let paths = []
-
-		const v = rd.randint(2,5)
-		for (const t of transforms) {
-			const func = new TransformTracker(parent)
-
-			if (t === 'up') func.shiftV(v)
-			else if (t === 'down') func.shiftV(-v)
-			else if (t === 'left') func.shiftH(-v)
-			else if (t === 'right') func.shiftH(v)
-			else if (t === 'stretchV') func.stretchV(v)
-			else if (t === 'flipDown') func.stretchV(-v)
-			else if (t === 'stretchH') func.stretchH(v)
-			else if (t === 'flipLR') func.compressH(-v)
-
-			const eqn = func.toLatex()
-			eqns.push(`$$y = ${eqn}$$`)
-			const f = func.f()
-			const points = []
-			let start, stop
-			const {a, b, h, k} = func
-			if (func.parent === 'sqrt') {
-				[start, stop] = b < 0 ? [-10, h*b] : [h*b, 10]
-			}
-			else if (func.parent === 'log2') {
-				if (b < 0) {
-					[start, stop] = [-10, h*b-0.01]
-				}
-				else {
-					[start, stop] = [h*b+0.01, 10]
-					points.push({x: h*b, y: -a*1000})
-				}
-			}
-			else {
-				[start, stop] = [-10, 10]
-			}
-			let x = start
-			while (x <= stop) {
-				const y = f(x)
-				points.push({x, y})
-				x += 0.2
-			}
-			if (func.parent === 'log2' && b < 0) {
-				points.push({x: h*b, y: -a*1000})
-			}
-			paths.push(points)
+		let [x1, y1, y2] = rd.sampleRange(2,7,3)
+		let x2 = rd.randint(-7,-2)
+		const rotation = rd.randint(0,3)
+		for (let i = 0; i < rotation; i++) {
+			[x1, y1, x2, y2] = [-y1, x1, -y2, x2]
+		}
+		if (x1 > 0 && x2 > 0) {
+			[x1, y1, x2, y2] = [-y1, x1, -y2, x2]
 		}
 
-		const graphPoints = points => ({
-			type: 'vectorgraphic',
-			data: [
-				'CartesianPlane', 
-				{ span: [-7,-7,7,7], autogrid: true, height: '1.2in' },
-				['Path', { points }]
+		const [ineq1, ineq2] = rd.shuffle([rd.choice(['<', '>']), rd.choice(['<=', '>='])])
+
+		const line1 = {a: y1, b: x1, c: x1*y1, ineq: ineq1, xInt: x1, yInt: y1}
+		const line2 = {a: y2, b: x2, c: x2*y2, ineq: ineq2, xInt: x2, yInt: y2}
+
+		const withsign = n => n < 0 ? n : '+' + n
+		const latexineq = ineq => {
+			if (ineq === '<=') return '\\leq'
+			if (ineq === '>=') return '\\geq'
+			return ineq
+		}
+
+		const latexeqn = f => `${f.a}x ${withsign(f.b)}y &${latexineq(f.ineq)} ${f.c}`
+
+		const question = `$$\\displaystyle\\left\\{\\begin{aligned} ${latexeqn(line1)} \\\\ ${latexeqn(line2)} \\end{aligned}\\right.$$`
+
+		const blankgraph = [
+			'ABVG', [
+				'CoordinatePlane', {span: [-10,-10,10,10], height: '1.8in'},
 			]
-		})
-
-		const eqnScramble = rd.shuffleRange(0, 5)
-		const graphScramble = rd.shuffleRange(0, 5)
-
-		const letters = 'ABCDEF'
-		const diagrams = [
-			'div', {style: {
-				display: 'grid', 
-				gridTemplateColumns: '1fr 1fr 1fr',
-				gridTemplateRows: '1fr 1r',
-			}},
-			...graphScramble.map((p, i) => [
-				'div', {style: {
-					display: 'flex',
-					alignItems: 'center',
-				}}, 
-				['div', {style: {marginLeft: '5mm'}}, letters[i] + ') '], 
-				graphPoints(paths[p])
-			])
 		]
 
-		const eqnTable = {
-			type: 'table',
-			data: {
-				headings: ['Equation', 'Graph'],
-				rows: [
-					...eqnScramble.map(i => [
-						eqns[i], 
-						{type: 'emptyspace', data: {height: '7mm', width: '7mm'}},
-					])
-				]
+		const correct = {
+			lines: [], 
+			clips: [],
+		}
+
+		for (const f of [line1, line2]) {
+			const func = x => (f.c - x*f.a) / f.b
+			const points = [[-11, func(-11)], [11, func(11)]]
+
+			if (f.ineq === '<' || f.ineq === '>') {
+				correct.lines.push(['Path', {points, style: ['dashed']}])
+			} else {
+				correct.lines.push(['Path', {points}])
+			}
+
+			let whichside
+			if (f.ineq === '<' || f.ineq === '<=') {
+				if (f.b > 0) {
+					whichside = 'below'
+				}	else {
+					whichside = 'above'
+				}
+			} else {
+				if (f.b > 0) {
+					whichside = 'above'
+				} else {
+					whichside = 'below'
+				}
+			}
+			if (whichside === 'above') {
+				correct.clips.push([...points, [11,11], [-11, 11]])
+			} else {
+				correct.clips.push([...points, [11,-11], [-11, -11]])
 			}
 		}
 
-		const answer = eqnScramble.map(i => letters[graphScramble.indexOf(i)]).join(', ')
+		const plotAnswer = a => (
+			[
+				'ABVG', [
+					'CoordinatePlane', {span: [-10,-10,10,10], height: '1in'},
+					[
+						'ClipPath', {points: a.clips[0]}, [
+							'ClipPath', {points: a.clips[1]},
+						['FillRegion', {points: [[-11,-11], [-11,11], [11,11], [11,-11]]}]
+					]],
+					['Layer', {strokeColor: '#999'}, ...a.lines],
+					[
+						'ClipPath', {points: a.clips[1]},
+						['Layer', a.lines[0]],
+					],
+					[
+						'ClipPath', {points: a.clips[0]},
+						['Layer', a.lines[1]],
+					],
+				]
+			]
+		)
+
 
 		return {
-			instructions: 'Fill in the table to match each equation to its graph.',
-			diagram: {
-				type: 'jsonml',
-				data: diagrams,
-			},
+			instructions: 'Graph the solution to the system of inequalities.',
+			question: question,
 			answer: {
-				prompt: eqnTable,
-				correct: answer,
-			}
+				prompt: blankgraph,
+				correct: plotAnswer(correct),
+			},
+			layout: ['instructions', 'question', 'diagram', 'answer'],
 		}
-
 	}
 }
+

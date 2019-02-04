@@ -2,12 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { resetGraphStyle } from '../../../actions/style'
 import {
-  PlotPathColor, PlotPathWidth, Plot2PathColor, PlotColorSwap,
+  Plot1PathColor, PlotPathWidth, Plot2PathColor, PlotColorSwap,
   GeomPathColor, GeomPathWidth,
   AsymptoteColor, AsymptoteWidth,
   AxisColor, AxisWidth,
   GridColor, GridWidth,
-  ShadedRegionOpacity,
+  FillOpacity,
 } from './GraphStyle'
 import { PreviewXYPlot, PreviewGeom } from './GraphPreview'
 
@@ -42,7 +42,7 @@ class GraphSettings extends React.Component {
         <>
           <tr>
             <td>Primary</td>
-            <td><PlotPathColor/></td>
+            <td><Plot1PathColor/></td>
             <td><PlotPathWidth/></td>
           </tr>
           <tr>
@@ -57,7 +57,7 @@ class GraphSettings extends React.Component {
           </tr>
           <tr>
             <td colSpan='2'>Fill</td>
-            <td><ShadedRegionOpacity /></td>
+            <td><FillOpacity /></td>
           </tr>
         </>
       )

@@ -1,29 +1,29 @@
-@import url('https://fonts.googleapis.com/css?family=Lora|Source+Sans+Pro');
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Serif|Source+Sans+Pro');
 
 
 @font-face {
-  font-family: 'Computer Modern Serif';
+  font-family: 'CMU Serif';
   font-style: normal;
   font-weight: normal;
   src: url('./fonts/cmunrm-webfont.woff');
 }
 
 @font-face {
-  font-family: 'Computer Modern Serif';
+  font-family: 'CMU Serif';
   font-style: normal;
   font-weight: bold;
   src: url('./fonts/cmunbx-webfont.woff');
 }
 
 @font-face {
-  font-family: 'Computer Modern Serif';
+  font-family: 'CMU Serif';
   font-style: italic;
   font-weight: normal;
   src: url('./fonts/cmunti-webfont.woff');
 }
 
 @font-face {
-  font-family: 'Computer Modern Serif';
+  font-family: 'CMU Serif';
   font-style: italic;
   font-weight: bold;
   src: url('./fonts/cmunbi-webfont.woff');

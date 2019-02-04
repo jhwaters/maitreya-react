@@ -1,5 +1,4 @@
 import React from 'react'
-import { RenderElement } from '../../renderMethods'
 import { TextPreview } from '../Settings/Font'
 import styles from './styles.module.css'
 

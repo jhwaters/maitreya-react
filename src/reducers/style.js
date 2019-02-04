@@ -10,13 +10,14 @@ import {
 
 
 const initialState = {
-  fontFamily: 'serif',
+  columns: true,
+  fontFamily: 'IBM Plex Serif',
   fontSize: '8pt',
   mathFontSize: '0.9em',
   mathFontWeight: 'normal',
   pageSize: 'letter',
   pageOrientation: 'portrait',
-  pageMargin: '10mm 10mm 10mm 10mm',
+  pageMargin: '0.5in',
   graph: {
     asymptoteColor: '#777777',
     asymptoteWidth: '0.7mm',
@@ -24,12 +25,15 @@ const initialState = {
     axisWidth: '0.3mm',
     gridColor: '#888888',
     gridWidth: '0.1mm',
-    plotPathColor: '#ff2600',
-    plot2PathColor: '#0044cc',
+    plot1PathColor: '#ff2600',
+    plot2PathColor: '#0080d9',
+    //plot3PathColor: '#70cc3e',
+    //plot4PathColor: '#ffa000',
     plotPathWidth: '0.5mm',
-    geomPathColor: '#009955',
+    //geomPathColor: '#337744',
+    geomPathColor: '#379600',
     geomPathWidth: '0.5mm',
-    shadedRegionOpacity: '0.3',
+    fillOpacity: '0.3',
   },
 }
 

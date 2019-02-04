@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { RenderElement } from '../../../renderMethods'
+import { RenderJson } from '../../../renderJson'
 
 
 
@@ -58,12 +58,12 @@ class TextPreview extends React.Component {
   renderPreview() {
     if (this.props.renderType === 'text') {
       return this.state.text.split('\n\n').map((t,i) => (
-        <RenderElement key={i} content={t} />
+        <RenderJson key={i} json={['Text', t]} />
       ))
     } else if (this.props.renderType === 'json') {
       try {
         const json = JSON.parse(this.state.text)
-        return <RenderElement content={json} />
+        return <RenderJson json={json} />
       } catch(e) {
         return "Failed to render"
       }

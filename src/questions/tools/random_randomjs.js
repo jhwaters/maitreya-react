@@ -42,6 +42,10 @@ export class Randomizer {
     return this.shuffle(range)
   }
 
+  bool() {
+    return Random.pick(this.engine, [true, false])
+  }
+
   choice(array) {
     return Random.pick(this.engine, array)
   }

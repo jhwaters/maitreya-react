@@ -30,7 +30,7 @@ class FontSizeSelect extends React.Component {
   }  
 
   renderSizeOptions() {
-    const options = [5, 6, 7, 8, 9, 10, 11, 12, 13]
+    const options = [6, 7, 8, 9, 10, 11, 12]
     return (
       <>
       {options.map((s) => {
@@ -38,7 +38,7 @@ class FontSizeSelect extends React.Component {
         return (
           <option 
             value={size}
-            key={`fontOption-${size}`}
+            key={s}
           >{size}</option>
         )
       })}

@@ -1,5 +1,5 @@
 import React from 'react'
-import { RenderElement } from '../../renderMethods'
+import { RenderJson } from '../../renderJson'
 import styles from './styles.module.css'
 import math from 'mathjs'
 
@@ -287,13 +287,13 @@ class GraphMaker extends React.Component {
     }
     const paths = this.getFunction()
     if (paths) {
-      return ['CartesianPlane', props, ...paths]
+      return ['ABVG', ['CoordinatePlane', props, ...paths]]
     }
-    return ['CartesianPlane', props]
+    return ['ABVG', ['CoordinatePlane', props]]
   }
 
   onSubmit = () => {
-    this.props.onSubmit({type: 'vectorgraphic', data: this.getData()})
+    this.props.onSubmit(this.getData())
     this.props.onRequestClose()
   }
 
@@ -322,7 +322,7 @@ class GraphMaker extends React.Component {
           </div>
           <div className={styles.GraphMakerPreview}>
             <div className='document preview-area'>
-              <RenderElement content={{type: 'vectorgraphic', data: this.getData()}} />
+              <RenderJson json={this.getData()} />
             </div>
           </div>
         </div>

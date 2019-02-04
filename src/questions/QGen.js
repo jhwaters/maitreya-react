@@ -22,12 +22,6 @@ class QGen {
   }
 
   _specialCaseValues(k, v) {
-    if (Array.isArray(v)) {
-      if (k === 'answer') {
-        return {type: 'answerchoices', data: v}
-      }
-      return {type: 'list', data: {items: v}}  
-    }
     return v
   }
 
@@ -58,11 +52,10 @@ class QGen {
     for (const k in out) {
       content[this._specialCaseKeys(k)] = this._specialCaseValues(k, out[k])
     }
-    return {
-      type: 'question',
-      data: content,
-      options: this.getOptions(),
-    }
+    return [
+      'NumberedQuestion',
+      { content, options: this.getOptions() },
+    ]
   }
 }
 

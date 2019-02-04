@@ -3,21 +3,23 @@
 @import './page.global.css';
 @import './katex.global.css';
 @import './document.global.css';
-@import './vectorgraphic.css';
+@import './debugview.css';
+
 
 
 body {
   font-family: var(--ui-font-family, sans-serif);
   font-size: var(--ui-font-size, 3mm);
+  color: var(--ui-fg-1, black);
 }
 
 button, input, select, textarea {
   border-radius: 4px;
-  border-color: #ccc;
+  border-color: var(--ui-border-1, #ccc);
   border-width: 1px;
   border-style: solid;
-  background-color: white;
-  color: black;
+  background-color: var(--ui-bg-0, white);
+  color: var(--ui-fg-1, black);
   font-family: var(--ui-font-family, sans-serif);
   font-size: var(--ui-font-size, 3mm);
   margin: 1px;
@@ -35,8 +37,8 @@ textarea {
 }
 
 button:hover, input:hover, select:hover, textarea:hover {
-  color: black;
-  border-color: #999;
+  color: var(--ui-fg-2, black);
+  border-color: var(--ui-border-2, #999);
 }
 
 button:disabled, input:disabled, select:disabled, textarea:disabled {
@@ -53,7 +55,7 @@ button:active, input:active, select:active, textarea:active {
 }
 
 button:hover {
-  background-image: linear-gradient(white, 50%, #eee);
+  background-image: var(--ui-gradient-v-2, linear-gradient(white, 50%, #eee));
 }
 
 button:active {
@@ -63,12 +65,17 @@ button:active {
 }
 
 button, button:disabled {
-  background-image: linear-gradient(white, 50%, #f5f5f5);
+  background-image: var(--ui-gradient-v-1, linear-gradient(white, 50%, #f5f5f5));
+}
+
+input[type=number] {
+  max-width: 3em;
 }
 
 pre, code {
   font-family: var(--ui-font-family-monospace, monospace);
 }
+
 
 .editable > *:hover {
   outline: 3px dotted var(--edit-color-light, lightgreen);
@@ -76,10 +83,12 @@ pre, code {
 }
 
 .preview-area {
-  border: 1px solid #ccc;
-  background-color: white;
-  padding: 1cm;
+  border: 1px solid var(--ui-border-1, #ccc);
+  background-color: var(--ui-page, white);
+  padding: 5mm;
   border-radius: 3px;
+  font-size: 1.1em;
+  max-width: 11in;
 }
 
 .text-preview-output > * {
@@ -94,12 +103,9 @@ pre, code {
 }
 
 .text-preview-output {
-  border: 1px solid #ccc;
-  background-color: white;
+  border: 1px solid var(--ui-border-1, #ccc);
+  background-color: var(--ui-page, white);
   padding: 2mm;
   width: fit-content;
   border-radius: 3px;
 }
-
-
-

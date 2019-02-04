@@ -2,15 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import ReactModal from 'react-modal'
-import { RenderElement } from '../../renderMethods'
-//import { updateElement, deleteElement } from '../../actions/document'
-import EditElement from '../../renderMethods/editing'
+import { RenderJson, EditJson, parseJson } from '../../renderJson'
+
 
 
 class TopLevelElement extends React.Component {
   static propTypes = {
     id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-    element: PropTypes.object.isRequired,
+    json: PropTypes.array.isRequired,
     canEdit: PropTypes.bool.isRequired,
   }
 
@@ -29,27 +28,38 @@ class TopLevelElement extends React.Component {
   closeModal = () => this.setState({modal: 'none'})
 
   render() {
-    const divprops = (
-      this.props.canEdit 
-      ? {className: 'editable', onDoubleClick: this.openEditor, title: 'Double-click to edit'} 
-      : {}
-    )
+    const divprops = {}
+    const classNames = []
+    if (this.props.canEdit) {
+      classNames.push('editable')
+      divprops.onDoubleClick = this.openEditor
+    }
+    if (this.props.columns) {
+      const elemprops = parseJson(this.props.json).props
+      if (elemprops.options && elemprops.options.singleColumn) {
+        classNames.push('single-column')
+      }
+    }
+
+    if (classNames.length) {
+      divprops.className = classNames.join(' ')
+    }
     return (
       <>
       <div {...divprops}>
-        <RenderElement content={this.props.element} />
+        <RenderJson json={this.props.json} />
       </div>
       <ReactModal isOpen={this.state.modal === 'edit'}
         onRequestClose={this.closeModal}
         style={{
-          //content: {
-          //  top: '20%'
-          //}
+          content: {
+            margin: '20px'
+          }
         }}
       >
-        <EditElement
+        <EditJson
           id={this.props.id}
-          element={this.props.element}
+          json={this.props.json}
           onRequestClose={this.closeModal}
         />
       </ReactModal>
@@ -60,6 +70,7 @@ class TopLevelElement extends React.Component {
 
 const mapStateToProps = state => ({
   canEdit: state.config.allowEditing,
+  columns: state.style.columns,
 })
 //const mapDispatchToProps = dispatch => ({
 //})

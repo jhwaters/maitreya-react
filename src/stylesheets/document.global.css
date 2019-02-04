@@ -1,11 +1,16 @@
 
 .document {
-  font-family: var(--doc-font-family);
+  font-family: var(--doc-font-family, serif);
   font-size: var(--doc-font-size);
+  color: black;
 }
 
 .document blockquote {
   font-style: italic;
+}
+
+.document code, .document pre {
+  font-family: var(--doc-font-family-monospace, monospace);
 }
 
 .document em > strong {
@@ -96,10 +101,6 @@
   content: counter(answerkey) '. ';
 }
 
-.error-failed-render {
-  color: red;
-}
-
 .header {
   border-collapse: collapse;
   width: 100%;
@@ -124,28 +125,41 @@
   height: 5mm;
 }
 
-.list-auto {
-  list-style-type: upper-roman;
+.page-content {
+  display: grid;
+  grid-template-columns: 47% 53%;
+  column-gap: 3mm;
 }
 
-.question-wrapper {
+.page-content > * {
+  grid-column: span 2;
+}
+
+.page-content .single-column {
+  grid-column: span 1;
+}
+
+.question-number {
   display: flex;
   margin: 1em 0;
-  break-inside: avoid;
-  width: 100%;
 }
 
-.question-wrapper::before {
+.question-number::before {
   counter-increment: question 1;
-  counter-reset: answerchoice 0;
   content: counter(question) '. ';
   font-size: 1em;
   position: relative;
 }
 
+.question-wrapper {
+  break-inside: avoid;
+  counter-reset: answerchoice 0;
+  width: 100%;
+  margin-right: auto;
+}
+
 .question-layout {
-  width: fit-content;
-  align-content: flex-start;  
+  align-content: space-between;
   display: flex;
   margin: 0;
   padding: 0;
@@ -153,6 +167,7 @@
 
 .question-layout-row {
   flex-direction: row;
+  align-content: space-between;
 }
 
 .question-layout-column {
@@ -166,9 +181,12 @@
 .question-area {
   margin-bottom: 0.5em;
   margin-right: 0.5em;
+  justify-content: flex-start;
 }
 
 .question-area-diagram {
-  align-self: flex-start;
+  display: flex;
+  justify-content: space-around;
+  padding: 3mm;
 }
 

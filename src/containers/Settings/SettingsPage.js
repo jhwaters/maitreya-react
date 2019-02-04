@@ -1,6 +1,7 @@
 import React from 'react'
 import FontSettings from './Font'
 import GraphSettings from './Graph'
+import GUImode from './GUImode'
 import styles from './styles.module.css'
 
 

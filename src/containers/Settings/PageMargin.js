@@ -4,10 +4,10 @@ import { connect } from 'react-redux'
 import { setPageMargin } from '../../actions/style'
 
 const MarginOptions = [
-  '5mm',
-  '10mm',
-  '15mm',
-  '20mm',
+  '0.25in',
+  '0.5in',
+  '0.75in',
+  '1.0in',
 ]
 
 class SetPageMargin extends React.Component {
@@ -33,7 +33,7 @@ class SetPageMargin extends React.Component {
         value={this.props.current}
       >
         {MarginOptions.map((m) => (
-          <option key={m} value={`${m} ${m} ${m} ${m}`}>{m}</option>
+          <option key={m} value={m}>{m}</option>
         ))}
       </select>
     )

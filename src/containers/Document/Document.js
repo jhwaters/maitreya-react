@@ -3,7 +3,6 @@ import React from 'react'
 import MeasuredPage from './MeasuredPage'
 import AnswerKey from './AnswerKey'
 import { connect } from 'react-redux'
-import { MarkerDefs } from '../../renderMethods/primaryTypes/VG'
 
 
 import Scratch from './scratchpage'
@@ -24,18 +23,13 @@ const Document = (props) => {
   const pages = slices.map(s => visibleIDs.slice(...s))
 
   return (
-    <div className='document'>
-      <svg height='0' width='0'>
-        <defs>
-          <MarkerDefs />
-        </defs>
-      </svg>
+    <div className={props.debugView ? 'document debug-view' : 'document'}>
       {(
         pages.length > 0 
         ? pages.map((ids,i) => (
           <MeasuredPage key={`page-${i+1}`} 
             pageNumber={i+1}
-            contentIDs={ids}
+            contentIDs={ids.map(i => `content.${i}`)}
           />
         )) : null
       )}
@@ -50,6 +44,7 @@ const mapStateToProps = state => ({
   showAnswerKey: state.config.showAnswerKey,
   style: state.style,
   hidden: state.config.numberHidden,
+  debugView: state.config.debugView,
 })
 
 export default connect(mapStateToProps)(Document)
