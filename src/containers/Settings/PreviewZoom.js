@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 class PreviewZoom extends React.Component {
   static propTypes = {
-    defaultValue: PropTypes.number.isRequired,
+    defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     values: PropTypes.arrayOf(PropTypes.number),
     type: PropTypes.string.isRequired,
     min: PropTypes.number,
@@ -39,12 +39,12 @@ class PreviewZoom extends React.Component {
   }
 
   zoomIn = () => {
-    const zoom = Math.min(+this.state.zoom + this.props.step, this.props.options[this.props.options.length-1])
+    const zoom = Math.min(+this.state.zoom + this.props.step, this.props.max)
     this.setState({ zoom })
   }
 
   zoomOut = () => {
-    const zoom = Math.max(+this.state.zoom - this.props.step, this.props.options[0])
+    const zoom = Math.max(+this.state.zoom - this.props.step, this.props.min)
     this.setState({ zoom })
   }
 

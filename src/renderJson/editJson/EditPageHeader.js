@@ -5,30 +5,30 @@ import DefaultEditor from './DefaultEditor'
 export default class EditPageHeader extends DefaultEditor {
 
   headingUpdate(row, lr, text) {
-    const newrow = [...this.state.children[row]]
+    const newrow = [...this.state.props.rows[row]]
     newrow[lr] = text
-    const children = [...this.state.children]
-    children[row] = newrow
-    this.setState({children})
+    const rows = [...this.state.props.rows]
+    rows[row] = newrow
+    this.setState({props: {...this.state.props, rows}})
   }
 
   headingAddRow = () => {
-    const children = [...this.state.children, ['', '']]
-    this.setState({ children })
+    const rows = [...this.state.props.rows, ['', '']]
+    this.setState({ props: {...this.state.props, rows} })
   }
 
   headingRemoveRow = () => {
-    const children = this.state.children.slice(0,-1)
-    this.setState({children})
+    const rows = this.state.props.rows.slice(0,-1)
+    this.setState({props: {...this.state.props, rows}})
   }
 
   renderEditor() {
-    const rows = this.state.children
+    const rows = this.state.props.rows
     const inputStyle = {
       width: '100%',
       borderStyle: 'dashed',
-      //fontSize: '0.8em',
-      //fontFamily: 'var(--doc-font-family, monospace)',
+      fontSize: '1.1em',
+      fontFamily: 'var(--doc-font-family, monospace)',
       margin: '1mm',
       padding: '1mm',
     }

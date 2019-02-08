@@ -1,39 +1,32 @@
 import React from 'react'
-import { pathFromPoints } from './Path'
+import { Path } from '.'
+
 
 let clipCount = 0
 
-export const ClipRect = props => {
-  const {id=`vg-clip-path-${++clipCount}`, span} = props
-  const [x1, y1, x2, y2] = span
-  return (
-    <>
-    <clipPath id={id}>
-      <rect x={x1} y={y1} width={x2-x1} height={y2-y1} />
-    </clipPath>
-    <g clipPath={`url(#${id})`}>
-      {props.children}
-    </g>
-    </>
-  )
+const Clip = props => {
+  const {shape, id=`vg-clip-path-${++clipCount}`, children, ...shapeprops} = props
+  let Elem
+  if (shape === 'Path') {
+    Elem = Path
+  }
+  else if (shape === 'Rect') {
+    Elem = 'rect'
+  }
+
+  if (Elem) {
+    return (
+      <>
+        <clipPath id={id}>
+          {React.createElement(Elem, shapeprops)}
+        </clipPath>
+        <g clipPath={`url(#${id})`}>
+          {props.children}
+        </g>
+      </>
+    )
+  }
+  return props.children
 }
 
-export const ClipPath = props => {
-  const {id=`vg-clip-path-${++clipCount}`, d, points} = props
-  let dd
-  if (d) {
-    dd = d
-  } else {
-    dd = pathFromPoints(points)
-  }
-  return (
-    <>
-    <clipPath id={id}>
-      <path d={dd} />
-    </clipPath>
-    <g clipPath={`url(#${id})`}>
-      {props.children}
-    </g>
-    </>
-  )
-}
+export default Clip

@@ -101,13 +101,13 @@
   content: counter(answerkey) '. ';
 }
 
-.header {
+.page-header {
   border-collapse: collapse;
   width: 100%;
   margin-top: 0;
 }
 
-.header td {
+.page-header td {
   border: none;
   font-size: 1.4em;
   font-weight: bold;
@@ -116,12 +116,12 @@
   text-align: left;
 }
 
-.header td:last-child {
+.page-header td:last-child {
   text-align: right;
   right: 0;
 }
 
-.header-empty {
+.page-header-empty {
   height: 5mm;
 }
 

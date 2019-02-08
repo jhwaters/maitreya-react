@@ -287,9 +287,9 @@ class GraphMaker extends React.Component {
     }
     const paths = this.getFunction()
     if (paths) {
-      return ['ABVG', ['CoordinatePlane', props, ...paths]]
+      return ['VectorGraphic', ['CoordinatePlane', props, ...paths]]
     }
-    return ['ABVG', ['CoordinatePlane', props]]
+    return ['VectorGraphic', ['CoordinatePlane', props]]
   }
 
   onSubmit = () => {

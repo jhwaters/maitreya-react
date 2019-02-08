@@ -13,15 +13,9 @@ class FontSizeSelect extends React.Component {
 
   constructor(props) {
     super(props)
-    this.setCss(props.current)
-  }
-
-  setCss(fontSize) {
-    document.body.style.setProperty('--doc-font-size', fontSize)
   }
 
   setDocFontSize(size) {
-    this.setCss(size)
     this.props.setDocumentFontSize(size)
   }
 

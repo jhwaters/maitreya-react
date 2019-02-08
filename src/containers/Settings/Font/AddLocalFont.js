@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { addLocalFont } from '../../../actions/config'
+import { addFontFamily } from '../../../actions/config'
 
 class AddLocalFont extends React.Component {
   static propTypes = {
-    addLocalFont: PropTypes.func.isRequired,
+    addFontFamily: PropTypes.func.isRequired,
     buttonLabel: PropTypes.string.isRequired,
   }
 
@@ -20,7 +20,7 @@ class AddLocalFont extends React.Component {
 
   addFont = () => {
     const fontName = this.input.current.value
-    this.props.addLocalFont({family: fontName})
+    this.props.addFontFamily({family: fontName})
   }
 
   render() {
@@ -34,7 +34,7 @@ class AddLocalFont extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addLocalFont: (font) => dispatch(addLocalFont(font)),
+  addFontFamily: (font) => dispatch(addFontFamily(font)),
 })
 
 export default connect(null, mapDispatchToProps)(AddLocalFont)

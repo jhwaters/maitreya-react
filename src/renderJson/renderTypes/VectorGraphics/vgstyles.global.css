@@ -1,0 +1,76 @@
+:root {
+  --vg-fill-opacity: 0.2;
+  --vg-asymptote-color: #888888;
+  --vg-axis-color: #111111;
+  --vg-grid-color: #888888;
+  --vg-axis-width: 0.3mm;
+  --vg-grid-width: 0.1mm;
+  --vg-asymptote-width: 0.6mm;
+  --vg-stroke-opacity: 1;
+  
+  --vg-function-1-color: #ff3600;
+  --vg-function-2-color: #0080d9;
+  --vg-geom-color: #224466;
+
+  --vg-function-width: 0.5mm;
+  --vg-geom-width: 0.5mm;
+}
+
+/************
+ STYLES 
+ ************/
+
+.svgplot-axis {
+  --svgplot-color: var(--vg-axis-color);
+  stroke-width: var(--vg-axis-width);
+}
+
+.svgplot-grid {
+  --svgplot-color: var(--vg-grid-color);
+  stroke-width: var(--vg-grid-width);
+}
+
+.svgplot-marker {
+  fill-opacity: var(--vg-stroke-opacity);
+}
+
+.vg-style-asymptote {
+  --svgplot-color: var(--vg-asymptote-color);
+  stroke: var(--svgplot-color);
+  stroke-width: var(--vg-asymptote-width);
+  stroke-dasharray: 2mm 1mm;
+}
+
+.vg-style-dashed {
+  stroke-dasharray: 2mm 1mm;
+}
+
+.vg-style-function {
+  stroke: var(--svgplot-color);
+  stroke-width: var(--vg-function-width);
+  fill-opacity: var(--vg-fill-opacity);
+}
+
+.vg-style-primary {
+  --svgplot-color: var(--vg-function-1-color);
+}
+
+.vg-style-secondary {
+  --svgplot-color: var(--vg-function-2-color);
+}
+
+.vg-style-geometry {
+  --svgplot-color: var(--vg-geom-color);
+  stroke-width: var(--vg-geom-width);
+}
+
+.vg-style-black { --svgplot-color: #000000; }
+.vg-style-red { --svgplot-color: #ff3600; }
+.vg-style-blue { --svgplot-color: #0080d9; }
+.vg-style-green { --svgplot-color: #44aa66; }
+.vg-style-orange { --svgplot-color: #f3972e; }
+.vg-style-purple { --svgplot-color: #cc66aa; }
+.vg-style-pink { --svgplot-color: #f05180; }
+
+
+

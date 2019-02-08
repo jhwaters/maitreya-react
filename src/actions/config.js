@@ -1,11 +1,11 @@
-export const ADD_LOCAL_FONT = 'ADD_LOCAL_FONT'
+export const ADD_FONTFAMILY = 'ADD_FONTFAMILY'
 export const SET_ALLOW_EDITING = 'SET_ALLOW_EDITING'
 export const SET_FONTFAMILY_UI = 'SET_FONTFAMILY_UI'
 export const SET_SHOW_ANSWERKEY = 'SET_SHOW_ANSWERKEY'
 export const SET_HIDDEN_COUNT = 'SET_HIDDEN_COUNT'
 
-export const addLocalFont = (font) => ({
-  type: 'ADD_LOCAL_FONT',
+export const addFontFamily = (font) => ({
+  type: ADD_FONTFAMILY,
   payload: font,
 })
 

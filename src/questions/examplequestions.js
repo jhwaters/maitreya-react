@@ -232,7 +232,7 @@ export class RationalGraph extends QGen {
 			freeResponse: {
 				instructions: 'Write the equation that best describes the graph shown.'
 			},
-			diagram: ['ABVG', graph],
+			diagram: graph,
 			answer: {
 				correct: fmtAns(answer),
 				choices: choices,
@@ -270,8 +270,23 @@ export class IncreasingIntervals extends QGen {
 		points: {
 			label: 'Mark points',
 			type: 'bool',
-			default: false,
+			default: true,
 		}
+	}
+
+	interpolatePath(points) {
+		// smooths path so that 1st deriv = 0 at each point
+		const pts = Array.isArray(points[0]) ? points.map(p => ({x: p[0], y: p[1]})) : points
+		let d = `M${pts[0].x},${pts[0].y}`
+		let prev = pts[0]
+		for (let i = 1; i < pts.length; i++) {
+			const p = pts[i]
+			const x1 = (2*prev.x + p.x) / 3
+			const x2 = (prev.x + 2*p.x) / 3
+			d += ` C ${x1},${prev.y} ${x2},${p.y} ${p.x},${p.y}`
+			prev = p
+		}
+		return d
 	}
 
 	generate(params) {
@@ -357,16 +372,14 @@ export class IncreasingIntervals extends QGen {
 			}
 		}
 
-		const effects = params.style === 'smooth' ? {interpolate: 'cubic-h'} : {}
-		const markers = params.points ? {mid: 'point'} : undefined
-		const interpolate = params.style === 'smooth' ? 'cubic-h' : null
+		const path = params.style === 'smooth' ? {d: this.interpolatePath(points)} : {points}
+		if (params.points) {
+			path.markers = '...'
+		}
 		
 		const diagram = [
-			'ABVG',
-			[
-				'CoordinatePlane', {span: [-10,yRange[0]-1,10,yRange[1]+1], height: '1.4in'},
-				['Path', { points, interpolate }]
-			]
+			'CoordinatePlane', {span: [-10,yRange[0]-1,10,yRange[1]+1], height: '1.4in', clip: false},
+			['Path', path]
 		]
 		
 		const fullName = {inc: 'increasing', dec: 'decreasing'}[toFind]
@@ -595,11 +608,7 @@ export class GraphLinearInequalities extends QGen {
 
 		const question = `$$\\displaystyle\\left\\{\\begin{aligned} ${latexeqn(line1)} \\\\ ${latexeqn(line2)} \\end{aligned}\\right.$$`
 
-		const blankgraph = [
-			'ABVG', [
-				'CoordinatePlane', {span: [-10,-10,10,10], height: '1.8in'},
-			]
-		]
+		const blankgraph = ['CoordinatePlane', {span: [-10,-10,10,10], height: '1.8in'}]
 
 		const correct = {
 			lines: [], 
@@ -611,7 +620,7 @@ export class GraphLinearInequalities extends QGen {
 			const points = [[-11, func(-11)], [11, func(11)]]
 
 			if (f.ineq === '<' || f.ineq === '>') {
-				correct.lines.push(['Path', {points, style: ['dashed']}])
+				correct.lines.push(['Path', {points, style: 'dashed'}])
 			} else {
 				correct.lines.push(['Path', {points}])
 			}
@@ -639,23 +648,15 @@ export class GraphLinearInequalities extends QGen {
 
 		const plotAnswer = a => (
 			[
-				'ABVG', [
-					'CoordinatePlane', {span: [-10,-10,10,10], height: '1in'},
-					[
-						'ClipPath', {points: a.clips[0]}, [
-							'ClipPath', {points: a.clips[1]},
-						['FillRegion', {points: [[-11,-11], [-11,11], [11,11], [11,-11]]}]
-					]],
-					['Layer', {strokeColor: '#999'}, ...a.lines],
-					[
-						'ClipPath', {points: a.clips[1]},
-						['Layer', a.lines[0]],
-					],
-					[
-						'ClipPath', {points: a.clips[0]},
-						['Layer', a.lines[1]],
-					],
-				]
+				'CoordinatePlane', {span: [-10,-10,10,10], height: '1in', style: 'primary function'},
+				[
+					'Clip', {shape: 'Path', points: a.clips[0]}, [
+						'Clip', {shape: 'Path', points: a.clips[1]},
+						['Path', {points: [[-11,-11], [-11,11], [11,11], [11,-11]], fill: "solid"}]
+				]],
+				['Style', {color: '#999'}, ...a.lines],
+				['Clip', {shape: 'Path', points: a.clips[1]}, a.lines[0] ],
+				['Clip', {shape: 'Path', points: a.clips[0]}, a.lines[1] ],
 			]
 		)
 

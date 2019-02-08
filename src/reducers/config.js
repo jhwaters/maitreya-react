@@ -1,5 +1,5 @@
 import {
-  ADD_LOCAL_FONT,
+  ADD_FONTFAMILY,
   SET_ALLOW_EDITING,
   SET_FONTFAMILY_UI,
   SET_SHOW_ANSWERKEY,
@@ -17,8 +17,14 @@ const initialState = {
 
 const config = function(state=initialState, action) {
   switch(action.type) {
-    case ADD_LOCAL_FONT:
-      return {...state, localFonts: [...state.localFonts, action.payload]}
+    case ADD_FONTFAMILY:
+      return {
+        ...state, 
+        localFonts: [
+          ...state.localFonts.filter(f => f.family !== action.payload.family), 
+          action.payload
+        ]
+      }
     case SET_ALLOW_EDITING:
       return {...state, allowEditing: action.payload}
     case SET_FONTFAMILY_UI:

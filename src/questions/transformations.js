@@ -179,11 +179,9 @@ export class MatchTransformations extends QGen {
 		}
 
 		const graphPoints = points => [
-			'ABVG', [
-				'CoordinatePlane', 
-				{ span: [-7,-7,7,7], height: '1.2in' },
-				['Path', { points }]
-			]
+			'CoordinatePlane', 
+			{ span: [-7,-7,7,7], height: '1.1in' },
+			['Path', { points }]
 		]
 
 		const eqnScramble = rd.shuffleRange(0, 5)

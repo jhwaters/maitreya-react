@@ -43,7 +43,7 @@ export const AnswerBlanks = props => {
   return (
     <table className='answerblanks'>
       <tbody>
-        {props.children.map((d,i) => {
+        {props.items.map((d,i) => {
           const dat = typeof d === 'string' ? {label: d} : d
           return (
             <AnswerBlank 

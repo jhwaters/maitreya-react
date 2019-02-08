@@ -1,0 +1,186 @@
+import React from 'react'
+import PropTypes from 'prop-types'
+import WebFont from 'webfontloader'
+import { connect } from 'react-redux'
+import { addFontFamily } from '../../../actions/config'
+import { setDocumentFontFamily } from '../../../actions/style'
+import { includes } from 'lodash'
+
+
+const googleFonts = [
+  
+  'Alegreya',
+  'Arima Madurai',
+  //'BioRhyme',
+  'EB Garamond',
+  'Gentium Basic',
+  //'Handlee',
+  'IBM Plex Sans',
+  'IBM Plex Serif',
+  //'Inconsolata',
+  'Jura',
+  'Lora',
+  'Merriweather',
+  'Noticia Text',
+  //'Noto Sans',
+  'Noto Serif',
+  'Old Standard TT',
+  'Raleway',
+  'Signika',
+  'Ubuntu',
+  'Zilla Slab',
+  //'Signika Negative',
+  
+  /*
+  'Fira Sans',
+  'Ledger',
+  'Montserrat',
+  'Neuton',
+  'Nunito',
+  'Roboto Slab',
+  */
+].sort()
+
+const fontStyles = {
+  default: '400,400i,700,700i',
+  //'Jura': '500,700',
+  //'Signika': '300,700',
+  'BioRhyme': '300,700',
+  'Merriweather': '300,300i,700,700i',
+  'Ubuntu': '300,300i,700,700i',
+}
+
+class FontLoader extends React.Component {
+  static propTypes = {
+    addFontFamily: PropTypes.func.isRequired,
+    type: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    type: 'select'
+  }
+
+  constructor(props) {
+    super(props)
+    const currentFamilies = this.props.localFonts.map(f => f['family'])
+    const toAdd = googleFonts.filter(f => !includes(currentFamilies, f))
+    
+    this.state = {
+      input: '',
+      selection: toAdd[0],
+      toAdd,
+    }
+  }
+
+  updateInput = evt => {
+    this.setState({input: evt.target.value})
+  }
+
+  updateSelection = evt => {
+    this.setState({selection: evt.target.value})
+  }
+
+  setFont(family) {
+    this.props.setDocumentFontFamily(family)
+  }
+
+  addFont({family, label}) {
+    this.props.setDocumentFontFamily(family)
+    this.props.addFontFamily({family, label})
+    const toAdd = this.state.toAdd.filter(f => f !== family)
+    this.setState({toAdd, selection: toAdd[0]})
+  }
+
+  loadFont = (family) => {
+    const request = `${family}:${fontStyles[family] || fontStyles.default}`
+    WebFont.load({
+      google: {
+        families: [request]
+      },
+      fontactive: () => this.addFont({family}),
+      fontinactive: () => console.error(`Could not load font ${family}`),
+    })
+  }
+
+  loadAll = () => {
+    if (this.state.toAdd.length === 1) {
+      return null
+    }
+    const loaded = {}
+    WebFont.load({
+      google: {
+        families: this.state.toAdd.map(f => `${f}:${fontStyles[f] || fontStyles.default}`)
+      },
+      fontactive: (family) => this.addFont({family}),
+      fontinactive: (family) => console.error(`Could not load font ${family}`),
+    })
+    for (const family in loaded) {
+      this.props.addFontFamily({family})
+    }
+    this.setState({toAdd: []})
+  }
+
+  loadInputFont = () => {
+    const family = this.state.input
+    if (family) {
+      this.loadFont(family)
+    }
+  }
+
+  loadSelectedFont = () => {
+    const family = this.state.selection
+    if (family) {
+      if (family === '__LOAD_ALL_WEB_FONTS__') {
+        this.loadAll()
+      } else {
+        this.loadFont(family)
+      }
+    }
+  }
+
+  renderInput() {
+    return (
+      <>
+      <input type="text" 
+        onChange={this.updateInput} 
+        value={this.state.input}
+      ></input>
+      <button onClick={this.loadInputFont}>Add</button>
+      </>
+    )
+  }
+
+  renderSelect() {
+    return (
+      <>
+      <select 
+        value={this.state.selection}
+        onChange={this.updateSelection}
+      >
+        {this.state.toAdd.map(f => <option key={`ff-${f}`} value={f}>{f}</option>)}
+        <option value="__LOAD_ALL_WEB_FONTS__">Load All Web Fonts</option>
+      </select>
+      <button onClick={this.loadSelectedFont}>Load</button>
+      </>
+    )
+  }
+
+  render() {
+    if (this.props.type === 'input') {
+      return this.renderInput()
+    }
+    if (this.props.type === 'select') {
+      return this.renderSelect()
+    }
+  }
+}
+
+const mapStateToProps = state => ({
+  localFonts: state.config.localFonts,
+})
+const mapDispatchToProps = dispatch => ({
+  addFontFamily: f => dispatch(addFontFamily(f)),
+  setDocumentFontFamily: f => dispatch(setDocumentFontFamily(f)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(FontLoader)

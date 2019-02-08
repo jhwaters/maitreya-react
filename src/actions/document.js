@@ -48,7 +48,7 @@ export const deleteElement = (idstr) => {
 
 export const deleteHeader = (id) => ({
   type: DELETE_HEADER,
-  payload: id,
+  payload: +id,
 })
 
 // Document settings

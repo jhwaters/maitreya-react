@@ -63,20 +63,16 @@ const MathAndMarkdown = ({data, options}) => {
       {splitWithDelimiters(data, katexOptions.delimiters).map((c,i) => {
         if (c.type === 'text') {
           if (options.renderMarkdown) {
-            return <InlineMarkdown key={i} data={c.data} options={options} />
+            return <InlineMarkdown key={i} data={c.data} options={options}/>
           } else {
-            return <PlainText key={i} data={c.data} />
+            return <span key={i}>c.data</span>
           }
         } else {
-          return <KatexMath key={i} data={c} katexOptions={{...katexOptions, displayMode: c.display}} />
+          return <KatexMath key={i} data={c} katexOptions={{...katexOptions, displayMode: c.display}}/>
         }
       })}
     </span>
   )
-}
-
-const PlainText = ({data}) => {
-  return <span>{data.toString()}</span>
 }
 
 const KatexMath = ({data, katexOptions}) => {
@@ -109,44 +105,47 @@ const InlineMarkdown = ({data, options}) => {
   return <span dangerouslySetInnerHTML={{__html: html}} />
 }
 
-export const Text = props => {
-  const { 
-    fontFamily, 
-    color,
-    options,
-    //renderMarkdown=true,
-    //renderMath=true,
-    //mathDelimiters=
-  } = props
-  const opts = defaultsDeep({}, options, defaultOptions)
-  const style = {}
-  if (fontFamily) {
-    style.fontFamily = fontFamily
-  }
-  if (color) {
-    style.color = color
-  }
-  if (opts.renderMath) {
+export default class Text extends React.Component {
+
+
+  render() {
+    const { 
+      fontFamily, 
+      fontSize,
+      color,
+      options,
+      //renderMarkdown=true,
+      //renderMath=true,
+      //mathDelimiters=
+    } = this.props
+    const opts = defaultsDeep({}, options, defaultOptions)
+    const style = {fontFamily, fontSize, color}
+    let RenderMethod
+    if (opts.renderMath) {
+      RenderMethod = MathAndMarkdown
+    } else if (opts.renderMarkdown) {
+      RenderMethod = InlineMarkdown
+    } else {
+      RenderMethod = ({data, options}) => data
+    }
     return (
       <span style={style}>
-        {props.children.map((c,i) => <MathAndMarkdown key={i} options={opts} data={c}/>)}
-      </span>
-    )
-  } else if (opts.renderMarkdown) {
-    return (
-      <span style={style}>
-        {props.children.map((c,i) => <InlineMarkdown key={i} options={opts} data={c}/>)}
-      </span>
-    )
-  } else {
-    return (
-      <span style={style}>
-        {props.children.map((c,i) => <PlainText key={i} options={opts} data={c}/>)}
+        {React.Children.map(this.props.children, (c,i) => {
+          if (typeof c === 'string') {
+            return <RenderMethod key={i} data={c} options={opts}/>
+          }
+          return null
+        })}
       </span>
     )
   }
 }
 
+
+
+
+
+/*
 export const Markdown = ({data, options}) => {
   const opts = defaultsDeep({}, options, defaultOptions)
   let md = new MarkdownIt()
@@ -169,11 +168,6 @@ export const Markdown = ({data, options}) => {
 }
 
 
-
-
-
-
-/*
 const defaultDelimiters = {
   display: {left: '$$$', right: '$$$'},
   inline: {left: '$$', right: '$$'},

@@ -34,20 +34,21 @@ function onKeyDown(evt) {
 }
 
 const jsonExample = `{
-  "instructions": "Use the table to answer the question.",
-  "question": "What is the value of $$g(f(2))$$?",
+  "instructions": "Use the Pythagorean Theorem: $$a^2 + b^2 = c^2$$",
+
+  "question": "Which is closest to the length of $$\\\\overline{XY}$$?",
+
   "answer": {
-    "choices": [1, 2, 3, 4, 5],
-    "correctIndex": 3
+    "choices": [6, 8, 10, 12, 14],
+    "correctIndex": 2
   },
+
   "diagram": [
-    "Table", {"align":"c|c|c"},
-    ["TRow", {"border":"bottom"}, "$$x$$", "$$f(x)$$", "$$g(x)$$"],
-    ["TRow", 1, 3, 2],
-    ["TRow", 2, 5, 1],
-    ["TRow", 3, 4, 5],
-    ["TRow", 4, 2, 3],
-    ["TRow", 5, 1, 4]
+    "CoordinatePlane",
+    {"span": "-5,-5 5,5", "axis": false, "height": "1.5in"},
+    ["Path", {"points": "-4,3 4,-3", "markers": ".-."}],
+    ["Label", {"x": -3, "y": 4}, "$$X$$"],
+    ["Label", {"x": 3, "y": -3}, "$$Y$$"]
   ]
 }`
 
@@ -189,13 +190,13 @@ class CustomQuestion extends React.Component {
       return (
         <>
           <button onClick={this.setJsonExample}>See example</button>
-          <p>Paste JSON:</p>
+          <br/>
           <textarea 
             value={this.state.json}
             onChange={this.updateJSON}
             onKeyDown={onKeyDown}
             spellCheck={false}
-            style={{width:'30rem', height: '10rem', fontSize: '0.9em'}}
+            style={{width:'30rem', height: '18rem', fontSize: '0.9em'}}
           />
           <br/>
         </>

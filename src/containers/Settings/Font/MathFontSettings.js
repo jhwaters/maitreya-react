@@ -11,21 +11,11 @@ class MathFontSettings extends React.Component {
     setMathFontWeight: PropTypes.func.isRequired,
   }
 
-  setSizeCss(size) {
-    document.body.style.setProperty('--doc-math-font-size', size)
-  }
-
-  setWeightCss(weight) {
-    document.body.style.setProperty('--doc-math-font-weight', weight)
-  }
-
   setSize(size) {
-    this.setSizeCss(size)
     this.props.setMathFontSize(size)
   }
 
   setWeight(weight) {
-    this.setWeightCss(weight)
     this.props.setMathFontWeight(weight)
   }
 

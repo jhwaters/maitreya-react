@@ -1,5 +1,4 @@
 import QGen from './QGen'
-import * as svg from './tools/svgplot'
 import { createTree } from './tools/QuadTree'
 
 
@@ -55,16 +54,13 @@ export class RationalPlot extends QGen {
     const transform = inv ? 'invertXY' : 'none'
 
     const graph = [
-      'ABVG',
+      'CoordinatePlane',
+      {span: [-10,-10,10,10], height: '2in'},
       [
-        'CoordinatePlane',
-        {span: [-10,-10,10,10], height: '2in'},
+        'Transform', { type: transform },
         [
-          'Layer', { transform },
-          [
-            'RationalFunction',
-            {roots, holes, asymptotes, domain}
-          ]
+          'RationalFunction',
+          {roots, holes, asymptotes, domain}
         ]
       ]
     ]
@@ -119,7 +115,7 @@ export class PolynomialPlot extends QGen {
     const graph = [
       'CoordinatePlane', {span: [-10,-10,10,10], width: '2in'},
       [
-        'Layer', { transform },
+        'Transform', { type: transform },
         [
           'PolynomialFunction',
           {coefficients: coeffs.map(c => c/denom), domain: [-11,11]}
@@ -131,7 +127,7 @@ export class PolynomialPlot extends QGen {
 
     return {
       question: question,
-      diagram: ['ABVG', graph],
+      diagram: graph,
       answer: {
         prompt: null,
       }
@@ -185,39 +181,68 @@ export class PlotStyling extends QGen {
     return {
       answer: {prompt: null},
       question: 'The graph of $$(x,y) = (9\\sin(t), 9\\cos(1.17t))$$ for $$-36 \\leq t \\leq 36$$:',
-      diagram: ['ABVG', 
+      diagram: [
+        'CoordinatePlane', { span: [-10,-10,10,10], height: '3in'},
         [
-          'CoordinatePlane', 
-          {
-            span: [-10,-10,10,10], 
-            height: '3in',
-          },
-          [
-            'Layer', {strokeColor: 'hsl(340,70%,60%)'},
-            ['Path', {points: path4}],
-          ],
-          [
-            'Layer', {strokeColor: 'hsl(30,90%,50%)'},
-            ['Path', {points: path3}],
-          ],
-          [
-            'Layer', {strokeColor: 'hsl(80,90%,40%)'},
-            ['Path', {points: path2}],
-          ],
-          [
-            'Layer', {strokeColor: 'hsl(170,90%,40%)'},
-            ['Path', {points: path1}],
-          ]
+          'Style', {color: 'hsl(340,70%,60%)'},
+          ['Path', {points: path4}],
+        ],
+        [
+          'Style', {color: 'hsl(30,90%,50%)'},
+          ['Path', {points: path3}],
+        ],
+        [
+          'Style', {color: 'hsl(80,90%,40%)'},
+          ['Path', {points: path2}],
+        ],
+        [
+          'Style', {color: 'hsl(170,90%,40%)'},
+          ['Path', {points: path1}],
         ]
       ]
     }
   }
 }
 
-
 export class FontTest extends QGen {
   static info = {
-    name: "Font Test"
+    name: 'Font Test',
+    description: 'how do 1lIJ look?',
+  }
+
+  generate(params) {
+    const rd = this.random
+    const b = 1
+    const [Ix, Iy, Jx, Jy] = rd.sampleRange(2,8,4)
+    const diagram = [
+      'CoordinatePlane', {span: [0,0,10,10], height: '1.2in'},
+      ['Point', {x: Ix, y: Iy}],
+      ['Point', {x: Jx, y: Jy}],
+      ['Label', {x: Ix, y: Iy}, '_I_'],
+      ['Label', {x: Jx, y: Jy}, '_J_'],
+    ]
+    return {
+      instructions: '**Remember**, point-slope form: $$y - y_1 = m(x - x_1)$$, and $$m = \\frac{\\Delta y}{\\Delta x}$$.',
+      question: [
+        `Given that line _l_ has a _y-intercept_ of ${b} and`,
+        '_l_ $$\\perp$$ _IJ_, determine the equation in',
+        '***slope-intercept*** form (_y = mx + b_) for _l_.',
+      ].join('\n'),
+      diagram: diagram,
+      layout: ['instructions', 'question', ['diagram', 'answer']],
+      answer: {
+        prompt: [
+          'AnswerBlanks', {items: ['equation: _y =_']}
+        ]
+      }
+    }
+  }
+}
+
+
+export class FontDisplay extends QGen {
+  static info = {
+    name: "Font Sample"
   }
 
   generate(params) {
@@ -233,29 +258,10 @@ export class FontTest extends QGen {
     }
 
     lines.push('$$\\text{' + text + '}$$ (LaTeX)')
-
-    const dontConfuse = ['IJl1']
-
-    for (const d of dontConfuse) {
-      let line = []
-      for (let i = 0; i < d.length-1; i++) {
-        for (let j = i+1; j < d.length; j++) {
-          line.push(d[i] + d[j])
-        }
-      }
-      for (const x of ['', '_', '__', '___']) {
-        lines.push(`${x}${line.join(' ')}${x}`)
-      }
-    }
-
-    const question = [
-      '_y = ax^2^ + bx +c_', 
-      '$$y = ax^2 + bx + c$$',
-    ].join('  \n')
+    lines.push('$$\\text{\\textit{' + text + '}}$$ (LaTeX)')
 
     return {
-      instructions: lines.join('  \n'),
-      question: question,
+      question: lines.join('  \n'),
     }
   }
 }
@@ -275,13 +281,9 @@ export class QuadTreePlotTest extends QGen {
     
     let points = createTree(pt => f1(pt) - f2(pt), -5, -5, 10, 8, 6)
 
-   const graph = [
-     'CoordinatePlane',
-     {span: [-5,-5,5,5], height: '3in'},
-     [
-       'Layer', {strokeWidth: '0.08mm'},
-       ['ScatterPlot', { points }]
-     ]
+    const graph = [
+      'CoordinatePlane',{span: [-5,-5,5,5], height: '3in'},
+      ['ScatterPlot', { points }]
    ]
 
 
@@ -289,9 +291,7 @@ export class QuadTreePlotTest extends QGen {
     return {
       answer: null,
       question: "The graph of $$\\sin(x^2) = \\cos(y^2)$$:",
-      diagram: [
-        'ABVG', graph
-      ],
+      diagram: graph,
     }
   }
 }

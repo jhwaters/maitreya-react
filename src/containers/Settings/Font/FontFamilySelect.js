@@ -4,10 +4,35 @@ import PropTypes from 'prop-types'
 import { setDocumentFontFamily } from '../../../actions/style'
 
 
-const GoogleFonts = [
+
+const googlefonts = [
+  'Arima Madurai',
+  'BioRhyme',
+  'Gentium Basic',
+  'IBM Plex Sans',
+  'IBM Plex Serif',
+  'Jura', 'Jura Medium',
+  'Lora',
+  'Noticia Text',
+  'Old Standard TT',
+  'Signika',
+  'Ubuntu',
+  'Zilla Slab',
+  
+  /* bad lIJ
+
+  'Fira Sans',
+  'Ledger',
+  'Montserrat',
+  'Neuton',
+  'Roboto Slab',
+
+  */
+]
+
+const DefaultFonts = [
+  //...googlefonts.map(f => ({family: f})),
   {family: 'CMU Serif'},
-  {family: 'IBM Plex Serif'},
-  {family: 'Source Sans Pro'},
 ]
 
 const BrowserFonts = [
@@ -66,33 +91,37 @@ class FontFamilySelect extends React.Component {
 
   constructor(props) {
     super(props)
-    this.setCss(props.current)
   }
 
   fontList = () => {
+    /*
     let result = [
-      ...GoogleFonts.sort(fontSort),
+      ...DefaultFonts.sort(fontSort),
       ...BrowserFonts, 
     ]
     if (this.props.localFonts.length > 0) {
       result.push({family: "0"})
       result = result.concat(this.props.localFonts.sort(fontSort))
     }
+    */
+    const result = [
+      ...[
+        ...DefaultFonts, 
+        ...this.props.localFonts
+      ].sort(fontSort), 
+      ...BrowserFonts,
+    ]
     return result
   }
 
-  setCss(fontFamily) {
-    document.body.style.setProperty('--doc-font-family', fontFamily)
-  }
-
   setFontFamily(fontFamily) {
-    this.setCss(fontFamily)
+    //this.setCss(fontFamily)
     this.props.setDocumentFontFamily(fontFamily)
   }
 
   setFromPrompt = () => {
     const customFamily = window.prompt(`Enter Font Name
-(this should be the name of a font installed on your computer)`)
+(this should be the name of a font already installed on your computer)`)
     this.setFontFamily(customFamily)
   }
 
@@ -119,7 +148,6 @@ class FontFamilySelect extends React.Component {
     )
   }
 }
-
 
 const mapStateToProps = state => ({
   current: state.style.fontFamily,

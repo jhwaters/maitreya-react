@@ -12,15 +12,9 @@ class FontFamilyInput extends React.Component {
 
   constructor(props) {
     super(props)
-    this.setCss(props.current)
-  }
-
-  setCss(fontFamily) {
-    document.body.style.setProperty('--doc-font-family', fontFamily)
   }
 
   setFontFamily(fontFamily) {
-    this.setCss(fontFamily)
     this.props.setDocumentFontFamily(fontFamily)
   }
 

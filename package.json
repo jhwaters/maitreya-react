@@ -24,7 +24,8 @@
     "react-vega-lite": "^2.0.2",
     "redux": "^4.0.1",
     "vega-lib": "^4.4.0",
-    "vega-lite": "^2.0.0"
+    "vega-lite": "^2.0.0",
+    "webfontloader": "^1.6.28"
   },
   "scripts": {
     "predeploy": "npm run build",

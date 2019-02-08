@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { resetGraphStyle } from '../../../actions/style'
 import {
-  Plot1PathColor, PlotPathWidth, Plot2PathColor, PlotColorSwap,
-  GeomPathColor, GeomPathWidth,
+  Function1Color, FunctionWidth, Function2Color, FunctionColorSwap,
+  GeomColor, GeomWidth,
   AsymptoteColor, AsymptoteWidth,
   AxisColor, AxisWidth,
   GridColor, GridWidth,
@@ -42,13 +42,13 @@ class GraphSettings extends React.Component {
         <>
           <tr>
             <td>Primary</td>
-            <td><Plot1PathColor/></td>
-            <td><PlotPathWidth/></td>
+            <td><Function1Color/></td>
+            <td><FunctionWidth/></td>
           </tr>
           <tr>
             <td>Secondary</td>
-            <td><Plot2PathColor/></td>
-            <td><PlotColorSwap>Swap Colors</PlotColorSwap></td>
+            <td><Function2Color/></td>
+            <td><FunctionColorSwap>Swap Colors</FunctionColorSwap></td>
           </tr>
           <tr>
             <td>Asymptote</td>
@@ -67,8 +67,8 @@ class GraphSettings extends React.Component {
         <>
           <tr>
             <td>Path</td>
-            <td><GeomPathColor/></td>
-            <td><GeomPathWidth/></td>
+            <td><GeomColor/></td>
+            <td><GeomWidth/></td>
           </tr>
         </>
       )

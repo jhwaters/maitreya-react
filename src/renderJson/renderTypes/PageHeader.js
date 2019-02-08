@@ -55,7 +55,7 @@ const renderHeaderElement = (text) => {
         } else {
           const w = `${1 + 3*(p.size - 1)}cm`
           return (
-            <div key={i} className='blank-underline blank-underline-header' style={{width: w}} />
+            <div key={i} className='blank-underline blank-underline-page-header' style={{width: w}} />
           )
         }
       })}
@@ -65,13 +65,13 @@ const renderHeaderElement = (text) => {
 
 export const PageHeader = props => {
 
-  if (props.children.length === 0) {
-    return <div className='header header-empty' />
+  if (props.rows.length === 0) {
+    return <div className='page-header page-header-empty' />
   } else {
     return (
-      <table className='header'>
+      <table className='page-header'>
         <tbody>
-          {props.children.map((row, i) => {
+          {props.rows.map((row, i) => {
             const [left, right] = row
             return (
               <tr key={i}>

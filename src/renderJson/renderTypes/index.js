@@ -1,4 +1,4 @@
-import ABVG from './VectorGraphics/index'
+import VectorGraphics from './VectorGraphics'
 import { AnswerChoices, AnswerBlanks } from './AnswerSpace'
 import { Container } from './Container'
 import { EmptySpace } from './EmptySpace'
@@ -7,11 +7,10 @@ import { Plain } from './Plain'
 import { Question, NumberedQuestion, AnswerKey } from './Question'
 import { RenderError } from './RenderError'
 import { Table, TRow } from './Table'
-import { Text } from './Text'
+import Text from './Text'
 import { VegaLite } from './VegaLite'
 
-const Terminal = {
-  ABVG,
+const renderTypes = {
   AnswerBlanks,
   AnswerKey,
   EmptySpace, 
@@ -22,13 +21,12 @@ const Terminal = {
   RenderError,
   Text,
   VegaLite,
-}
 
-const NonTerminal = {
   AnswerChoices,
   Container, 
   Table, 
-  TRow
+  TRow,
+  ...VectorGraphics,
 }
 
-export { NonTerminal, Terminal}
+export default renderTypes

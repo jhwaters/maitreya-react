@@ -97,11 +97,11 @@ function createComponent(base, propertyName) {
 }
 
 
-export const Plot1PathColor = createComponent(Color, 'plot1PathColor')
-export const PlotPathWidth = createComponent(Width, 'plotPathWidth')
-export const Plot2PathColor = createComponent(Color, 'plot2PathColor')
-export const GeomPathColor = createComponent(Color, 'geomPathColor')
-export const GeomPathWidth = createComponent(Width, 'geomPathWidth')
+export const Function1Color = createComponent(Color, 'function1Color')
+export const Function2Color = createComponent(Color, 'function2Color')
+export const FunctionWidth = createComponent(Width, 'functionWidth')
+export const GeomColor = createComponent(Color, 'geomColor')
+export const GeomWidth = createComponent(Width, 'geomWidth')
 export const AsymptoteColor = createComponent(Color, 'asymptoteColor')
 export const AsymptoteWidth = createComponent(Width, 'asymptoteWidth')
 export const AxisColor = createComponent(Color, 'axisColor')
@@ -144,12 +144,12 @@ class SwapButton extends React.Component {
   }
 }
 
-export const PlotColorSwap = connect(
+export const FunctionColorSwap = connect(
   state => ({
-    current1: state.style.graph.plot1PathColor, 
-    current2: state.style.graph.plot2PathColor,
-    propertyName1: 'plot1PathColor',
-    propertyName2: 'plot2PathColor'
+    current1: state.style.graph.function1Color, 
+    current2: state.style.graph.function2Color,
+    propertyName1: 'function1Color',
+    propertyName2: 'function2Color'
   }),
   dispatch => ({
     updateGraphStyle: updates => dispatch(updateGraphStyle(updates)),

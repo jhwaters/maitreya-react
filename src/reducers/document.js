@@ -17,11 +17,14 @@ const initialState = {
   content: {},
   order: [],
   headers: {
-    0: ['PageHeader'],
-    1: [
-      'PageHeader',
-      ['Assignment', 'Name ___'],
-      [null, 'Date __ Class _'],
+    '0': ['PageHeader', {rows: []}],
+    '1': [
+      'PageHeader', {
+        rows: [
+          ['Assignment', 'Name ___'],
+          [null, 'Date __ Class _'],
+        ]
+      }
     ],
   },
   footers: {},
@@ -37,9 +40,9 @@ const document = function(state=initialState, action) {
         ...state, 
         content: {
           ...state.content, 
-          [action.payload.id]: action.payload.element
+          [+action.payload.id]: action.payload.element
         },
-        order: [...state.order, action.payload.id]
+        order: [...state.order, +action.payload.id]
       }
     case CLEAR_ALL:
       return {
@@ -56,28 +59,29 @@ const document = function(state=initialState, action) {
       }
     case DELETE_HEADER:
       const headers = {...state.headers}
-      if (action.payload === 0 || action.payload === 1) {
-        headers[action.payload] = ['Header']
+      if (+action.payload === 0 || +action.payload === 1) {
+        headers[+action.payload] = ['PageHeader', {rows: []}]
+        return {...state, headers}
       } else {
-        delete headers[action.payload]
+        delete headers[+action.payload]
         return {...state, headers}
       }
     case DELETE_ELEMENT:
       //Note that this does not remove the element from 'content', only from 'order'
       return {
         ...state, 
-        order: state.order.filter(id => id !== action.payload),
+        order: state.order.filter(id => id !== +action.payload),
         pagebreaks: state.pagebreaks.filter(n => n < state.order.length),
       }
     case UPDATE_HEADER:
       return {
         ...state, 
-        headers: {...state.headers, [action.payload.id]: action.payload.data}
+        headers: {...state.headers, [+action.payload.id]: action.payload.data}
       }
     case UPDATE_ELEMENT:
       return {
         ...state, 
-        content: {...state.content, [action.payload.id]: action.payload.data}
+        content: {...state.content, [+action.payload.id]: action.payload.data}
       }
 
 

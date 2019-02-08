@@ -1,0 +1,78 @@
+.svgplot-canvas {
+  --svgplot-color: black;
+  stroke: var(--svgplot-color);
+  stroke-width: 0.3mm;
+  stroke-opacity: 1;
+  fill: none;
+  fill-opacity: 0.5;
+  stroke-linecap: butt;
+  stroke-linejoin: round;
+}
+
+.svgplot-canvas *[marker-start="arrowfwd"] { marker-start: var(--svgplot-marker-arrowfwd) }
+.svgplot-canvas *[marker-start="arrowrev"] { marker-start: var(--svgplot-marker-arrowrev) }
+.svgplot-canvas *[marker-start="arrow"] { marker-start: var(--svgplot-marker-arrowrev) }
+.svgplot-canvas *[marker-start="point"] { marker-start: var(--svgplot-marker-point) }
+.svgplot-canvas *[marker-start="hole"] { marker-start: var(--svgplot-marker-hole) }
+
+.svgplot-canvas *[marker-mid="arrowfwd"] { marker-mid: var(--svgplot-marker-arrowfwd) }
+.svgplot-canvas *[marker-mid="arrowrev"] { marker-mid: var(--svgplot-marker-arrowrev) }
+.svgplot-canvas *[marker-mid="arrow"] { marker-mid: var(--svgplot-marker-arrowfwd) }
+.svgplot-canvas *[marker-mid="point"] { marker-mid: var(--svgplot-marker-point) }
+.svgplot-canvas *[marker-mid="hole"] { marker-mid: var(--svgplot-marker-hole) }
+
+.svgplot-canvas *[marker-end="arrowfwd"] { marker-end: var(--svgplot-marker-arrowfwd) }
+.svgplot-canvas *[marker-end="arrowrev"] { marker-end: var(--svgplot-marker-arrowrev) }
+.svgplot-canvas *[marker-end="arrow"] { marker-end: var(--svgplot-marker-arrowfwd) }
+.svgplot-canvas *[marker-end="point"] { marker-end: var(--svgplot-marker-point) }
+.svgplot-canvas *[marker-end="hole"] { marker-end: var(--svgplot-marker-hole) }
+
+.svgplot-canvas *[fill~="50%"] { fill-opacity: 0.5; }
+.svgplot-canvas *[fill~="100%"] { fill-opacity: 1; }
+.svgplot-canvas *[fill~="solid"] { fill: var(--svgplot-color); }
+.svgplot-canvas *[fill~="dots1"] { fill: var(--svgplot-fillpattern-dots1); }
+.svgplot-canvas *[fill~="dots2"] { fill: var(--svgplot-fillpattern-dots2); }
+.svgplot-canvas *[fill~="zigzag1"] { fill: var(--svgplot-fillpattern-zigzag1); }
+.svgplot-canvas *[fill~="zigzag2"] { fill: var(--svgplot-fillpattern-zigzag2); }
+.svgplot-canvas *[fill~="diagonal1"] { fill: var(--svgplot-fillpattern-diagonal1); }
+.svgplot-canvas *[fill~="diagonal2"] { fill: var(--svgplot-fillpattern-diagonal2); }
+
+.svgplot-canvas * {
+  stroke: var(--svgplot-color);
+}
+
+.svgplot-marker {
+  stroke: none;
+  stroke-width: 0;
+  fill: var(--svgplot-color);
+}
+
+.svgplot-marker-hole {
+  stroke: none;
+  stroke-width: 0;
+  fill: white;
+  fill-opacity: 1;
+}
+
+.svgplot-fillpattern {
+  stroke: none;
+  fill: var(--svgplot-color);
+  fill-opacity: 1;
+}
+
+.svgplot-axis {
+  --svgplot-color: #222222;
+  stroke-width: 0.3mm;
+  stroke-linecap: square;
+}
+
+.svgplot-axis *[marker-start="arrow"] { marker-start: var(--svgplot-marker-axisarrow) }
+.svgplot-axis *[marker-start="arrowrev"] { marker-start: var(--svgplot-marker-axisarrow) }
+.svgplot-axis *[marker-end="arrow"] { marker-end: var(--svgplot-marker-axisarrow) }
+.svgplot-axis *[marker-end="arrowfwd"] { marker-end: var(--svgplot-marker-axisarrow) }
+
+.svgplot-grid {
+  --svgplot-color: #888888;
+  stroke-width: 0.1mm;
+  stroke-linecap: square;
+}

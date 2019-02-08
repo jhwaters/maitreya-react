@@ -1,5 +1,5 @@
 import React from 'react'
-import { Path, Asymptote, Point, Hole } from '.'
+import { Path, Style, Point } from '.'
 
 
 const calcPath = function(f, domain, step=0.1) {
@@ -15,7 +15,7 @@ const calcPath = function(f, domain, step=0.1) {
 
 export const PolynomialFunction = (props) => {
   const { 
-    coefficients, domain, step=0.1,
+    coefficients, domain, step=0.2,
     ...otherprops
   } = props
 
@@ -33,7 +33,7 @@ export const PolynomialFunction = (props) => {
 export const RationalFunction = (props) => {
   const {
     roots=[], holes=[], asymptotes=[], numerLC=1, denomLC=1, 
-    domain, step=0.1, range=[-1000,1000], 
+    domain, step=0.2, range=[-1000,1000], 
     renderAsymptotes=true, renderRoots=true, renderHoles=true,
     role
   } = props
@@ -104,15 +104,18 @@ export const RationalFunction = (props) => {
     ha = [{x: domain[0], y: numerLC/denomLC}, {x: domain[1], y: numerLC/denomLC}]
   }
 
-  const classNames = ['vg-rational-function']
 
   return (
-    <g className={classNames.join(' ')}>
-      {renderAsymptotes && ha ? <Asymptote key='hasym' points={ha} /> : null}
-      {renderAsymptotes ? vas.map(p => <Asymptote key={`asym${p[0].x}`} points={p} />) : null}
+    <>
+      {renderAsymptotes ? (
+        <Style name='asymptote'>
+          {ha ? <Path key='hasym' points={ha} /> : null}
+          {vas.map(p => <Path key={`asym${p[0].x}`} points={p} />)}
+        </Style>
+      ) : null}
       {paths.map(p => <Path key={`path${p[0].x}`} points={p} role={role} />)}
       {renderRoots ? roots.map(x => <Point key={`root${x}`} x={x} y={f(x)} />): null}
-      {renderHoles ? holes.map(x => <Hole key={`hole${x}`} x={x} y={f(x)} />) : null}
-    </g>
+      {renderHoles ? holes.map(x => <Point key={`hole${x}`} x={x} y={f(x)} marker="o"/>) : null}
+    </>
   )
 }

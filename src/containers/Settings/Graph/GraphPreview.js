@@ -1,12 +1,6 @@
 import React from 'react'
-import { 
-  CoordinatePlane, Path,
-  Asymptote, Point, FillRegion,
-  RationalFunction, Layer,
 
-  Polygon, Ray, Line, Segment,
-} from '../../../renderJson/renderTypes/VectorGraphics'
-//import { RenderJson } from '../../../renderJson'
+import { RenderJson } from '../../../renderJson'
 
 export const PreviewXYPlot = () => {
   
@@ -53,42 +47,42 @@ export const PreviewXYPlot = () => {
     x += step
   }
 
-  
-
-  const region = [...regionBottom, ...regionTop.reverse()]
-
-  /*
-  const preview = [
-    'ABVG',
+  const json = [
+    'CoordinatePlane', {span: [-10,-10,10,10], height: '3in'},
     [
-      'CoordinatePlane', {span: [-10,-10,10,10], width: '3.5in'},
-      ...vasymptotes.map(p => ['Asymptote', {points: [[p,-12], [p,12]]}]),
-      ...hasymptotes.map(p => ['Asymptote', {points: [[-12,p], [12,p]]}]),
+      'Style', {name: 'asymptote'},
+      ...vasymptotes.map(v => ['Path', {points: [[v, -12], [v, 12]]}]),
+      ...hasymptotes.map(v => ['Path', {points: [[-12, v], [12, v]]}])
+    ],
+    [
+      'Style', {name: 'primary'},
+      ['Path', {points: fpoints, fill: 'solid'}],
       [
-        'Layer', {style: 'function-2'},
-        ['FillRegion', {points: fpoints}],
-        ['Path', {points: fpoints}],
-      ],
-      [
-        'Layer', {style: 'function-1'},
+        'Transform', {type: 'translate', y: 2},
         [
-          'Layer', {transform: ['translate', {y: 2}]},
-          ['RationalFunction', {
-            numerLC: 2, asymptotes: vasymptotes, holes: holes, 
-            domain: [-11,-3], renderAsymptotes: false,
-          }]
+          'RationalFunction', {
+            numerLC: 2,
+            asymptotes: vasymptotes,
+            holes: holes,
+            domain: [-11,-3],
+            renderAsymptotes: false,
+          }
         ],
-        ['FillRegion', {points: gpoints}],
-        ['Path', {points: gpoints}],
-        ['Point', {x: 2, y: f(2)}],
-        ['Point', {x: 7, y: f(7)}],
-      ]
+      ],
+      ['Point', {x: -4, y: 0}],
+    ],
+    [
+      'Style', {name: 'secondary'},
+      ['Path', {points: gpoints, fill: 'solid'}],
+      
+      ['Point', {x: 2, y: f(2)}],
+      ['Point', {x: 7, y: f(7)}],
+      
     ]
   ]
-  return <RenderJson json={preview}/>
-  */
+  return <RenderJson json={json} />
 
-
+  /*
   return (
     <CoordinatePlane span={[-10,-10,10,10]} width="3in">
       {vasymptotes.map(p => <Asymptote key={`va-${p}`} points={[{x: p, y: -12}, {x: p, y: 12}]} />)}
@@ -117,6 +111,7 @@ export const PreviewXYPlot = () => {
 
     </CoordinatePlane>
   )
+  */
 
 }
 
@@ -130,6 +125,17 @@ export const PreviewGeom = () => {
   const seg = [[7,15], [2,15]]
   const circ = ({cx: 4, cy: 7, r: 2})
 
+  const json = [
+    'CoordinatePlane', {span: [0,0,20,20], height: '3in', style: 'geometry'},
+    ['Polyline', {points: poly, markers: "..."}],
+    ['Polyline', {points: ray, markers: ".->"}],
+    ['Polyline', {points: line, markers: "<->"}],
+    ['Polyline', {points: seg, markers: ".-."}],
+  ]
+
+  return <RenderJson json={json} />
+
+  /*
   return (
     <CoordinatePlane span={[0,0,20,20]} width='3in'>
       <Layer style='geometry'>
@@ -142,4 +148,5 @@ export const PreviewGeom = () => {
       </Layer>
     </CoordinatePlane>
   )
+  */
 }

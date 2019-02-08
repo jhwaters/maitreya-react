@@ -138,7 +138,7 @@ class AppWrapper extends React.Component {
           <span style={toplabel}>Start Numbers:</span><StartNumbering />
           <span style={toplabel}>Font:</span><FontFamily/><FontSize />
           <span style={toplabel}>Margins:</span><PageMargin />
-          <span style={toplabel}>Zoom:</span><PreviewZoom />
+          <span style={toplabel}>Zoom:</span><PreviewZoom defaultValue="110"/>
           <span style={toplabel}>Allow Editing:</span><AllowEditingToggle />
           <div style={{width: '3mm'}} />
           <FixPagination/>
