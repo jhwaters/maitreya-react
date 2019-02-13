@@ -20,7 +20,7 @@ class MathFontSettings extends React.Component {
   }
 
   onChangeSize = (evt) => {
-    this.setSize(evt.target.value)
+    this.setSize(evt.target.value + 'em')
   }
 
   onChangeWeight = (evt) => {
@@ -34,23 +34,18 @@ class MathFontSettings extends React.Component {
   render() {
     return (
       <>
-        Relative Size:
-        <select
+        <span>Relative Size:</span>
+        <input
+          type="number"
           onChange={this.onChangeSize}
-          value={this.props.currentSize}
-        >
-          <option value='0.6em'>0.6</option>
-          <option value='0.7em'>0.7</option>
-          <option value='0.8em'>0.8</option>
-          <option value='0.9em'>0.9 (default)</option>
-          <option value='1em'>1.0</option>
-          <option value='1.1em'>1.1</option>
-          <option value='1.2em'>1.2</option>
-          <option value='1.3em'>1.3</option>
-          <option value='1.4em'>1.4</option>
-        </select>
-        Bold:
-        <input ref={this.bold} 
+          value={this.props.currentSize.slice(0,-2)}
+          min="0.7"
+          max="2.0"
+          step="0.1"/>
+        <br/>
+        <label for="math-font-bold">Bold:</label>
+        <input id="math-font-bold"
+          ref={this.bold} 
           onChange={this.onChangeWeight}
           type="checkbox"
           checked={this.props.currentWeight === 'bold'}

@@ -128,9 +128,6 @@ export class PolynomialPlot extends QGen {
     return {
       question: question,
       diagram: graph,
-      answer: {
-        prompt: null,
-      }
     }
   }
 }
@@ -214,21 +211,28 @@ export class FontTest extends QGen {
     const rd = this.random
     const b = 1
     const [Ix, Iy, Jx, Jy] = rd.sampleRange(2,8,4)
-    const diagram = [
-      'CoordinatePlane', {span: [0,0,10,10], height: '1.2in'},
+    const diagram1 = [
+      'CoordinatePlane', {span: [-2,-2,10,10], height: '1.4in'},
       ['Point', {x: Ix, y: Iy}],
       ['Point', {x: Jx, y: Jy}],
       ['Label', {x: Ix, y: Iy}, '_I_'],
       ['Label', {x: Jx, y: Jy}, '_J_'],
     ]
+
     return {
-      instructions: '**Remember**, point-slope form: $$y - y_1 = m(x - x_1)$$, and $$m = \\frac{\\Delta y}{\\Delta x}$$.',
+      instructions: [
+        'Text',
+        '**Remember**, point-slope form:',
+        '$$y - y_1 = m(x - x_1)$$,',
+        'and $$m = \\frac{\\Delta y}{\\Delta x}$$.',
+      ],
       question: [
+        'Text',
         `Given that line _l_ has a _y-intercept_ of ${b} and`,
         '_l_ $$\\perp$$ _IJ_, determine the equation in',
         '***slope-intercept*** form (_y = mx + b_) for _l_.',
-      ].join('\n'),
-      diagram: diagram,
+      ],
+      diagram: diagram1,
       layout: ['instructions', 'question', ['diagram', 'answer']],
       answer: {
         prompt: [
@@ -289,7 +293,6 @@ export class QuadTreePlotTest extends QGen {
 
 
     return {
-      answer: null,
       question: "The graph of $$\\sin(x^2) = \\cos(y^2)$$:",
       diagram: graph,
     }
@@ -352,7 +355,6 @@ ${'```'}
 `
 
     return ({
-      answer: null,
       question: {
         type: 'markdown',
         data: mdtest,
@@ -384,6 +386,11 @@ export class VegaLite extends QGen {
     }
 
     const diagram2 = {
+      config: {
+        line: {
+          color: 'red'
+        }
+      },
       data: { values: points },
       mark: {
         type: 'line', 
@@ -400,13 +407,16 @@ export class VegaLite extends QGen {
         },
         color: {
           field: 'function',
-          type: 'nominal'
+          type: 'nominal',
+          scale: {
+            domain: ['f', 'g'], 
+            range: ['var(--vg-function-1-color)', 'var(--vg-function-2-color)'],
+          },
         }
       },
     }
 
     return {
-      answer: null,
       instructions: 'The graphs of $$f(x) = - x^2 + 6x$$ and $$g(x) = 5\\sin(x)$$',
       diagram: ['VegaLite', diagram2],
     }

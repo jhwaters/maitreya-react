@@ -13,26 +13,27 @@ const googleFonts = [
   'Arima Madurai',
   //'BioRhyme',
   'EB Garamond',
+  'Fira Sans',
   'Gentium Basic',
   //'Handlee',
-  'IBM Plex Sans',
-  'IBM Plex Serif',
+  //'IBM Plex Sans',
+  //'IBM Plex Serif',
   //'Inconsolata',
   'Jura',
-  'Lora',
-  'Merriweather',
-  'Noticia Text',
+  //'Lora',
+  //'Merriweather',
+  //'Noticia Text',
   //'Noto Sans',
   'Noto Serif',
   'Old Standard TT',
   'Raleway',
   'Signika',
+  'Source Serif Pro',
   'Ubuntu',
   'Zilla Slab',
   //'Signika Negative',
   
   /*
-  'Fira Sans',
   'Ledger',
   'Montserrat',
   'Neuton',
@@ -45,9 +46,9 @@ const fontStyles = {
   default: '400,400i,700,700i',
   //'Jura': '500,700',
   //'Signika': '300,700',
+  //'Ubuntu': '300,300i,700,700i',
   'BioRhyme': '300,700',
   'Merriweather': '300,300i,700,700i',
-  'Ubuntu': '300,300i,700,700i',
 }
 
 class FontLoader extends React.Component {
@@ -57,13 +58,12 @@ class FontLoader extends React.Component {
   }
 
   static defaultProps = {
-    type: 'select'
+    type: 'button'
   }
 
   constructor(props) {
     super(props)
-    const currentFamilies = this.props.localFonts.map(f => f['family'])
-    const toAdd = googleFonts.filter(f => !includes(currentFamilies, f))
+    const toAdd = googleFonts.filter(f => !includes(this.props.localFonts, f))
     
     this.state = {
       input: '',
@@ -84,9 +84,9 @@ class FontLoader extends React.Component {
     this.props.setDocumentFontFamily(family)
   }
 
-  addFont({family, label}) {
+  addFont(family) {
     this.props.setDocumentFontFamily(family)
-    this.props.addFontFamily({family, label})
+    this.props.addFontFamily(family)
     const toAdd = this.state.toAdd.filter(f => f !== family)
     this.setState({toAdd, selection: toAdd[0]})
   }
@@ -97,7 +97,7 @@ class FontLoader extends React.Component {
       google: {
         families: [request]
       },
-      fontactive: () => this.addFont({family}),
+      fontactive: () => this.addFont(family),
       fontinactive: () => console.error(`Could not load font ${family}`),
     })
   }
@@ -111,13 +111,10 @@ class FontLoader extends React.Component {
       google: {
         families: this.state.toAdd.map(f => `${f}:${fontStyles[f] || fontStyles.default}`)
       },
-      fontactive: (family) => this.addFont({family}),
+      fontactive: (family) => this.addFont(family),
       fontinactive: (family) => console.error(`Could not load font ${family}`),
     })
-    for (const family in loaded) {
-      this.props.addFontFamily({family})
-    }
-    this.setState({toAdd: []})
+    //this.setState({toAdd: []})
   }
 
   loadInputFont = () => {
@@ -136,6 +133,10 @@ class FontLoader extends React.Component {
         this.loadFont(family)
       }
     }
+  }
+
+  renderButton() {
+    return <button onClick={this.loadAll}>Load Web Fonts</button>
   }
 
   renderInput() {
@@ -166,6 +167,9 @@ class FontLoader extends React.Component {
   }
 
   render() {
+    if (this.props.type === 'button') {
+      return this.renderButton()
+    }
     if (this.props.type === 'input') {
       return this.renderInput()
     }

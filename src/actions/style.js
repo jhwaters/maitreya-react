@@ -8,14 +8,12 @@ export const RESET_GRAPHSTYLE = 'RESET_GRAPHSTYLE'
 
 // Document font
 export const setDocumentFontFamily = (family) => {
-  document.body.style.setProperty('--doc-font-family', family)
   return ({
     type: SET_DOCUMENT_FONTFAMILY,
     payload: family
   })
 }
 export const setDocumentFontSize = (size) => {
-  document.body.style.setProperty('--doc-font-size', size)
   return ({
     type: SET_DOCUMENT_FONTSIZE,
     payload: size
@@ -24,14 +22,12 @@ export const setDocumentFontSize = (size) => {
 
 // Document Math Font
 export const setMathFontSize = (size) => {
-  document.body.style.setProperty('--doc-math-font-size', size)
   return ({
     type: SET_MATH_FONTSIZE,
     payload: size
   })
 }
 export const setMathFontWeight = (weight) => {
-  document.body.style.setProperty('--doc-math-font-weight', weight)
   return ({
     type: SET_MATH_FONTWEIGHT,
     payload: weight
@@ -45,10 +41,12 @@ export const setPageMargin = (margins) => ({
 })
 
 // Graph Style
-export const updateGraphStyle = (props) => ({
-  type: UPDATE_GRAPHSTYLE,
-  payload: props,
-})
+export const updateGraphStyle = (props) => {
+  return ({
+    type: UPDATE_GRAPHSTYLE,
+    payload: props,
+  })
+}
 
 export const resetGraphStyle = () => ({
   type: RESET_GRAPHSTYLE,

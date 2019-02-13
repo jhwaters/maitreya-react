@@ -10,10 +10,6 @@ class FontFamilyInput extends React.Component {
     setDocumentFontFamily: PropTypes.func,
   }
 
-  constructor(props) {
-    super(props)
-  }
-
   setFontFamily(fontFamily) {
     this.props.setDocumentFontFamily(fontFamily)
   }
@@ -26,7 +22,7 @@ class FontFamilyInput extends React.Component {
 
   render() {
     return (
-      <input 
+      <input type="text"
         value={this.props.current}
         spellCheck={false}
         onChange={this.onChange}

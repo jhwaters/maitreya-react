@@ -8,19 +8,19 @@ export const MarkerSymbols = props => {
   return (
     <defs>
       <symbol id="svgplot-symbol-point" viewBox="-12 -12 24 24" refX="0" refY="0">
-        <circle cx="0" cy="0" r="3"/>
+        <circle cx="0" cy="0" r="4"/>
       </symbol>
       <symbol id="svgplot-symbol-hole" viewBox="-12 -12 24 24" refX="0" refY="0">
-        <circle cx="0" cy="0" r="4.5"/>
-        <circle cx="0" cy="0" r="2.5"className="svgplot-marker-hole"/>
+        <circle cx="0" cy="0" r="5"/>
+        <circle cx="0" cy="0" r="3"className="svgplot-marker-hole"/>
       </symbol>
       <symbol id="svgplot-symbol-arrow" viewBox="-12 -12 24 24" refX="0" refY="0">
-        <path d="M -2,0 L -4,-5 L 5,0 L -4,5 z"/>
+        <path d="M -2,0 L -5,-6 L 6,0 L -5,6 z"/>
       </symbol>
       <symbol id="svgplot-symbol-axisarrow" viewBox="-12 -12 24 24" refX="0" refY="0">
-        <polygon points="0,1 4,1 4,-1 0,-1"/>
-        <polygon points="0,0 0,2 10,2 10,0" transform="translate(5,0) rotate(120)"/>
-        <polygon points="0,0 0,2 10,2 10,0" transform="scale(1,-1) translate(5,0) rotate(120)"/>
+        <polygon points="0,1 1,1 1,-1 0,-1"/>
+        <polygon points="0,0 0,2 10,2 10,0" transform="translate(2,0) rotate(120)"/>
+        <polygon points="0,0 0,2 10,2 10,0" transform="scale(1,-1) translate(2,0) rotate(120)"/>
       </symbol>
     </defs>
   )
@@ -140,7 +140,7 @@ class StyleDefs extends React.Component {
   }
 
   checkSize() {
-    const CTM = this.ref.current.getScreenCTM()
+    const CTM = this.ref.current.getCTM()
     this.setState({CTM})
   }
 
@@ -163,7 +163,7 @@ class StyleDefs extends React.Component {
     return (
       <defs ref={this.ref}>
         <MarkerDefs stylename={stylename} markerW={w} markerH={h}/>
-        <FillPatternDefs stylename={stylename} width={w/4} height={h/4}/>
+        <FillPatternDefs stylename={stylename} width={w/3} height={h/3}/>
       </defs>
     )
   }
@@ -190,7 +190,7 @@ const Style = props => {
   }
 
   return (
-    <g className={name} style={style}>
+    <g className={name} style={style} vectorEffect="inherit">
       <StyleDefs stylename={uniquename}/>
       {props.children}
     </g>

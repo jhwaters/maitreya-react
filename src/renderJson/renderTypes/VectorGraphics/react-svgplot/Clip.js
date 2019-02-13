@@ -10,7 +10,7 @@ const Clip = props => {
       <clipPath id={id}>
         {React.createElement(shape, shapeprops)}
       </clipPath>
-      <g clipPath={`url(#${id})`}>
+      <g clipPath={`url(#${id})`} vectorEffect="inherit">
         {props.children}
       </g>
     </>

@@ -2,15 +2,15 @@ import React from 'react'
 
 
 export const Circle = props => {
-  return <circle {...props} vectorEffect="non-scaling-stroke" />
+  return <circle vectorEffect="inherit" {...props}/>
 }
 
 export const Ellipse = props => {
-  return <ellipse {...props} vectorEffect="non-scaling-stroke" />
+  return <ellipse vectorEffect="inherit" {...props}/>
 }
 
 export const Rect = props => {
-  return <rect vectorEffect="non-scaling-stroke" {...updatePropsWithMarkers(props)}/>
+  return <rect vectorEffect="inherit" {...updatePropsWithMarkers(props)}/>
 }
 
 const markerProps = s => {
@@ -37,20 +37,20 @@ function updatePropsWithMarkers(props) {
 }
 
 export const Line = props => {
-  return <line vectorEffect="non-scaling-stroke" {...updatePropsWithMarkers(props)}/>
+  return <line vectorEffect="inherit" {...updatePropsWithMarkers(props)}/>
 }
 
 export const Polygon = props => {
-  return <polygon vectorEffect="non-scaling-stroke" {...updatePropsWithMarkers(props)}/>
+  return <polygon vectorEffect="inherit" {...updatePropsWithMarkers(props)}/>
 }
 
 export const Polyline = props => {
-  return <polyline vectorEffect="non-scaling-stroke" {...updatePropsWithMarkers(props)}/>
+  return <polyline vectorEffect="inherit" {...updatePropsWithMarkers(props)}/>
 }
 
 export const Path = props => {
   return (
-    <path vectorEffect="non-scaling-stroke" {...updatePropsWithMarkers(props)}/>
+    <path vectorEffect="inherit" {...updatePropsWithMarkers(props)}/>
   )
 }
 

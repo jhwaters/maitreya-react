@@ -99,11 +99,20 @@ export const AnswerKey = props => {
   const letters = 'abcdefg'
   const { content, options } = props
   if (isMultipleChoice(content, options)) {
-    if (content.answer.choices && content.answer.correctIndex !== undefined) {
-      if (Array.isArray(content.answer.correctIndex)) {
-        return content.answer.correctIndex.map(i => letters[i]).join(', ')
-      } else {
-        return letters[content.answer.correctIndex]
+    if (content.answer.choices) {
+      if (content.answer.correctIndex !== undefined) {
+        if (Array.isArray(content.answer.correctIndex)) {
+          return content.answer.correctIndex.map(i => letters[i]).join(', ')
+        } else {
+          return letters[content.answer.correctIndex]
+        }
+      }
+      if (content.answer.correct) {
+        for (let i = 0; i < content.answer.choices.length; i++) {
+          if (content.answer.choices[i] == content.answer.correct) {
+            return letters[i]
+          }
+        }
       }
     }
   }

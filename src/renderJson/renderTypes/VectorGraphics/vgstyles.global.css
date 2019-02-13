@@ -1,24 +1,20 @@
 :root {
-  --vg-fill-opacity: 0.2;
+  --vg-angle-color: #6688ff;
   --vg-asymptote-color: #888888;
-  --vg-axis-color: #111111;
-  --vg-grid-color: #888888;
-  --vg-axis-width: 0.3mm;
-  --vg-grid-width: 0.1mm;
   --vg-asymptote-width: 0.6mm;
-  --vg-stroke-opacity: 1;
-  
+  --vg-axis-color: #111111;
+  --vg-axis-width: 0.3mm;
+  --vg-fill-opacity: 0.2;
   --vg-function-1-color: #ff3600;
   --vg-function-2-color: #0080d9;
-  --vg-geom-color: #224466;
-
-  --vg-function-width: 0.5mm;
-  --vg-geom-width: 0.5mm;
+  --vg-function-width: 0.4mm;
+  --vg-geom-color: #000000;
+  --vg-geom-width: 0.3mm;
+  --vg-grid-color: #888888;
+  --vg-grid-width: 0.1mm;
+  --vg-label-font-size: 1em;
+  --vg-stroke-opacity: 1;
 }
-
-/************
- STYLES 
- ************/
 
 .svgplot-axis {
   --svgplot-color: var(--vg-axis-color);
@@ -34,14 +30,21 @@
   fill-opacity: var(--vg-stroke-opacity);
 }
 
+.svgplot-label {
+  color: black;
+  font-size: var(--vg-label-font-size);
+  white-space: nowrap;
+}
+
+/************
+ STYLES 
+ ************/
+
+
 .vg-style-asymptote {
   --svgplot-color: var(--vg-asymptote-color);
   stroke: var(--svgplot-color);
   stroke-width: var(--vg-asymptote-width);
-  stroke-dasharray: 2mm 1mm;
-}
-
-.vg-style-dashed {
   stroke-dasharray: 2mm 1mm;
 }
 
@@ -64,13 +67,29 @@
   stroke-width: var(--vg-geom-width);
 }
 
+.vg-style-scatterplot {
+  stroke-dasharray: 0 1;
+  marker-start: var(--svgplot-marker-point);
+  marker-mid: var(--svgplot-marker-point);
+  marker-end: var(--svgplot-marker-point);
+}
+
+.vg-style-anglemark {
+  --svgplot-color: var(--vg-angle-color);
+}
+
+.vg-style-dashed {
+  stroke-dasharray: 2mm 1mm;
+}
+
+.vg-style-nostroke {
+  stroke-width: 0;
+}
+
 .vg-style-black { --svgplot-color: #000000; }
-.vg-style-red { --svgplot-color: #ff3600; }
 .vg-style-blue { --svgplot-color: #0080d9; }
 .vg-style-green { --svgplot-color: #44aa66; }
-.vg-style-orange { --svgplot-color: #f3972e; }
+.vg-style-orange { --svgplot-color: #f58518; }
+.vg-style-pink { --svgplot-color: #f87199; }
 .vg-style-purple { --svgplot-color: #cc66aa; }
-.vg-style-pink { --svgplot-color: #f05180; }
-
-
-
+.vg-style-red { --svgplot-color: #ff3600; }

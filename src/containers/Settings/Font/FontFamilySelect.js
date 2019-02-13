@@ -2,71 +2,73 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { setDocumentFontFamily } from '../../../actions/style'
+import { addFontFamily } from '../../../actions/config'
 
 
 
 const googlefonts = [
+  //'Alegreya',
   'Arima Madurai',
   'BioRhyme',
-  'Gentium Basic',
-  'IBM Plex Sans',
-  'IBM Plex Serif',
-  'Jura', 'Jura Medium',
-  'Lora',
-  'Noticia Text',
+  'EB Garamond',
+  'Fira Sans',
+  //'Gentium Basic',
+  //'IBM Plex Sans',
+  //'IBM Plex Serif',
+  'Jura', 
+  //'Jura Medium',
+  //'Lora',
+  //'Merriweather',
+  //'Noticia Text',
   'Old Standard TT',
+  //'PT Serif',
+  'Raleway',
   'Signika',
+  //'Source Serif Pro',
   'Ubuntu',
   'Zilla Slab',
-  
-  /* bad lIJ
-
-  'Fira Sans',
-  'Ledger',
-  'Montserrat',
-  'Neuton',
-  'Roboto Slab',
-
-  */
 ]
 
 const DefaultFonts = [
-  //...googlefonts.map(f => ({family: f})),
-  {family: 'CMU Serif'},
+  //...googlefonts,
+  'CMU Concrete',
+  'CMU Serif',
+  'IBM Plex Sans',
+  'IBM Plex Serif',
 ]
 
 const BrowserFonts = [
-  {label: 'serif', family: 'serif'},
-  {label: 'sans-serif', family: 'sans-serif'},
+  '__CUSTOM__',
+  'sans-serif',
+  'serif',
 ]
 
+const fontLabels = {
+  '__CUSTOM__': 'local font',
+  'sans-serif': 'sans-serif (browser)',
+  'serif': 'serif (browser)'
+}
+
+
 function fontSort(a, b) {
-  const aName = (a.label ? a.label : a.family).toUpperCase()
-  const bName = (b.label ? b.label : b.family).toUpperCase()
+  const aName = (fontLabels[a] || a).toUpperCase()
+  const bName = (fontLabels[b] || b).toUpperCase()
   if (aName < bName) { return -1 }
   if (aName > bName) { return 1}
   return 0
 }
 
 
-function renderFontOption(font) {
-  const {family, label} = font
-  if (family === "0") {
-    const optionLabel = label ? label : "---"
+function renderFontOption(family) {
+  if (family) {
+    const label = fontLabels[family] || family
     return (
-      <option key={`font-null-${optionLabel}`}
-        value="0"
-        disabled
-      >{optionLabel}</option>
-    )
-  } else {
-    const optionLabel = label ? label : family
-    return (
-      <option key={`font-family-option-${family}`}
+      <option key={`font-${family}`}
         value={family}
-        >{optionLabel}</option>
+        >{label}</option>
     )
   }
+  return <option key={0} value="0" disabled={true}>---</option>
 }
 
 
@@ -94,22 +96,14 @@ class FontFamilySelect extends React.Component {
   }
 
   fontList = () => {
-    /*
-    let result = [
-      ...DefaultFonts.sort(fontSort),
-      ...BrowserFonts, 
-    ]
-    if (this.props.localFonts.length > 0) {
-      result.push({family: "0"})
-      result = result.concat(this.props.localFonts.sort(fontSort))
-    }
-    */
     const result = [
+      ...BrowserFonts,
+      0,
       ...[
         ...DefaultFonts, 
         ...this.props.localFonts
       ].sort(fontSort), 
-      ...BrowserFonts,
+      
     ]
     return result
   }
@@ -120,9 +114,12 @@ class FontFamilySelect extends React.Component {
   }
 
   setFromPrompt = () => {
-    const customFamily = window.prompt(`Enter Font Name
+    const family = window.prompt(`Enter Font Name
 (this should be the name of a font already installed on your computer)`)
-    this.setFontFamily(customFamily)
+    if (family) {
+      this.props.addFontFamily(family)
+      this.setFontFamily(family)
+    }
   }
 
   onChange = (evt) => {
@@ -141,7 +138,6 @@ class FontFamilySelect extends React.Component {
           value={this.props.current}
           onChange={this.onChange}
         >
-          <option value="__CUSTOM__">Custom</option>
           {this.fontList().map((f) => renderFontOption(f))}
         </select>
       </>
@@ -155,6 +151,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+  addFontFamily: f => dispatch(addFontFamily(f)),
   setDocumentFontFamily: (family) => dispatch(setDocumentFontFamily(family)),
 })
 

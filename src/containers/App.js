@@ -33,23 +33,21 @@ import {
   clearAll,
 } from '../actions/document'
 
-import {
-  examplequestions, transformations, demogenerators, picofermi
-} from '../questions'
+import * as questiontypes from '../questions'
 
 
 let questionBank = {}
-for (const set of [examplequestions, transformations]) {
-  for (const q in set) {
-    const n = set[q].register().name
-    questionBank[n] = set[q]
+for (const set of ['examplequestions', 'transformations', 'trigonometry']) {
+  for (const q in questiontypes[set]) {
+    const n = questiontypes[set][q].register().name
+    questionBank[n] = questiontypes[set][q]
   }
 }
 
-for (const set of [demogenerators, picofermi]) {
-  for (const q in set) {
-    const n = '_ ' + set[q].register().name
-    questionBank[n] = set[q]
+for (const set of ['generatortests', 'picofermi']) {
+  for (const q in questiontypes[set]) {
+    const n = '_' + questiontypes[set][q].register().name
+    questionBank[n] = questiontypes[set][q]
   }
 }
 

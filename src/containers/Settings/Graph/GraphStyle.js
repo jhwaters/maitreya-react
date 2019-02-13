@@ -1,31 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { kebabCase } from 'lodash'
 import { updateGraphStyle } from '../../../actions/style'
 
-function setCss(k, v) {
-  document.body.style.setProperty(k, v)
-}
 
 class GraphStyle extends React.Component {
   static propTypes = {
     updateGraphStyle: PropTypes.func.isRequired,
     propertyName: PropTypes.string.isRequired,
     current: PropTypes.string.isRequired,
-  }
-
-  constructor(props) {
-    super(props)
-    this.cssName = `--vg-${kebabCase(props.propertyName)}`
-  }
-
-  componentDidMount() {
-    setCss(this.cssName, this.props.current)
-  }
-
-  componentDidUpdate() {
-    setCss(this.cssName, this.props.current)
   }
 
   setValue(value) {
@@ -122,15 +105,7 @@ class SwapButton extends React.Component {
     updateGraphStyle: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props)
-    this.cssName1 = `--vg-${kebabCase(props.propertyName1)}`
-    this.cssName2 = `--vg-${kebabCase(props.propertyName2)}`
-  }
-
   doSwap = () => {
-    setCss(this.cssName1, this.current2)
-    setCss(this.cssName2, this.current1)
     this.props.updateGraphStyle({
       [this.props.propertyName1]: this.props.current2,
       [this.props.propertyName2]: this.props.current1,
@@ -155,3 +130,26 @@ export const FunctionColorSwap = connect(
     updateGraphStyle: updates => dispatch(updateGraphStyle(updates)),
   })
 )(SwapButton)
+
+
+class RelativeFontSize extends GraphStyle {
+  onChange = (evt) => {
+    this.setValue(evt.target.value + 'em')
+  }
+  render() {
+    return (
+      <input type='range'
+        value={this.props.current.slice(0,-2)}
+        onChange={this.onChange}
+        min='0.1'
+        max='3'
+        step='0.05'
+      />
+    )
+  }
+}
+
+export const LabelFontSize = connect(
+  state => ({current: state.style.graph.labelFontSize, propertyName: 'labelFontSize'}),
+  dispatch => ({updateGraphStyle: updates => dispatch(updateGraphStyle(updates))}),
+)(RelativeFontSize)

@@ -1,5 +1,9 @@
-/*@import url('https://fonts.googleapis.com/css?family=Lora|Ubuntu|Zilla+Slab');*/
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,700,700i|IBM+Plex+Serif:400,400i,700,700i');
 
+/*
+@import url('https://fontlibrary.org/face/cmu-serif');
+@import url('https://fontlibrary.org/face/cmu-concrete');
+*/
 
 @font-face {
   font-family: 'CMU Serif';
@@ -27,4 +31,32 @@
   font-style: italic;
   font-weight: bold;
   src: url('./fonts/cmunbi-webfont.woff');
+}
+
+@font-face {
+  font-family: 'CMU Concrete';
+  font-style: normal;
+  font-weight: normal;
+  src: url('./fonts/cmunorm-webfont.woff');
+}
+
+@font-face {
+  font-family: 'CMU Concrete';
+  font-style: italic;
+  font-weight: normal;
+  src: url('./fonts/cmunoti-webfont.woff');
+}
+
+@font-face {
+  font-family: 'CMU Concrete';
+  font-style: normal;
+  font-weight: bold;
+  src: url('./fonts/cmunobx-webfont.woff');
+}
+
+@font-face {
+  font-family: 'CMU Concrete';
+  font-style: italic;
+  font-weight: bold;
+  src: url('./fonts/cmunobi-webfont.woff');
 }

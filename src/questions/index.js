@@ -1,10 +1,12 @@
 import * as examplequestions from './examplequestions'
-import * as demogenerators from './demogenerators'
+import * as generatortests from './generatortests'
 import * as transformations from './transformations'
+import * as trigonometry from './trigonometry'
 import * as picofermi from './picofermi'
 export {
   examplequestions,
-  demogenerators,
   transformations,
+  trigonometry,
   picofermi,
+  generatortests,
 }

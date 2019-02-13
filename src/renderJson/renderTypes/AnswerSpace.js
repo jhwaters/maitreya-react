@@ -1,5 +1,4 @@
 import React from 'react'
-import { RenderJson } from '..'
 
 export const AnswerChoices = props => {
 
@@ -19,38 +18,23 @@ export const AnswerChoices = props => {
   )
 }
 
-
-
-const AnswerBlank = props => {
-  const style = {margin: '0'}
-  
+export const AnswerBlanks = props => {
+  const style = {margin: 0}
   if (props.width !== undefined) {
     style.minWidth = props.width
   }
   if (props.height !== undefined) {
     style.minHeight = props.height
   }
-
-  return (
-    <tr>
-      <td><RenderJson json={props.label === undefined ? 'answer:' : props.label} /></td>
-      <td><div className='blank-underline answerblank' style={style}/></td>
-    </tr>
-  )
-}
-
-export const AnswerBlanks = props => {
   return (
     <table className='answerblanks'>
       <tbody>
-        {props.items.map((d,i) => {
-          const dat = typeof d === 'string' ? {label: d} : d
-          return (
-            <AnswerBlank 
-              key={`answerblank=${dat.label}-${i}`} 
-              {...dat}
-            />
-        )})}
+        {React.Children.map(props.children, (c,i) => (
+          <tr key={i}>
+            <td>{c}</td>
+            <td><div className='blank-underline answerblank' style={style}/></td>
+          </tr>
+        ))}
       </tbody>
     </table>
   )

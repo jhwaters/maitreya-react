@@ -1,7 +1,6 @@
 html, body { margin: 0 }
 @page { margin: 0 }
 
-
 /** For screen preview **/
 @media screen {
   body { background: var(--ui-border-0, #ccc); }
@@ -16,16 +15,16 @@ html, body { margin: 0 }
 }
 
 @media print {
-  html, body, #root {
-    overflow: visible;
-  }
   .document {
-    position: absolute;
     overflow: visible;
+    display: block;
   }
   .page-outer {
     page-break-inside: avoid;
     page-break-after: always;
     overflow: hidden;
+  }
+  .page-inner {
+    position: static;
   }
 }

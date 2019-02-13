@@ -9,25 +9,33 @@
   stroke-linejoin: round;
 }
 
-.svgplot-canvas *[marker-start="arrowfwd"] { marker-start: var(--svgplot-marker-arrowfwd) }
-.svgplot-canvas *[marker-start="arrowrev"] { marker-start: var(--svgplot-marker-arrowrev) }
-.svgplot-canvas *[marker-start="arrow"] { marker-start: var(--svgplot-marker-arrowrev) }
-.svgplot-canvas *[marker-start="point"] { marker-start: var(--svgplot-marker-point) }
-.svgplot-canvas *[marker-start="hole"] { marker-start: var(--svgplot-marker-hole) }
+.svgplot-canvas *[marker-start="arrowfwd"] { marker-start: var(--svgplot-marker-arrowfwd, none) }
+.svgplot-canvas *[marker-start="arrowrev"] { marker-start: var(--svgplot-marker-arrowrev, none) }
+.svgplot-canvas *[marker-start="arrow"] { marker-start: var(--svgplot-marker-arrowrev, none) }
+.svgplot-canvas *[marker-start="point"] { marker-start: var(--svgplot-marker-point, none) }
+.svgplot-canvas *[marker-start="hole"] { marker-start: var(--svgplot-marker-hole, none) }
 
-.svgplot-canvas *[marker-mid="arrowfwd"] { marker-mid: var(--svgplot-marker-arrowfwd) }
-.svgplot-canvas *[marker-mid="arrowrev"] { marker-mid: var(--svgplot-marker-arrowrev) }
-.svgplot-canvas *[marker-mid="arrow"] { marker-mid: var(--svgplot-marker-arrowfwd) }
-.svgplot-canvas *[marker-mid="point"] { marker-mid: var(--svgplot-marker-point) }
-.svgplot-canvas *[marker-mid="hole"] { marker-mid: var(--svgplot-marker-hole) }
+.svgplot-canvas *[marker-mid="arrowfwd"] { marker-mid: var(--svgplot-marker-arrowfwd, none) }
+.svgplot-canvas *[marker-mid="arrowrev"] { marker-mid: var(--svgplot-marker-arrowrev, none) }
+.svgplot-canvas *[marker-mid="arrow"] { marker-mid: var(--svgplot-marker-arrowfwd, none) }
+.svgplot-canvas *[marker-mid="point"] { marker-mid: var(--svgplot-marker-point, none) }
+.svgplot-canvas *[marker-mid="hole"] { marker-mid: var(--svgplot-marker-hole, none) }
 
-.svgplot-canvas *[marker-end="arrowfwd"] { marker-end: var(--svgplot-marker-arrowfwd) }
-.svgplot-canvas *[marker-end="arrowrev"] { marker-end: var(--svgplot-marker-arrowrev) }
-.svgplot-canvas *[marker-end="arrow"] { marker-end: var(--svgplot-marker-arrowfwd) }
-.svgplot-canvas *[marker-end="point"] { marker-end: var(--svgplot-marker-point) }
-.svgplot-canvas *[marker-end="hole"] { marker-end: var(--svgplot-marker-hole) }
+.svgplot-canvas *[marker-end="arrowfwd"] { marker-end: var(--svgplot-marker-arrowfwd, none) }
+.svgplot-canvas *[marker-end="arrowrev"] { marker-end: var(--svgplot-marker-arrowrev, none) }
+.svgplot-canvas *[marker-end="arrow"] { marker-end: var(--svgplot-marker-arrowfwd, none) }
+.svgplot-canvas *[marker-end="point"] { marker-end: var(--svgplot-marker-point, none) }
+.svgplot-canvas *[marker-end="hole"] { marker-end: var(--svgplot-marker-hole, none) }
 
+.svgplot-canvas *[fill~="10%"] { fill-opacity: 0.1; }
+.svgplot-canvas *[fill~="20%"] { fill-opacity: 0.2; }
+.svgplot-canvas *[fill~="30%"] { fill-opacity: 0.3; }
+.svgplot-canvas *[fill~="40%"] { fill-opacity: 0.4; }
 .svgplot-canvas *[fill~="50%"] { fill-opacity: 0.5; }
+.svgplot-canvas *[fill~="60%"] { fill-opacity: 0.6; }
+.svgplot-canvas *[fill~="70%"] { fill-opacity: 0.7; }
+.svgplot-canvas *[fill~="80%"] { fill-opacity: 0.8; }
+.svgplot-canvas *[fill~="90%"] { fill-opacity: 0.9; }
 .svgplot-canvas *[fill~="100%"] { fill-opacity: 1; }
 .svgplot-canvas *[fill~="solid"] { fill: var(--svgplot-color); }
 .svgplot-canvas *[fill~="dots1"] { fill: var(--svgplot-fillpattern-dots1); }
@@ -75,4 +83,34 @@
   --svgplot-color: #888888;
   stroke-width: 0.1mm;
   stroke-linecap: square;
+}
+
+
+.svgplot-label {
+  position: absolute;
+  white-space: nowrap;
+}
+.svgplot-label[anchor="NW"] {
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  text-align: left;
+}
+.svgplot-label[anchor="NE"] {
+  top: 0;
+  right: 0;
+  transform-origin: top right;
+  text-align: right;
+}
+.svgplot-label[anchor="SW"] {
+  bottom: 0;
+  left: 0;
+  transform-origin: bottom left;
+  text-align: left;
+}
+.svgplot-label[anchor="SE"] {
+  bottom: 0;
+  right: 0;
+  transform-origin: bottom right;
+  text-align: right;
 }

@@ -113,10 +113,6 @@ export class MatchTransformations extends QGen {
 		}
 	}
 
-	//static options = {
-	//	layout: ['instructions', 'question', ['answer', 'diagram']]
-	//}
-
 	generate(params) {
 		const rd = this.random
 

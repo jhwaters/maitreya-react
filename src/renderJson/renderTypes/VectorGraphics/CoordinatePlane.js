@@ -1,6 +1,7 @@
 import React from 'react'
 import { Clip, Style, Grid, Path } from '.'
 import { MarkerSymbols } from './react-svgplot/Style'
+import { Canvas } from './react-svgplot'
 
 function parseSpan(span) {
   if (Array.isArray(span)) {
@@ -25,7 +26,122 @@ function parseSpan(span) {
   return null
 }
 
-export default class CoordinatePlane extends React.Component {
+function convertToMM(val, unit) {
+  if (unit === 'mm') return val
+  if (unit === 'cm') return val*10
+  if (unit === 'in') return (val * 25.4)
+  if (unit === 'pt') return convertToMM(val/72, 'in')
+  if (unit === 'pc') return convertToMM(val/12, 'pt')
+}
+
+function toMM(s) {
+  // return in
+  const v = +s.slice(0,-2)
+  const u = s.slice(-2)
+  return convertToMM(v, u)
+}
+
+
+const Clipper = ({x1, y1, x2, y2, clip, children}) => {
+  if (clip) {
+    return (
+      <Clip shape="Rect" x={x1} y={y1} width={x2-x1} height={y2-y1}>
+        {children}
+      </Clip>
+    )
+  } else {
+    return children
+  }
+}
+
+const Styler = ({style, children}) => {
+  if (style && style !== 'none') {
+    return (
+      <Style name={style}>
+        {children}
+      </Style>
+    )
+  } else {
+    return children
+  }
+}
+
+export const CoordinatePlane = props => {
+  
+
+  const canvas = {}
+  
+  const span = parseSpan(props.span)
+  const {x1, y1, x2, y2} = span
+  const w = x2 - x1
+  const h = y2 - y1
+  const {
+    preserveAspectRatio=true, 
+    margin='1mm',
+    grid=true, axis=true, 
+    style="primary function", clip=true,
+  } = props
+
+  const clipper = {x1, y1, x2, y2, clip}
+  const styler = {style}
+
+  const marg = toMM(margin)
+
+  if (props.preserveAspectRatio === false) {
+    // TODO
+  } else {
+    if (props.width && props.height) {
+      // TODO 
+    } else if (props.width) {
+      const width = toMM(props.width)
+      canvas.width = width + marg*2 + 'mm'
+      const vbmarg = w * marg / width
+      canvas.x1 = x1 - vbmarg
+      canvas.y1 = y1 - vbmarg
+      canvas.x2 = x2 + vbmarg
+      canvas.y2 = y2 + vbmarg
+
+    } else if (props.height) {
+      const height = toMM(props.height)
+      canvas.height = height + marg*2 + 'mm'
+      const vbmarg = h * marg / height
+      canvas.x1 = x1 - vbmarg
+      canvas.y1 = y1 - vbmarg
+      canvas.x2 = x2 + vbmarg
+      canvas.y2 = y2 + vbmarg
+    } else {
+
+    }
+  }
+  console.log(canvas)
+
+  return (
+    <Canvas {...canvas}>
+      <MarkerSymbols />
+      {grid ? (
+        <Grid span={[x1, y1, x2, y2]} axis={axis}/>
+        ) : axis ? (
+        <Style exactname="svgplot-axis">
+          <Path points={[[0,y1], [0,y2]]} markers="-->"/>
+          <Path points={[[x1,0], [x2,0]]} markers="-->"/>
+        </Style>
+        ) : null}
+        <Clipper {...clipper}>
+          <Styler {...styler}>
+            {props.children}
+          </Styler>
+        </Clipper>
+    </Canvas>
+  )
+
+}
+
+export default CoordinatePlane
+
+  
+
+/*
+export class CoordinatePlane2 extends React.Component {
   static defaultProps = {
     style: 'primary function',
     clip: true,
@@ -34,15 +150,30 @@ export default class CoordinatePlane extends React.Component {
   constructor(props) {
     super(props)
     const span = parseSpan(props.span)
+
     this.state = { span }
+
     this.svgref = React.createRef()
   }
 
   checkSize() {
-    const {a, b, c, d} = this.svgref.current.getScreenCTM().inverse()
-    const xmargin = 10*Math.abs(a + c)
-    const ymargin = 10*Math.abs(d + b)
-    this.setState({xmargin, ymargin})
+    let a, b, c, d
+    const bbox = this.svgref.current.getBBox()
+    console.log(bbox)
+    try {
+      // Chrome
+      ({a, b, c, d} = this.svgref.current.getCTM())
+    } catch(e) {
+      // Firefox
+      ({a, b, c, d} = this.svgref.current.getScreenCTM())
+    }
+    console.log({a, b, c, d})
+    const xmargin = 0.05*Math.abs(a + c)
+    const ymargin = 0.05*Math.abs(d + b)
+    this.setState({
+      xmargin, ymargin, 
+      width: bbox.width / (1.1*Math.abs(a)), height: bbox.height / (1.1*Math.abs(d))
+    })
   }
 
   componentDidMount() {
@@ -78,7 +209,9 @@ export default class CoordinatePlane extends React.Component {
     }
     
     const {x1, y1, x2, y2} = this.state.span
-    const {height, width, grid=true, axis=true} = this.props
+    const {grid=true, axis=true} = this.props
+    const height = this.state.height || this.props.height
+    const width = this.state.width || this.props.width
     const xmargin = this.state.xmargin || 0
     const ymargin = this.state.ymargin || 0
 
@@ -97,6 +230,7 @@ export default class CoordinatePlane extends React.Component {
     }
 
     return (
+      <>
       <svg className='svgplot-canvas' {...svgprops} ref={this.svgref}>
         <MarkerSymbols />
         {grid ? (
@@ -109,6 +243,8 @@ export default class CoordinatePlane extends React.Component {
          ) : null}
         {this.renderClip()}
       </svg>
+      </>
     )
   }
 }
+*/

@@ -70,6 +70,7 @@ export const PreviewXYPlot = () => {
         ],
       ],
       ['Point', {x: -4, y: 0}],
+      ['Label', {x: -9, y: 7}, '$$f(x) = \\frac{1}{x-2}+2$$'],
     ],
     [
       'Style', {name: 'secondary'},
@@ -127,10 +128,10 @@ export const PreviewGeom = () => {
 
   const json = [
     'CoordinatePlane', {span: [0,0,20,20], height: '3in', style: 'geometry'},
-    ['Polyline', {points: poly, markers: "..."}],
-    ['Polyline', {points: ray, markers: ".->"}],
-    ['Polyline', {points: line, markers: "<->"}],
-    ['Polyline', {points: seg, markers: ".-."}],
+    ['Polygon', {points: poly, markers: "..."}],
+    ['Path', {points: ray, markers: ".->"}],
+    ['Path', {points: line, markers: "<->"}],
+    ['Path', {points: seg, markers: ".-."}],
   ]
 
   return <RenderJson json={json} />

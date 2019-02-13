@@ -20,10 +20,7 @@ const config = function(state=initialState, action) {
     case ADD_FONTFAMILY:
       return {
         ...state, 
-        localFonts: [
-          ...state.localFonts.filter(f => f.family !== action.payload.family), 
-          action.payload
-        ]
+        localFonts: [...state.localFonts.filter(f => f !== action.payload), action.payload],
       }
     case SET_ALLOW_EDITING:
       return {...state, allowEditing: action.payload}

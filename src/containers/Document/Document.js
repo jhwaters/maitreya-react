@@ -21,9 +21,12 @@ const Document = (props) => {
   }
   slices.push([prev])
   const pages = slices.map(s => visibleIDs.slice(...s))
+  const className = props.debugView ? 'document debug-view' : 'document'
+
+  //return <div className={className}><Scratch/></div>
 
   return (
-    <div className={props.debugView ? 'document debug-view' : 'document'}>
+    <div className={className}>
       {(
         pages.length > 0 
         ? pages.map((ids,i) => (

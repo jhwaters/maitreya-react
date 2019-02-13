@@ -59,7 +59,7 @@ const makeTransform = props => {
 const Transform = props => {
   const { type, list, children, ...params } = props
 
-  const layerprops = {}
+  const layerprops = { vectorEffect: 'inherit' }
 
   if (list) {
     const transforms = []

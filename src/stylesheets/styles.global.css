@@ -1,9 +1,9 @@
 @import './fonts.global.css';
 @import './variables.global.css';
-@import './page.global.css';
 @import './katex.global.css';
 @import './document.global.css';
 @import './debugview.css';
+@import './page.global.css';
 
 
 
@@ -13,7 +13,12 @@ body {
   color: var(--ui-fg-1, black);
 }
 
+input[type="checkbox"] {
+  appearance: checkbox;
+}
+
 button, input, select, textarea {
+  padding: 1px 5px;
   border-radius: 4px;
   border-color: var(--ui-border-1, #ccc);
   border-width: 1px;
@@ -24,11 +29,6 @@ button, input, select, textarea {
   font-size: var(--ui-font-size, 3mm);
   margin: 1px;
   font-size: var(--ui-font-size, 3mm);
-}
-
-
-textarea, input {
-  padding: 2px 5px;
 }
 
 textarea {
@@ -50,6 +50,11 @@ button:focus, input:focus, select:focus, textarea:focus {
   outline: none;
 }
 
+input[type="text"]:focus, textarea:focus {
+  border-color: var(--ui-border-2, #ccc);
+  box-shadow: 0 0 5px var(--edit-color-dark);
+}
+
 button:active, input:active, select:active, textarea:active {
   outline: none;
 }
@@ -59,9 +64,9 @@ button:hover {
 }
 
 button:active {
-  color: white;
-  border-color: black;
-  background-image: linear-gradient(0deg, #27f, 50%, #05f);
+  color: var(--ui-page, white);
+  border-color: var(--ui-border-2, black);
+  background-image: var(--ui-gradient-v-x, linear-gradient(0deg, #27f, 50%, #05f));
 }
 
 button, button:disabled {
@@ -72,10 +77,14 @@ input[type=number] {
   max-width: 3em;
 }
 
+select:active {
+  border: none;
+  outline: none;
+}
+
 pre, code {
   font-family: var(--ui-font-family-monospace, monospace);
 }
-
 
 .editable > *:hover {
   outline: 3px dotted var(--edit-color-light, lightgreen);
@@ -86,7 +95,7 @@ pre, code {
   border: 1px solid var(--ui-border-1, #ccc);
   background-color: var(--ui-page, white);
   padding: 5mm;
-  border-radius: 3px;
+  border-radius: 0px;
   font-size: 1.1em;
   max-width: 11in;
 }
@@ -98,7 +107,7 @@ pre, code {
 .text-preview-input > textarea {
   min-width: 4in;
   padding: 2mm;
-  margin: 0;
+  margin: 2px;
   min-height: 4em;
 }
 
@@ -107,5 +116,6 @@ pre, code {
   background-color: var(--ui-page, white);
   padding: 2mm;
   width: fit-content;
-  border-radius: 3px;
+  border-radius: 0px;
+  margin: 2px;
 }

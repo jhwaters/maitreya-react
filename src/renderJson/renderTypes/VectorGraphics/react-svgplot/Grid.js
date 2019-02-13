@@ -24,12 +24,12 @@ const Grid = (props) => {
       {xvals.map(v => (
         <line key={`x-${v}`}
           x1={v} x2={v} y1={y1} y2={y2} 
-          vectorEffect='non-scaling-stroke'/>
+          vectorEffect='inherit'/>
       ))}
       {yvals.map(v => (
         <line key={`y-${v}`}
           y1={v} y2={v} x1={x1} x2={x2} 
-          vectorEffect='non-scaling-stroke'/>
+          vectorEffect='inherit'/>
       ))}
     </>
   )

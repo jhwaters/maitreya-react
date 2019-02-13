@@ -19,8 +19,8 @@ class AddLocalFont extends React.Component {
   }
 
   addFont = () => {
-    const fontName = this.input.current.value
-    this.props.addFontFamily({family: fontName})
+    const fontFamily = this.input.current.value
+    this.props.addFontFamily(fontFamily)
   }
 
   render() {
@@ -34,7 +34,7 @@ class AddLocalFont extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addFontFamily: (font) => dispatch(addFontFamily(font)),
+  addFontFamily: f => dispatch(addFontFamily(f)),
 })
 
 export default connect(null, mapDispatchToProps)(AddLocalFont)

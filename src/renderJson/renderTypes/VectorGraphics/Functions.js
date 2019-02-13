@@ -35,7 +35,7 @@ export const RationalFunction = (props) => {
     roots=[], holes=[], asymptotes=[], numerLC=1, denomLC=1, 
     domain, step=0.2, range=[-1000,1000], 
     renderAsymptotes=true, renderRoots=true, renderHoles=true,
-    role
+    style, fill,
   } = props
 
   const f = (x) => {
@@ -105,6 +105,8 @@ export const RationalFunction = (props) => {
   }
 
 
+
+
   return (
     <>
       {renderAsymptotes ? (
@@ -113,9 +115,20 @@ export const RationalFunction = (props) => {
           {vas.map(p => <Path key={`asym${p[0].x}`} points={p} />)}
         </Style>
       ) : null}
-      {paths.map(p => <Path key={`path${p[0].x}`} points={p} role={role} />)}
-      {renderRoots ? roots.map(x => <Point key={`root${x}`} x={x} y={f(x)} />): null}
-      {renderHoles ? holes.map(x => <Point key={`hole${x}`} x={x} y={f(x)} marker="o"/>) : null}
+      {style ? (
+        <Style name={style}>
+          {paths.map(p => <Path key={`path${p[0].x}`} points={p} fill={fill}/>)}
+          {renderRoots ? roots.map(x => <Point key={`root${x}`} x={x} y={f(x)} />): null}
+          {renderHoles ? holes.map(x => <Point key={`hole${x}`} x={x} y={f(x)} marker="o"/>) : null}
+        </Style>
+      ) : (
+        <>
+          {paths.map(p => <Path key={`path${p[0].x}`} points={p} fill={fill}/>)}
+          {renderRoots ? roots.map(x => <Point key={`root${x}`} x={x} y={f(x)} />): null}
+          {renderHoles ? holes.map(x => <Point key={`hole${x}`} x={x} y={f(x)} marker="o"/>) : null}        
+        </>
+      )}    
+      
     </>
   )
 }

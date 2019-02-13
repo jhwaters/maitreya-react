@@ -44,14 +44,14 @@ export default class EditPageHeader extends DefaultEditor {
             return (
               <tr key={i} >
                 <td style={{border: 'none', padding: '0 1em 0 0'}}>
-                  <input 
+                  <input type="text"
                     onChange={(evt) => this.headingUpdate(i, 0, evt.target.value)}
                     value={left || ''} 
                     style={inputStyle}
                   />
                 </td>
                 <td style={{border: 'none', padding: '0 1em 0 0'}}>
-                  <input 
+                  <input type="text"
                     onChange={(evt) => this.headingUpdate(i, 1, evt.target.value)}
                     value={right || ''} 
                     style={inputStyle}

@@ -53,12 +53,16 @@
   border: none;
 }
 
+.answerblanks > tbody > tr > td:first-child {
+  text-align: right;
+}
+
 .answerblank {
   min-width: 1cm;
   min-height: 1cm;
   width: 1in;
   height: 1.2cm;
-  border: none;
+  border: 1px solid black;
 }
 
 .answerchoice-list {

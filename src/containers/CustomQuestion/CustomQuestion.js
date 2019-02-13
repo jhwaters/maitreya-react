@@ -40,7 +40,7 @@ const jsonExample = `{
 
   "answer": {
     "choices": [6, 8, 10, 12, 14],
-    "correctIndex": 2
+    "correct": 10
   },
 
   "diagram": [

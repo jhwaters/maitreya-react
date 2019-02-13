@@ -8,6 +8,7 @@ import {
   AxisColor, AxisWidth,
   GridColor, GridWidth,
   FillOpacity,
+  LabelFontSize,
 } from './GraphStyle'
 import { PreviewXYPlot, PreviewGeom } from './GraphPreview'
 
@@ -104,6 +105,12 @@ class GraphSettings extends React.Component {
                 <td><GridColor/></td>
                 <td><GridWidth/></td>
               </tr>
+
+              <tr>
+                <td colSpan="2">Label Font Size</td>
+                <td><LabelFontSize /></td>
+              </tr>
+
               <tr>
                 <td colSpan='3' >
                   <div style={{margin: '5mm 0'}}>
@@ -117,6 +124,8 @@ class GraphSettings extends React.Component {
               </tr>
 
               {this.renderStyleSettings()}
+
+              
             </tbody>
 
           </table>

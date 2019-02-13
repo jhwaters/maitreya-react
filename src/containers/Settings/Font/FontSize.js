@@ -11,10 +11,6 @@ class FontSizeSelect extends React.Component {
     setDocumentFontSize: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props)
-  }
-
   setDocFontSize(size) {
     this.props.setDocumentFontSize(size)
   }

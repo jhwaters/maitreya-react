@@ -1,20 +1,18 @@
-import {
-  range as mathjsrange 
-} from 'mathjs'
+import math from 'mathjs'
 
 export const range = function(start, stop, inclusive=false) {
-  return mathjsrange(start, stop, inclusive)._data
+  if (inclusive) {
+    return math.range(start, stop+1)._data
+  }
+  return math.range(start, stop)._data
 }
 
-export const gcd = function(a, b) {
-  if (a > b) {
-    return gcd(b, a)
-  } else if (a === 0) {
-    return b
-  } else {
-    return gcd(b % a, a)
-  }
-}
+export const roundTo = (n, d) => {
+  const f = Math.pow(10, d)
+  return Math.round(n*f) / f
+} 
+
+export const gcd = (a, b) => math.gcd(a, b)
 
 export const divrem = function(n, p) {
   let r = n

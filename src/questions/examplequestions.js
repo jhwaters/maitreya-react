@@ -6,7 +6,7 @@ import QGen from './QGen'
 import _ from 'lodash'
 
 
-/***** Handy Things *********/
+////// Handy Things ///////
 
 function randomPolynomialCoefficients({degree, maxCoefficient=12, terms='auto'}={}) {
 	const rd = this.random
@@ -48,7 +48,6 @@ export class SolveQuadratic extends QGen {
 	static options = {
 		singleColumn: true,
 	}
-
 
 	generate(props) {
 		const rd = this.random
@@ -104,8 +103,8 @@ export class FactorQuadraticHard extends QGen {
 		}
 		b2 *= rd.choice([-1,1])
 
-		// prevent difference of squares
-		while ((a1 === a2 && b1 === -b2) || (a1 === -a2 && b1 === b2)) {
+		// prevent difference of squares and perfect square
+		while (Math.abs(a1) === Math.abs(a2) && Math.abs(b1) === Math.abs(b2)) {
 			b2 = rd.randint(2, 14-a1)
 			while (gcd(a2, b2) !== 1) {
 				b2 = rd.randint(1,14-a1)
@@ -172,7 +171,7 @@ export class RationalGraph extends QGen {
 
 		function allHolesInRange(holes, f) {
 			for (const r of holes) {
-				if (f(r) <= -10 || f(r) >= 10) {
+				if (f(r) <= -8 || f(r) >= 8) {
 					return false
 				} 
 			}
@@ -191,12 +190,12 @@ export class RationalGraph extends QGen {
 
 		const graph = [
 			'CoordinatePlane',
-			{span: [-10,-10,10,10], height: '2.2in'},
+			{span: [-10,-8,10,8], height: '1.8in'},
 			[
 				'RationalFunction',
 				{
 					domain: [-12,12],
-					range: [-12,12],
+					range: [-10,10],
 					roots, holes, asymptotes,
 				}
 			]
@@ -254,10 +253,11 @@ export class IncreasingIntervals extends QGen {
 	static params = {
 		toFind: {
 			label: 'Type of interval to find',
-			type: 'multipleselect',
+			type: 'select',
 			options: [
-				{value: 'inc', label: 'increasing'}, 
-				{value: 'dev', label: 'decreasing'}
+				{value: ['inc'], label: 'increasing'}, 
+				{value: ['dec'], label: 'decreasing'},
+				{value: ['inc', 'dec'], label: 'either'},
 			],
 			default: ['inc'],
 		},
@@ -270,7 +270,7 @@ export class IncreasingIntervals extends QGen {
 		points: {
 			label: 'Mark points',
 			type: 'bool',
-			default: true,
+			default: false,
 		}
 	}
 

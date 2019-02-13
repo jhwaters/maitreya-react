@@ -1,0 +1,54 @@
+.FO {
+  position: relative;
+  overflow: visible;
+}
+
+.Div1 {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 0;
+  width: 0;
+  overflow: visible;
+  margin: 0;
+  padding: 0;
+}
+
+.Div2 {
+  border: 1px solid blue;
+  transform-origin: bottom left;
+  transform: scale(0.2,-0.2) rotate(30deg);
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  font-size: 0.3rem;
+  white-space: nowrap;
+}
+
+.Div2 > * {
+  margin-right: 10px;
+}
+
+.Div2[anchor="NW"] {
+  transform-origin: top left;
+  top: 0;
+  left: 0;
+}
+
+.Div2[anchor="NE"] {
+  transform-origin: top right;
+  top: 0;
+  right: 0;
+}
+
+.Div2[anchor="SE"] {
+  transform-origin: bottom right;
+  bottom: 0;
+  right: 0;
+}
+
+.Div2[anchor="SW"] {
+  transform-origin: bottom left;
+  bottom: 0;
+  left: 0;
+}

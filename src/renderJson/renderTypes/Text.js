@@ -5,32 +5,19 @@ the 'markdown' type, which will be passed to the 'renderMarkdown' function
 */
 
 import React from 'react'
-import katex from 'katex'
-import { defaultsDeep } from 'lodash'
-import MarkdownIt from 'markdown-it'
-import mdsup from 'markdown-it-sup'
-import mdsub from 'markdown-it-sub'
-import mdsmartarrows from 'markdown-it-smartarrows'
-import mdmath from 'markdown-it-math'
 import splitAtDelimiters  from 'katex/contrib/auto-render/splitAtDelimiters'
-
+import { defaultsDeep } from 'lodash'
+import { Math, DisplayMath } from './Math'
+import { Markdown, InlineMarkdown } from './Markdown'
 
 const defaultOptions = {
   renderMath: true,
-  renderMarkdown: true,
-  
-  markdown: {
-    superscript: true,
-    subscript: true,
-    smartarrows: true,
-  },
-
+  markdown: 'inline',
   mathDelimiters: {
     display: {left: '$$$', right: '$$$'},
     inline: {left: '$$', right: '$$'},
   }
 };
-
 
 
 // from katex:
@@ -45,129 +32,64 @@ const splitWithDelimiters = function(text, delimiters) {
   return data;
 };
 
-const MathAndMarkdown = ({data, options}) => {
-  /**
-   * Split text using Katex, then render pieces with katex (if math)
-   * or markdown (inline only)
-   */
-  const katexOptions = {
-    delimiters: [
-      {left: options.mathDelimiters.display.left, right: options.mathDelimiters.display.right, display: true},
-      {left: options.mathDelimiters.inline.left, right: options.mathDelimiters.inline.right, display: false},
-    ],
-    errorCallback: console.error,
-  }
+const ParseMath = ({data, options}) => {
+  const delimiters = [
+    {left: options.mathDelimiters.display.left, right: options.mathDelimiters.display.right, display: true},
+    {left: options.mathDelimiters.inline.left, right: options.mathDelimiters.inline.right, display: false},
+  ]
 
   return (
     <span>
-      {splitWithDelimiters(data, katexOptions.delimiters).map((c,i) => {
+      {splitWithDelimiters(data, delimiters).map((c,i) => {
         if (c.type === 'text') {
-          if (options.renderMarkdown) {
+          if (options.markdown) {
             return <InlineMarkdown key={i} data={c.data} options={options}/>
           } else {
-            return <span key={i}>c.data</span>
+            return <Plain key={i} data={c.data} options={options}/>
           }
         } else {
-          return <KatexMath key={i} data={c} katexOptions={{...katexOptions, displayMode: c.display}}/>
+          if (c.display) {
+            return <DisplayMath key={i} data={c.data}/>
+          } else {
+            return <Math key={i} data={c.data}/>
+          }
         }
       })}
     </span>
   )
 }
 
-const KatexMath = ({data, katexOptions}) => {
-  try {
-    const html = katex.renderToString(data.data, katexOptions);
-    return <span dangerouslySetInnerHTML={{__html: html}} />
-  } catch (e) {
-    if (!(e instanceof katex.ParseError)) {
-      throw e;
-    }
-    katexOptions.errorCallback(
-      "KaTeX auto-render: Failed to parse `" + data.data + "` with ", e
-    );
-    return <span>{data.raw}</span>
-  }
-}
-
-const InlineMarkdown = ({data, options}) => {
-  let md = new MarkdownIt()
-  if (options.markdown.subscript) {
-    md = md.use(mdsub)
-  }
-  if (options.markdown.superscript) {
-    md = md.use(mdsup)
-  }
-  if (options.markdown.smartarrows) {
-    md = md.use(mdsmartarrows)
-  }
-  const html = md.renderInline(data)
-  return <span dangerouslySetInnerHTML={{__html: html}} />
-}
-
-export default class Text extends React.Component {
-
-
-  render() {
-    const { 
-      fontFamily, 
-      fontSize,
-      color,
-      options,
-      //renderMarkdown=true,
-      //renderMath=true,
-      //mathDelimiters=
-    } = this.props
-    const opts = defaultsDeep({}, options, defaultOptions)
-    const style = {fontFamily, fontSize, color}
-    let RenderMethod
-    if (opts.renderMath) {
-      RenderMethod = MathAndMarkdown
-    } else if (opts.renderMarkdown) {
-      RenderMethod = InlineMarkdown
-    } else {
-      RenderMethod = ({data, options}) => data
-    }
-    return (
-      <span style={style}>
-        {React.Children.map(this.props.children, (c,i) => {
-          if (typeof c === 'string') {
-            return <RenderMethod key={i} data={c} options={opts}/>
-          }
-          return null
-        })}
-      </span>
-    )
-  }
+export const Plain = props => {
+  return <span>{props.data}</span>
 }
 
 
-
-
-
-/*
-export const Markdown = ({data, options}) => {
-  const opts = defaultsDeep({}, options, defaultOptions)
-  let md = new MarkdownIt()
-  if (opts.markdown.subscript) { md = md.use(mdsub); }
-  if (opts.markdown.superscript) { md = md.use(mdsup); }
-  if (opts.markdown.smartarrows) { md = md.use(mdsmartarrows); }
-  if (opts.math.render) {
-    md = md.use(mdmath, {
-      inlineRenderer: (str) => katex.renderToString(str),
-      blockRenderer: (str) => '<div class="math-block">' + katex.renderToString(str, {displayMode: true}) + '</div>',
-      inlineOpen: opts.math.delimiters.inline.left,
-      inlineClose: opts.math.delimiters.inline.right,
-      blockOpen: opts.math.delimiters.display.left,
-      blockClose: opts.math.delimiters.display.right,
-    })
+export const Text = props => {
+  const {
+    data, fontFamily, fontSize, color,
+    ...otherprops
+  } = props
+  const opts = defaultsDeep({}, otherprops, defaultOptions)
+  const style = {fontFamily, fontSize, color}
+  let RenderMethod
+  if (opts.markdown === true || opts.markdown === 'full') {
+    RenderMethod = Markdown
+  } else if (opts.renderMath) {
+    RenderMethod = ParseMath
+  } else if (opts.markdown === 'inline') {
+    RenderMethod = InlineMarkdown
+  } else {
+    RenderMethod = Plain
   }
+
   return (
-    <span dangerouslySetInnerHTML={{__html: md.render(data)}} ></span> 
+    <span style={style}>
+      <RenderMethod data={data} options={opts}/>
+    </span>
   )
 }
 
-
+/*
 const defaultDelimiters = {
   display: {left: '$$$', right: '$$$'},
   inline: {left: '$$', right: '$$'},
