@@ -271,37 +271,41 @@ export class SolveRightTriangle extends QGen {
       A = B
       B = 90 - A
     }
+
+    c = rd.randint(8, 90)
+    a = Math.sin(A * Math.PI / 180) * c
+    b = Math.sin(B * Math.PI / 180) * c
     
-    if (includes(givens, 'a')) {
-      const t = Math.sin(A*Math.PI/180)
-      a = rd.randint(Math.min(Math.floor(t*8),1), Math.ceil(t*90))
-      b = a * Math.tan(B * Math.PI / 180)
-      c = Math.sqrt(a*a + b*b)
-    }
-    else if (includes(givens, 'b')) {
-      const t = Math.sin(B*Math.PI/180)
-      b = rd.randint(Math.min(Math.floor(t*8),1), Math.ceil(t*90))
-      a = b * Math.tan(A * Math.PI / 180)
-      c = Math.sqrt(a*a + b*b)
-    }
-    else if (includes(givens, 'c')) {
-      c = rd.randint(8, 90)
-      a = Math.sin(A * Math.PI / 180) * c
-      b = Math.sin(B * Math.PI / 180) * c
-    }
     console.log({a, b, c, A, B})
 
-    if (given === 'LL' || given === 'HL') {
-      // Make givens integers
-      if (givens.join('') === 'ab') {
-        a = Math.round(a)
-        b = Math.round(b)
-        c = Math.sqrt(a*a + b*b)
-      } else if (givens.join('') === 'ac') {
+
+    // Make sure all givens are integers
+    if (given === 'HA') {
+      c = Math.ceil(c)
+      a = Math.sin(A * Math.PI / 180) * c
+      b = Math.sin(B * Math.PI / 180) * c
+    } else if (given === 'LA') {
+      if (includes(givens, 'a')) {
+        a = Math.ceil(a)
+        c = a / Math.sin(A * Math.PI / 180)
+        b = a / Math.tan(A * Math.PI / 180)
+      } else {
+        b = Math.ceil(a)
+        c = b / Math.sin(B * Math.PI / 180)
+        a = b / Math.tan(B * Math.PI / 180)
+      }
+    } else if (given === 'LL') {
+      a = Math.round(a)
+      b = Math.round(b)
+      c = Math.sqrt(a*a + b*b)
+      A = Math.atan(b/a) * 180 / Math.PI
+      B = 90 - A
+    } else if (given === 'HL') {
+      if (includes(givens, 'a')) {
         a = Math.floor(a)
         c = Math.ceil(c)
         b = Math.sqrt(c*c - a*a)
-      } else if (givens.join('') === 'bc') {
+      } else if (includes(givens, 'b')) {
         b = Math.floor(b)
         c = Math.ceil(c)
         a = Math.sqrt(c*c - b*b)

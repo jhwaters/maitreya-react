@@ -10,8 +10,8 @@ export default class Label extends React.Component {
   componentDidMount() {
     const CTM = this.ref.current.getCTM()
     const sCTM = this.ref.current.getScreenCTM()
-    console.log({CTM})
-    console.log({sCTM})
+    //console.log({CTM})
+    //console.log({sCTM})
     this.setState({ctm: CTM})
   }
 
