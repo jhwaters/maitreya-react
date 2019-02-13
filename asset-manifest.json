@@ -1,16 +1,16 @@
 {
   "main.css": "/maitreya-react/static/css/main.88b65a80.chunk.css",
-  "main.js": "/maitreya-react/static/js/main.74893d80.chunk.js",
-  "main.js.map": "/maitreya-react/static/js/main.74893d80.chunk.js.map",
+  "main.js": "/maitreya-react/static/js/main.9272c784.chunk.js",
+  "main.js.map": "/maitreya-react/static/js/main.9272c784.chunk.js.map",
   "static/css/1.465b55af.chunk.css": "/maitreya-react/static/css/1.465b55af.chunk.css",
   "static/js/1.d2b7d2c6.chunk.js": "/maitreya-react/static/js/1.d2b7d2c6.chunk.js",
   "static/js/1.d2b7d2c6.chunk.js.map": "/maitreya-react/static/js/1.d2b7d2c6.chunk.js.map",
   "runtime~main.js": "/maitreya-react/static/js/runtime~main.7fe41080.js",
   "runtime~main.js.map": "/maitreya-react/static/js/runtime~main.7fe41080.js.map",
-  "static/media/styles.global.css": "/maitreya-react/static/media/KaTeX_Main-Regular.424335d9.ttf",
-  "static/css/1.465b55af.chunk.css.map": "/maitreya-react/static/css/1.465b55af.chunk.css.map",
+  "static/media/styles.global.css": "/maitreya-react/static/media/KaTeX_AMS-Regular.dffd527d.ttf",
   "static/css/main.88b65a80.chunk.css.map": "/maitreya-react/static/css/main.88b65a80.chunk.css.map",
+  "static/css/1.465b55af.chunk.css.map": "/maitreya-react/static/css/1.465b55af.chunk.css.map",
   "index.html": "/maitreya-react/index.html",
-  "precache-manifest.cbd48476ec6dd113702c621e9ce14805.js": "/maitreya-react/precache-manifest.cbd48476ec6dd113702c621e9ce14805.js",
+  "precache-manifest.690c7b85451846be74a8f48ca635c084.js": "/maitreya-react/precache-manifest.690c7b85451846be74a8f48ca635c084.js",
   "service-worker.js": "/maitreya-react/service-worker.js"
 }
