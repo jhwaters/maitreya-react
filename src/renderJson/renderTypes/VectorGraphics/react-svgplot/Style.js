@@ -174,9 +174,10 @@ class StyleDefs extends React.Component {
 let styleCount = 0
 
 const Style = props => {
-  const { name='svgplot-unnamed-style', color } = props
+  const { name, color, ...styleprops } = props
   const uniquename = `styleID-${++styleCount}`
-  const style = {}
+  
+  const style = {...styleprops}
   for (const shape of ['arrowfwd', 'arrowrev', 'axisarrow', 'point', 'hole']) {
     style[`--svgplot-marker-${shape}`] = `url(#${uniquename}-marker-${shape})`
   }
@@ -187,6 +188,8 @@ const Style = props => {
 
   if (color) {
     style['--svgplot-color'] = color
+  } else if (style.stroke) {
+    style['--svgplot-color'] = style.stroke
   }
 
   return (

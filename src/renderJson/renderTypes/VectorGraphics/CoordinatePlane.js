@@ -1,5 +1,5 @@
 import React from 'react'
-import { Clip, Style, Grid, Path } from '.'
+import { Clip, Style, Grid, Overlay, Path } from '.'
 import { MarkerSymbols } from './react-svgplot/Style'
 import { Canvas } from './react-svgplot'
 
@@ -91,7 +91,26 @@ export const CoordinatePlane = props => {
     // TODO
   } else {
     if (props.width && props.height) {
+      console.log('WIDTH AND HEIGHT')
       // TODO 
+      /*
+      const width = toMM(props.width)
+      canvas.width = width + marg*2 + 'mm'
+      const vbmarg = w * marg / width
+      canvas.x1 = x1 - vbmarg
+      canvas.y1 = y1 - vbmarg
+      canvas.x2 = x2 + vbmarg
+      canvas.y2 = y2 + vbmarg
+
+      const height = toMM(props.height)
+      canvas.height = height + marg*2 + 'mm'
+      const vbmarg = h * marg / height
+      canvas.x1 = x1 - vbmarg
+      canvas.y1 = y1 - vbmarg
+      canvas.x2 = x2 + vbmarg
+      canvas.y2 = y2 + vbmarg
+      */
+
     } else if (props.width) {
       const width = toMM(props.width)
       canvas.width = width + marg*2 + 'mm'
@@ -113,24 +132,32 @@ export const CoordinatePlane = props => {
 
     }
   }
-  console.log(canvas)
+
+  console.log({canvas})
+  
+  const children = React.Children.toArray(props.children)
+  const svgchildren = children.filter(c => c.type !== Overlay)
+  const overlays = children.filter(c => c.type === Overlay)
+
+  console.log({children, svgchildren, overlays})
 
   return (
     <Canvas {...canvas}>
       <MarkerSymbols />
       {grid ? (
         <Grid span={[x1, y1, x2, y2]} axis={axis}/>
-        ) : axis ? (
-        <Style exactname="svgplot-axis">
-          <Path points={[[0,y1], [0,y2]]} markers="-->"/>
-          <Path points={[[x1,0], [x2,0]]} markers="-->"/>
-        </Style>
-        ) : null}
-        <Clipper {...clipper}>
-          <Styler {...styler}>
-            {props.children}
-          </Styler>
-        </Clipper>
+      ) : axis ? (
+      <Style exactname="svgplot-axis">
+        <Path points={[[0,y1], [0,y2]]} markers="-->"/>
+        <Path points={[[x1,0], [x2,0]]} markers="-->"/>
+      </Style>
+      ) : null}
+      <Clipper {...clipper}>
+        <Styler {...styler}>
+          {svgchildren}
+        </Styler>
+      </Clipper>
+      {overlays}
     </Canvas>
   )
 

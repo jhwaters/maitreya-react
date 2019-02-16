@@ -44,16 +44,24 @@ const a = () => (
   </svg>
 )
 
-const [x, y] = [1,1]
+const [x, y] = [2.5,1.5]
+
+const angles = [0, 45, 90, 135, 180]
 
 const json = [
   [
     'CoordinatePlane', {span: [-2,-2,10,10], height: '2in', },
     ['Layer', {vectorEffect: 'non-scaling-stroke'},
-      ['Path', {points: '1,1 5,2 6,7'}],
+      //['Path', {points: '1,1 5,2 6,7'}],
       ['Point', {x, y}],
-      ...['NE', 'NW', 'SE', 'SW'].map(a => [
-        'Label', {x, y, anchor: a, padding: '2mm'}, `$$f(x) = ${a}$$`
+      ...angles.map(a => [
+        'Label', {
+          x, y, 
+          anchor: 180+a, 
+          distance: '3mm', 
+          rotate: 'auto',
+        }, 
+        `$$f(x) = ${a}^\\circ$$`
       ])
     ]
   ],
@@ -84,19 +92,6 @@ const Scratch = () => {
       <p>Scratch Page</p>
       <div className='page-content'>
         <RenderJson json={json}/>
-        <svg viewBox="-11 -11 22 22" height="2in" vectorEffect="non-scaling-stroke" >
-          <g style={{stroke: 'black', fill: 'none'}} vectorEffect="inherit" transform="scale(1,-1)">
-            <polyline points="-10 0 10 0" vectorEffect="inherit"/>
-            <polyline points="0 -10 0 10" vectorEffect="inherit"/>
-            <rect x="-10" y="-10" width="20" height="20" vectorEffect="inherit"/>
-            <circle cx="3" cy="5" r="1" fill="blue" vectorEffect="non-scaling-stroke"/>
-            <foreignObject x="2" y="-9" height="7" width="7" style={{border: '1px solid blue'}}>
-              <div >
-                <RenderJson json={['Text', '$$f(x) = x^2 - \\sqrt{3}$$']} />
-              </div>
-            </foreignObject>
-          </g>
-        </svg>
       </div>
     </Page>
   )

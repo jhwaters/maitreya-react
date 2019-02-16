@@ -1,6 +1,6 @@
 
 :root {
-  --doc-font-family: serif;
+  --doc-font-family: 'katex_main';
   --doc-font-family-monospace: 'Courier', monospace;
   --doc-font-size: 8pt;
   --doc-math-font-size: 1.1em;

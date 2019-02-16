@@ -45,6 +45,7 @@
 .svgplot-canvas *[fill~="diagonal1"] { fill: var(--svgplot-fillpattern-diagonal1); }
 .svgplot-canvas *[fill~="diagonal2"] { fill: var(--svgplot-fillpattern-diagonal2); }
 
+
 .svgplot-canvas * {
   stroke: var(--svgplot-color);
 }
@@ -74,6 +75,7 @@
   stroke-linecap: square;
 }
 
+
 .svgplot-axis *[marker-start="arrow"] { marker-start: var(--svgplot-marker-axisarrow) }
 .svgplot-axis *[marker-start="arrowrev"] { marker-start: var(--svgplot-marker-axisarrow) }
 .svgplot-axis *[marker-end="arrow"] { marker-end: var(--svgplot-marker-axisarrow) }
@@ -85,32 +87,6 @@
   stroke-linecap: square;
 }
 
-
 .svgplot-label {
-  position: absolute;
   white-space: nowrap;
-}
-.svgplot-label[anchor="NW"] {
-  top: 0;
-  left: 0;
-  transform-origin: top left;
-  text-align: left;
-}
-.svgplot-label[anchor="NE"] {
-  top: 0;
-  right: 0;
-  transform-origin: top right;
-  text-align: right;
-}
-.svgplot-label[anchor="SW"] {
-  bottom: 0;
-  left: 0;
-  transform-origin: bottom left;
-  text-align: left;
-}
-.svgplot-label[anchor="SE"] {
-  bottom: 0;
-  right: 0;
-  transform-origin: bottom right;
-  text-align: right;
 }

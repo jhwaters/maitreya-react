@@ -204,8 +204,6 @@ export class SolveRightTriangle extends QGen {
         {value: 'HL', label: 'Hypotenuse-Leg'},
         {value: 'LL', label: 'Leg-Leg'},
         {value: 'HA', label: 'Hypotenuse-Angle'}, 
-        //{value: 'A-L', label: 'Leg + Opposite Angle'},
-        //{value: 'AL', label: 'Leg + Adjacent Angle'},
         {value: 'LA', label: 'Leg-Angle'},
       ],
       default: {HL: true, LL: true, HA: true, 'LA': true}
@@ -347,23 +345,27 @@ export class SolveRightTriangle extends QGen {
       'determine the measure of all sides and angles for right triangle $$ABC$$. The diagram is __not__ to scale.'
     ].join(' ')
 
-    const ALabelProps = (
-      labels.A === 'A' 
-      ? {x: 3.8, y: 2.5, padding: '1mm', anchor: 'NE'}
-      : {x: 4, y: 2.5, padding: '1mm', anchor: 'NE'}
+    const BLabelProps = (
+      labels.B === 'B' 
+      ? {x: 4, y: 3, anchor: 'NE', distance: '5.5mm'}
+      : {x: 4, y: 3, anchor: 'NE', distance: '5.5mm'}
     )
 
     const diagram = [
-      'Canvas', {x1:-1, y1:-1, x2:5, y2:4, height: '1.5in'},
+      'CoordinatePlane', {span: "0,0 4,3", axis: false, grid: false, clip: false, height: '1in'},
       //['Style', {exactName: 'svgplot-grid'}, ['Grid', {span: [0,0,4,3]}]],
       ['Path', {points: "3.5,0 3.5,0.5 4,0.5", style: 'geometry anglemark'}],
       ['Polygon', {points: "0,0 4,0 4,3", style: "geometry", markers: '...'}],
       
-      ['Label', {x: 4, y: 1.5, padding: '1mm', anchor: 'NW'}, `$$${labels.a}$$`],
-      ['Label', {x: 2, y: 0, padding: '1mm', anchor: 'NW'}, `$$${labels.b}$$`],
-      ['Label', {x: 2.3, y: 1.7, padding: '1mm', anchor: 'SE', angle: 30}, `$$${labels.c}$$`],
-      ['Label', ALabelProps, `$$${labels.A}$$`],
-      ['Label', {x: 1, y: 0, padding: '1mm', anchor: 'SW'}, `$$${labels.B}$$`],
+      ['Overlay', {x: 4, y: 1.5, anchor: 'W', displacement: '1mm'}, `$$${labels.a}$$`],
+      ['Overlay', {x: 2.2, y: 0, anchor: 'N', displacement: '1mm'}, `$$${labels.b}$$`],
+      [
+        'Overlay', 
+        {x: 2, y: 1.5, anchor: 'SE', displacement: '1mm', rotate: '30' },
+        `$$${labels.c}$$`,
+      ],
+      ['Overlay', {x: 4, y: 3, displacement: {angle: 245, radius: '8mm'}}, `$$${labels.B}$$`],
+      ['Overlay', {x: 0, y: 0, displacement: {angle: 18, radius: '9mm'}}, `$$${labels.A}$$`],
     ]
 
     function answerPrompt(s) {

@@ -70,8 +70,8 @@ export const PreviewXYPlot = () => {
         ],
       ],
       ['Point', {x: -4, y: 0}],
-      ['Label', {x: -9, y: 7}, '$$f(x) = \\frac{1}{x-2}+2$$'],
     ],
+    ['Overlay', {x: -9, y: 7, anchor: 'W'}, '$$f(x) = \\frac{1}{x-2}+2$$'],
     [
       'Style', {name: 'secondary'},
       ['Path', {points: gpoints, fill: 'solid'}],

@@ -31,20 +31,22 @@ const googlefonts = [
 
 const DefaultFonts = [
   //...googlefonts,
-  'CMU Concrete',
-  'CMU Serif',
-  'IBM Plex Sans',
-  'IBM Plex Serif',
+  //'CMU Concrete',
+  //'CMU Serif',
+  //'IBM Plex Sans',
+  //'IBM Plex Serif',
 ]
 
 const BrowserFonts = [
-  '__CUSTOM__',
+  'katex_main',
   'sans-serif',
   'serif',
+  '__CUSTOM__',
 ]
 
 const fontLabels = {
-  '__CUSTOM__': 'local font',
+  '__CUSTOM__': 'other',
+  'katex_main': 'default',
   'sans-serif': 'sans-serif (browser)',
   'serif': 'serif (browser)'
 }
@@ -97,12 +99,11 @@ class FontFamilySelect extends React.Component {
 
   fontList = () => {
     const result = [
-      ...BrowserFonts,
-      0,
       ...[
         ...DefaultFonts, 
         ...this.props.localFonts
       ].sort(fontSort), 
+      ...BrowserFonts,
       
     ]
     return result

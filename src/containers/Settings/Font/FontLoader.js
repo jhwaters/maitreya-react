@@ -16,8 +16,8 @@ const googleFonts = [
   'Fira Sans',
   'Gentium Basic',
   //'Handlee',
-  //'IBM Plex Sans',
-  //'IBM Plex Serif',
+  'IBM Plex Sans',
+  'IBM Plex Serif',
   //'Inconsolata',
   'Jura',
   //'Lora',
@@ -85,7 +85,7 @@ class FontLoader extends React.Component {
   }
 
   addFont(family) {
-    this.props.setDocumentFontFamily(family)
+    //this.props.setDocumentFontFamily(family)
     this.props.addFontFamily(family)
     const toAdd = this.state.toAdd.filter(f => f !== family)
     this.setState({toAdd, selection: toAdd[0]})

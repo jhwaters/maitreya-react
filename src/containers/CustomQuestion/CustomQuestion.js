@@ -47,8 +47,8 @@ const jsonExample = `{
     "CoordinatePlane",
     {"span": "-5,-5 5,5", "axis": false, "height": "1.5in"},
     ["Path", {"points": "-4,3 4,-3", "markers": ".-."}],
-    ["Label", {"x": -3, "y": 4}, "$$X$$"],
-    ["Label", {"x": 3, "y": -3}, "$$Y$$"]
+    ["Overlay", {"x": -4, "y": 3, "anchor": "S"}, "$$X$$"],
+    ["Overlay", {"x": 4, "y": -3, "anchor": "N"}, "$$Y$$"]
   ]
 }`
 

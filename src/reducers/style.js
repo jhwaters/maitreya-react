@@ -12,7 +12,7 @@ import { kebabCase } from 'lodash'
 
 const initialState = {
   columns: true,
-  fontFamily: 'serif',
+  fontFamily: 'katex_main',
   fontSize: '8pt',
   mathFontSize: '1.1em',
   mathFontWeight: 'normal',

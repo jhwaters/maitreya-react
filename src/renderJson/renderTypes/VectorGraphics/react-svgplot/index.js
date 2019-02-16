@@ -1,8 +1,10 @@
 import './svgplot.global.css'
 import Canvas from './Canvas'
 import Clip from './Clip'
+import G from './G'
 import Grid from './Grid'
 import Label from './Label'
+import Overlay from './Overlay'
 import { 
   Circle, Ellipse, Line, Path, 
   Point, Polygon, Polyline, Rect
@@ -15,9 +17,11 @@ export {
   Circle,
   Clip,
   Ellipse,
+  G,
   Grid,
   Label,
   Line,
+  Overlay,
   Path,
   Polygon,
   Polyline,

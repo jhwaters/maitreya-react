@@ -1,5 +1,6 @@
 import Polynomial from 'polynomial'
 import fraction from 'fraction.js'
+import { roundTo } from './tools/handystuff'
 
 import QGen from './QGen'
 
@@ -165,7 +166,9 @@ export class MatchTransformations extends QGen {
 			let x = start
 			while (x <= stop) {
 				const y = f(x)
-				points.push({x, y})
+				if (Math.abs(y) < 1000) {
+					points.push({x: roundTo(x, 5), y: roundTo(y, 5)})
+				}
 				x += 0.2
 			}
 			if (func.parent === 'log2' && b < 0) {

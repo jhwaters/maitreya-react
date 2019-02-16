@@ -3,9 +3,10 @@ import {
   Circle, 
   Ellipse,
   Label,
-  Transform,
+  Overlay,
   Point,
   Rect,
+  Transform,
 } from './react-svgplot'
 
 import Clip from './Clip'
@@ -27,6 +28,7 @@ export {
   Grid,
   Label,
   Layer,
+  Overlay,
   Path,
   Point,
   Polygon,
@@ -45,6 +47,7 @@ const VectorGraphics = {
   Grid,
   Label,
   Layer,
+  Overlay,
   Path,
   Point,
   Polygon,
