@@ -55,8 +55,13 @@ export const Path = props => {
 }
 
 export const Point = props => {
-  const {x, y, marker="."} = props
-  const pathprops = {d: `M${x},${y}Z`}
+  const {x, y, coords, marker="."} = props
+  const pathprops = {}
+  if (coords) {
+    pathprops.d = `M${coords[0]},${coords[1]}Z`
+  } else {
+    pathprops.d = `M${x},${y}Z`
+  }
   if (marker) {
     pathprops.markers = `--${marker}`
   }

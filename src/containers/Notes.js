@@ -19,7 +19,6 @@ const Notes = (props) => {
         appropriate. Use the 'Fix Pagination' button to quickly recalculate 
         all page breaks.
       </p>
-      <p>Labels on graphs do not work in Safari.</p>
       <p>The answer key can't be over one page long.</p>
 
     </div>

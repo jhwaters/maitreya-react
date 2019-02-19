@@ -215,9 +215,19 @@ export class FontTest extends QGen {
       'CoordinatePlane', {span: [-2,-2,10,10], height: '1.4in'},
       ['Point', {x: Ix, y: Iy}],
       ['Point', {x: Jx, y: Jy}],
-      ['Label', {x: Ix, y: Iy}, '_I_'],
-      ['Label', {x: Jx, y: Jy}, '_J_'],
+      ['Overlay', {x: Ix, y: Iy, anchor: 'NW'}, '_I_'],
+      ['Overlay', {x: Jx, y: Jy, anchor: 'NW'}, '_J_'],
     ]
+
+    const wrongs = []
+    for (let i = 0; i < 4; i++) {
+      const [rise, run] = rd.sample([2,3,4,5,6,7,8,9],2)
+      const inter = rd.randint(1,10)
+      const s = rd.choice(['+', '-'])
+      wrongs.push(`$$y = \\frac{${rise}}{${run}}x ${s} ${inter}$$`)
+    }
+
+    const choices = wrongs
 
     return {
       instructions: [
@@ -233,11 +243,9 @@ export class FontTest extends QGen {
         '***slope-intercept*** form (_y = mx + b_) for _l_.',
       ],
       diagram: diagram1,
-      layout: ['instructions', 'question', ['diagram', 'answer']],
       answer: {
-        prompt: [
-          'AnswerBlanks', {items: ['equation: _y =_']}
-        ]
+        prompt: ['AnswerBlanks', {width: '2in'}, 'equation: _y =_'],
+        //choices: choices,
       }
     }
   }
@@ -263,6 +271,8 @@ export class FontDisplay extends QGen {
 
     lines.push('$$\\text{' + text + '}$$ (LaTeX)')
     lines.push('$$\\text{\\textit{' + text + '}}$$ (LaTeX)')
+    lines.push('$$\\text{' + text.toUpperCase() + '}$$ (LaTeX)')
+    lines.push('$$\\text{\\textit{' + text.toUpperCase() + '}}$$ (LaTeX)')
 
     return {
       question: lines.join('  \n'),

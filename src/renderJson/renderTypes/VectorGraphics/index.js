@@ -9,6 +9,7 @@ import {
   Transform,
 } from './react-svgplot'
 
+import AngleMark from './AngleMark'
 import Clip from './Clip'
 import CoordinatePlane from './CoordinatePlane'
 import Grid from './Grid'
@@ -20,6 +21,7 @@ import Style from './Style'
 import './vgstyles.global.css'
 
 export {
+  AngleMark,
   Asymptote,
   Circle,
   Clip,
@@ -38,6 +40,7 @@ export {
 }
 
 const VectorGraphics = {
+  AngleMark,
   Asymptote,
   Canvas,
   Circle,

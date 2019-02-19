@@ -4,7 +4,8 @@ import { renderJson } from '..'
 
 const QuestionLayout = ({
   content,
-  layout=[[['instructions', 'question', 'answer'], 'diagram']], 
+  //layout=[[['instructions', 'question', 'answer'], 'diagram']], 
+  layout = ['instructions', 'question', ['answer', 'diagram']],
   direction='column',
 }={}) => {
 

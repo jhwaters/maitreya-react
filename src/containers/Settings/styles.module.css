@@ -46,26 +46,24 @@
   flex-direction: column;
 }
 
-.NavButton, .NavButton:hover, .NavButton:disabled,
-.NavButton.active, .NavButton:focus {
-  color: var(--ui-border-2, #aaa);
+.NavButton {
+  text-align: center;
+  border: none;
+  color: var(--ui-border-2, #aaaaaa);
+  background-image: none;
+  background-color: none;
   display: inline-block;
   font-size: inherit;
   font-weight: inherit;
-  background-image: none;
-  background-color: inherit;
-  border: none;
   margin: 1mm 0;
   padding: 0.2em 0.9em;
-  border: none;
-  border-radius: 0;
+  cursor: default;
 }
 
 .NavButton:hover {
-  color: var(--ui-fg-0, #555);
+  color: var(--ui-fg-0, #555555);
 }
 
-.NavButton:disabled {
-  color: var(--ui-fg-1, #222);
+.NavButton[status="active"] {
+  color: var(--ui-fg-1, #222222);
 }
-

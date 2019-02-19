@@ -12,9 +12,9 @@
 
 .SettingTable input[type=range] { width: 2cm }
 
-.SettingTable * > tr > td:nth-of-type(1) { width: 2cm }
-.SettingTable * > tr > td:nth-of-type(2) { width: 1cm }
-.SettingTable * > tr > td:nth-of-type(3) { width: 2cm }
+.SettingTable * > tr > td:nth-of-type(1) { width: 2cm; text-align: left; }
+.SettingTable * > tr > td:nth-of-type(2) { width: 1cm; text-align: center; }
+.SettingTable * > tr > td:nth-of-type(3) { width: 2cm; text-align: center; }
 
 .StyleSetting {
   margin: 5mm 0;

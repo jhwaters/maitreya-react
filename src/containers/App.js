@@ -19,25 +19,21 @@ import SettingsPage, {
   FontFamily,
   FontSize,
   GUImode,
-  PageMargin,
   PreviewZoom,
   StartNumbering
 } from './Settings'
-
-
-import '../stylesheets/styles.global.css'
-
 import {
   addToDocument,
   removeLast,
   clearAll,
 } from '../actions/document'
 
+import '../stylesheets/styles.global.css'
 import * as questiontypes from '../questions'
 
 
 let questionBank = {}
-for (const set of ['examplequestions', 'transformations', 'trigonometry']) {
+for (const set of ['examplequestions', 'transformations', 'trigonometry', 'geometry']) {
   for (const q in questiontypes[set]) {
     const n = questiontypes[set][q].register().name
     questionBank[n] = questiontypes[set][q]
@@ -50,8 +46,6 @@ for (const set of ['generatortests', 'picofermi']) {
     questionBank[n] = questiontypes[set][q]
   }
 }
-
-
 
 ReactModal.setAppElement('#root')
 Object.assign(ReactModal.defaultStyles.content, {
@@ -133,10 +127,9 @@ class AppWrapper extends React.Component {
           <button onClick={window.print}>Print / PDF</button>
           <button onClick={this.openSettings}>Settings</button>
           <span style={toplabel}>Answer Key:</span><AnswerKeyToggle />
-          <span style={toplabel}>Start Numbers:</span><StartNumbering />
+          <span style={toplabel}>Start Numbering:</span><StartNumbering />
           <span style={toplabel}>Font:</span><FontFamily/><FontSize />
-          <span style={toplabel}>Margins:</span><PageMargin />
-          <span style={toplabel}>Zoom:</span><PreviewZoom defaultValue="110"/>
+          <span style={toplabel}>Zoom:</span><PreviewZoom defaultValue="100"/>
           <span style={toplabel}>Allow Editing:</span><AllowEditingToggle />
           <div style={{width: '3mm'}} />
           <FixPagination/>
@@ -185,8 +178,8 @@ class AppWrapper extends React.Component {
           isOpen={this.state.modal === 'CustomQuestion'}
           onRequestClose={this.closeModal}
         >
-          <CustomQuestion onRequestClose={this.closeModal}/>
           <button onClick={this.closeModal}>Close</button>
+          <CustomQuestion onRequestClose={this.closeModal}/>
         </ReactModal>
 
         <ReactModal

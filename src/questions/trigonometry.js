@@ -97,10 +97,10 @@ export class ConvertAngle extends QGen {
     if (conversion === 'r2d') {
       instructions = 'Convert the angle from radians to degrees:'
       question = ['Math', `\\displaystyle ${latexpifraction(radians)}`]
-      answer = ['Math', `${degrees}^\\circ`]
+      answer = ['Math', `${degrees}\\degree`]
     } else {
       instructions = 'Convert the angle from degrees to radians:'
-      question = ['Math', `${degrees}^\\circ`]
+      question = ['Math', `${degrees}\\degree`]
       answer = ['Math', `${latexpifraction(radians)}`]
     }
 
@@ -318,9 +318,9 @@ export class SolveRightTriangle extends QGen {
       a: roundTo(a, 2),
       b: roundTo(b, 2),
       c: roundTo(c, 2),
-      A: roundTo(A, 1) + '^\\circ',
-      B: roundTo(B, 1) + '^\\circ',
-      C: roundTo(C, 1) + '^\\circ'
+      A: roundTo(A, 1) + '\\degree',
+      B: roundTo(B, 1) + '\\degree',
+      C: roundTo(C, 1) + '\\degree'
     }
     
 
@@ -345,14 +345,8 @@ export class SolveRightTriangle extends QGen {
       'determine the measure of all sides and angles for right triangle $$ABC$$. The diagram is __not__ to scale.'
     ].join(' ')
 
-    const BLabelProps = (
-      labels.B === 'B' 
-      ? {x: 4, y: 3, anchor: 'NE', distance: '5.5mm'}
-      : {x: 4, y: 3, anchor: 'NE', distance: '5.5mm'}
-    )
-
     const diagram = [
-      'CoordinatePlane', {span: "0,0 4,3", axis: false, grid: false, clip: false, height: '1in'},
+      'CoordinatePlane', {span: "0,0 4,3", axis: false, grid: false, clip: false, height: '1.3in'},
       //['Style', {exactName: 'svgplot-grid'}, ['Grid', {span: [0,0,4,3]}]],
       ['Path', {points: "3.5,0 3.5,0.5 4,0.5", style: 'geometry anglemark'}],
       ['Polygon', {points: "0,0 4,0 4,3", style: "geometry", markers: '...'}],
@@ -364,8 +358,8 @@ export class SolveRightTriangle extends QGen {
         {x: 2, y: 1.5, anchor: 'SE', displacement: '1mm', rotate: '30' },
         `$$${labels.c}$$`,
       ],
-      ['Overlay', {x: 4, y: 3, displacement: {angle: 245, radius: '8mm'}}, `$$${labels.B}$$`],
-      ['Overlay', {x: 0, y: 0, displacement: {angle: 18, radius: '9mm'}}, `$$${labels.A}$$`],
+      ['Overlay', {x: 4, y: 3, displacement: {angle: 245, radius: labels.B === 'B' ? '7mm': '8.5mm'}}, `$$${labels.B}$$`],
+      ['Overlay', {x: 0, y: 0, displacement: {angle: 15, radius: labels.A === 'A' ? '8mm' : '10mm'}}, `$$${labels.A}$$`],
     ]
 
     function answerPrompt(s) {
@@ -387,7 +381,6 @@ export class SolveRightTriangle extends QGen {
           ...answerblanks.map(answerPrompt)
         ]
       },
-      layout: ['instructions', 'question', ['diagram', 'answer']]
     }
   }
 }

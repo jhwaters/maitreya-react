@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { RenderJson } from '../../../renderJson'
 
 
-
 const tabsize = 2;
 
 function onKeyDown(evt) {

@@ -1,5 +1,6 @@
 :root {
-  --vg-angle-color: #6688ff;
+  --vg-anglemark-color: #6688ff;
+  --vg-anglemark-fill-opacity: 0.2;
   --vg-asymptote-color: #888888;
   --vg-asymptote-width: 0.6mm;
   --vg-axis-color: #111111;
@@ -40,7 +41,6 @@
  STYLES 
  ************/
 
-
 .vg-style-asymptote {
   --svgplot-color: var(--vg-asymptote-color);
   stroke: var(--svgplot-color);
@@ -75,7 +75,8 @@
 }
 
 .vg-style-anglemark {
-  --svgplot-color: var(--vg-angle-color);
+  --svgplot-color: var(--vg-anglemark-color);
+  fill-opacity: var(--vg-anglemark-fill-opacity);
 }
 
 .vg-style-dashed {

@@ -2,7 +2,7 @@ import React from 'react'
 
 //const axisArrow = "M 0,0 Q -4,4 -4,12 Q 0,4 6,0 Q 0,-4 -4,-12 Q -4,-4 0,0"
 //const axisArrow = "M 0,0 Q -2,-6 -1,-12 Q 2,-3 6,0 Q 2,3 -1,12 Q -2,6 0,0"
-
+const axisArrow = 'M 0,0 L 0,2 Q 5,3 10,2 L 10,0 Q 5,1 0,0'
 
 export const MarkerSymbols = props => {
   return (
@@ -18,9 +18,9 @@ export const MarkerSymbols = props => {
         <path d="M -2,0 L -5,-6 L 6,0 L -5,6 z"/>
       </symbol>
       <symbol id="svgplot-symbol-axisarrow" viewBox="-12 -12 24 24" refX="0" refY="0">
-        <polygon points="0,1 1,1 1,-1 0,-1"/>
-        <polygon points="0,0 0,2 10,2 10,0" transform="translate(2,0) rotate(120)"/>
-        <polygon points="0,0 0,2 10,2 10,0" transform="scale(1,-1) translate(2,0) rotate(120)"/>
+        <polygon points="0,1 .5,1 .5,-1 0,-1"/>
+        <path d={axisArrow} transform="translate(2,0) rotate(120)"/>
+        <path d={axisArrow} transform="scale(1,-1) translate(2,0) rotate(120)"/>
       </symbol>
     </defs>
   )

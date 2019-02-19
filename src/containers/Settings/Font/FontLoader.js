@@ -8,29 +8,31 @@ import { includes } from 'lodash'
 
 
 const googleFonts = [
-  
   'Alegreya',
+  'Alegreya Sans',
   'Arima Madurai',
-  //'BioRhyme',
+  'BioRhyme',
   'EB Garamond',
   'Fira Sans',
-  'Gentium Basic',
+  //'Gentium Basic',
   //'Handlee',
   'IBM Plex Sans',
   'IBM Plex Serif',
   //'Inconsolata',
-  'Jura',
-  //'Lora',
+  //'Jura',
+  'Lora',
   //'Merriweather',
   //'Noticia Text',
   //'Noto Sans',
   'Noto Serif',
   'Old Standard TT',
   'Raleway',
+  'Roboto',
+  'Roboto Slab',
   'Signika',
   'Source Serif Pro',
   'Ubuntu',
-  'Zilla Slab',
+  //'Zilla Slab',
   //'Signika Negative',
   
   /*
@@ -106,7 +108,6 @@ class FontLoader extends React.Component {
     if (this.state.toAdd.length === 1) {
       return null
     }
-    const loaded = {}
     WebFont.load({
       google: {
         families: this.state.toAdd.map(f => `${f}:${fontStyles[f] || fontStyles.default}`)
@@ -114,7 +115,6 @@ class FontLoader extends React.Component {
       fontactive: (family) => this.addFont(family),
       fontinactive: (family) => console.error(`Could not load font ${family}`),
     })
-    //this.setState({toAdd: []})
   }
 
   loadInputFont = () => {

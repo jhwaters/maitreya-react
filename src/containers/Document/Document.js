@@ -5,7 +5,7 @@ import AnswerKey from './AnswerKey'
 import { connect } from 'react-redux'
 
 
-import Scratch from './scratchpage'
+import Scratch from './testing/scratchpage'
 
 
 const Document = (props) => {

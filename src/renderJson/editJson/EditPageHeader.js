@@ -26,7 +26,6 @@ export default class EditPageHeader extends DefaultEditor {
     const rows = this.state.props.rows
     const inputStyle = {
       width: '100%',
-      borderStyle: 'dashed',
       fontSize: '1.1em',
       fontFamily: 'var(--doc-font-family, monospace)',
       margin: '1mm',

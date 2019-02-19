@@ -77,7 +77,7 @@ export const CoordinatePlane = props => {
   const h = y2 - y1
   const {
     preserveAspectRatio=true, 
-    margin='1mm',
+    margin='3mm',
     grid=true, axis=true, 
     style="primary function", clip=true,
   } = props
@@ -132,14 +132,10 @@ export const CoordinatePlane = props => {
 
     }
   }
-
-  console.log({canvas})
   
   const children = React.Children.toArray(props.children)
   const svgchildren = children.filter(c => c.type !== Overlay)
   const overlays = children.filter(c => c.type === Overlay)
-
-  console.log({children, svgchildren, overlays})
 
   return (
     <Canvas {...canvas}>

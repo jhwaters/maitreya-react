@@ -5,40 +5,36 @@ import { setDocumentFontFamily } from '../../../actions/style'
 import { addFontFamily } from '../../../actions/config'
 
 
-
-const googlefonts = [
-  //'Alegreya',
+const DefaultFonts = [
+  /*
+  'Alegreya',
+  'Alegreya Sans',
   'Arima Madurai',
   'BioRhyme',
   'EB Garamond',
   'Fira Sans',
   //'Gentium Basic',
-  //'IBM Plex Sans',
-  //'IBM Plex Serif',
-  'Jura', 
-  //'Jura Medium',
-  //'Lora',
+  //'Handlee',
+  'IBM Plex Sans',
+  'IBM Plex Serif',
+  //'Inconsolata',
+  //'Jura',
+  'Lora',
   //'Merriweather',
   //'Noticia Text',
+  //'Noto Sans',
+  'Noto Serif',
   'Old Standard TT',
-  //'PT Serif',
   'Raleway',
+  'Roboto',
+  'Roboto Slab',
   'Signika',
-  //'Source Serif Pro',
+  'Source Serif Pro',
   'Ubuntu',
-  'Zilla Slab',
-]
-
-const DefaultFonts = [
-  //...googlefonts,
-  //'CMU Concrete',
-  //'CMU Serif',
-  //'IBM Plex Sans',
-  //'IBM Plex Serif',
+  */
 ]
 
 const BrowserFonts = [
-  'katex_main',
   'sans-serif',
   'serif',
   '__CUSTOM__',
@@ -46,7 +42,10 @@ const BrowserFonts = [
 
 const fontLabels = {
   '__CUSTOM__': 'other',
-  'katex_main': 'default',
+  'cmu_concrete': 'CMU Concrete',
+  'cmu_serif': 'CMU Serif',
+  'katex_sansserif': 'KaTeX Sans',
+  'katex_main': 'KaTeX Serif',
   'sans-serif': 'sans-serif (browser)',
   'serif': 'serif (browser)'
 }

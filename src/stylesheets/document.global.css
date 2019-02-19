@@ -189,8 +189,10 @@
 }
 
 .question-area-diagram {
-  display: flex;
-  justify-content: space-around;
-  padding: 3mm;
+  margin: auto;
+}
+.question-area-answer {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 

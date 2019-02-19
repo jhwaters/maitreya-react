@@ -179,7 +179,7 @@ export class MatchTransformations extends QGen {
 
 		const graphPoints = points => [
 			'CoordinatePlane', 
-			{ span: [-7,-7,7,7], height: '1.1in' },
+			{ span: [-7,-7,7,7], height: '1.1in'},
 			['Path', { points }]
 		]
 
@@ -218,7 +218,7 @@ export class MatchTransformations extends QGen {
 			answer: {
 				prompt: eqnTable,
 				correct: answer,
-			}
+			},
 		}
 
 	}

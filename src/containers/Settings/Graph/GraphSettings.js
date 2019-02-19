@@ -49,7 +49,7 @@ class GraphSettings extends React.Component {
           <tr>
             <td>Secondary</td>
             <td><Function2Color/></td>
-            <td><FunctionColorSwap>Swap Colors</FunctionColorSwap></td>
+            <td><FunctionColorSwap>Swap</FunctionColorSwap></td>
           </tr>
           <tr>
             <td>Asymptote</td>

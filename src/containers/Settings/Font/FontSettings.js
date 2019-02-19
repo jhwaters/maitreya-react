@@ -10,9 +10,13 @@ const previewtext = `To solve an equation of the form $$ax^2 + bx + c = 0$$, use
 
 $$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$$
 
+The angles of $$\\triangle{ABC}$$ add to $$180\\degree$$.
+
 The **volume** of a sphere is $$\\frac{4}{3}\\pi r^3$$.
 
-Remember that $$e^{i\\theta} = \\cos\\theta + i\\sin\\theta$$.`
+***Remember*** that $$e^{i\\theta} = \\cos\\theta + i\\sin\\theta$$.
+
+It can be difficult to distinguish between J I l 1.`
 
 
 const FontSettings = () => {

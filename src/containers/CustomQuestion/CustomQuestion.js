@@ -45,10 +45,37 @@ const jsonExample = `{
 
   "diagram": [
     "CoordinatePlane",
-    {"span": "-5,-5 5,5", "axis": false, "height": "1.5in"},
-    ["Path", {"points": "-4,3 4,-3", "markers": ".-."}],
-    ["Overlay", {"x": -4, "y": 3, "anchor": "S"}, "$$X$$"],
-    ["Overlay", {"x": 4, "y": -3, "anchor": "N"}, "$$Y$$"]
+    {
+      "span": "-5,-5 5,5", 
+      "axis": false, 
+      "height": "1.5in"
+    },
+    [
+      "Path", 
+      {
+        "points": "-4,3 4,-3", 
+        "markers": ".-.",
+        "style": "blue dashed"
+      }
+    ],
+    [
+      "Overlay", 
+      {
+        "x": -4, 
+        "y": 3, 
+        "anchor": "S"
+      }, 
+      "$$X$$"
+    ],
+    [
+      "Overlay", 
+      {
+        "x": 4, 
+        "y": -3, 
+        "anchor": "N"
+      }, 
+      "$$Y$$"
+    ]
   ]
 }`
 
@@ -65,11 +92,11 @@ class CustomQuestion extends React.Component {
       json: '',
       modal: 'none',
     }
-    this.inputType = React.createRef()
-    this.instructions = React.createRef()
-    this.question = React.createRef()
-    this.answer = React.createRef()
-    this.json = React.createRef()
+    //this.inputType = React.createRef()
+    //this.instructions = React.createRef()
+    //this.question = React.createRef()
+    //this.answer = React.createRef()
+    //this.json = React.createRef()
   }
 
   openExamples = () => this.setState({ modal: 'examples' })
@@ -94,35 +121,6 @@ class CustomQuestion extends React.Component {
 
   updateInputType = (evt) => {
     this.setState({inputType: evt.target.value})
-
-    /*
-    const inputType = evt.target.value
-    const data = this.getDataFromState()
-    if (data) {
-      if (inputType === 'json') {
-        const json = JSON.stringify(data,null,2)
-        if (json.length <= 2) {
-          this.setState({inputType, json: ''})
-        } else {
-          this.setState({inputType, json})
-        }
-      } else {
-        const newstate = {}
-        for (const k of ['instructions', 'question', 'answer']) {
-          if (data[k]) {
-            if (typeof data[k] === 'string') newstate[k] = data[k];
-            else if (data[k].type === 'text') newstate[k] = data[k].data;
-            else newstate[k] = '';
-          } else {
-            newstate[k] = '';
-          }
-        }
-        this.setState({ inputType, ...newstate })
-      }
-    } else {
-      this.setState({inputType})
-    }
-    */
   }
 
   getDataFromState() {
@@ -243,6 +241,7 @@ class CustomQuestion extends React.Component {
     }
     return (
       <>
+      
       <div style={divstyle}>
         <div style={{gridArea: 'inputs'}}>
           <h4 style={{gridArea: 'title'}}>Custom Question</h4>
@@ -251,13 +250,14 @@ class CustomQuestion extends React.Component {
             <option value='json'>JSON</option>
           </select>
           {this.renderInputs()}
+          <button onClick={this.addQuestion}>Add to Assignment</button>
         </div>
         <div style={{gridArea: 'preview'}}>
           <h4>Preview</h4>
           {this.renderPreview()}
         </div>
       </div>
-      <button onClick={this.addQuestion}>Add to Assignment</button>
+      
 
 
       <ReactModal isOpen={this.state.modal === 'examples'}
@@ -266,12 +266,6 @@ class CustomQuestion extends React.Component {
           content: {
             backgroundColor: 'var(--ui-page, white)',
             color: 'black',
-            //top: '0',
-            //bottom: '0',
-            //borderTop: 'none',
-            //borderBottom: 'none',
-            //left: '50px',
-            //right: '50px',
           }
         }}
       >

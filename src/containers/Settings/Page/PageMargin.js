@@ -1,16 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { setPageMargin } from '../../actions/style'
+import { setPageMargin } from '../../../actions/style'
 
 const MarginOptions = [
-  '0.25in',
-  '0.5in',
-  '0.75in',
-  '1.0in',
+  '.25',
+  '.5',
+  '.75',
+  '1.0',
 ]
 
 class SetPageMargin extends React.Component {
+  static defaultProps = {
+    unit: 'in',
+  }
 
   static propTypes = {
     current: PropTypes.string.isRequired,
@@ -22,7 +25,7 @@ class SetPageMargin extends React.Component {
   }
 
   updateFromSelection = (evt) => {
-    const m = evt.target.value
+    const m = evt.target.value + this.props.unit
     this.setPageMargin(m)
   }
 
@@ -30,10 +33,10 @@ class SetPageMargin extends React.Component {
     return (
       <select
         onChange={this.updateFromSelection}
-        value={this.props.current}
+        value={parseFloat(this.props.current)}
       >
         {MarginOptions.map((m) => (
-          <option key={m} value={m}>{m}</option>
+          <option key={m} value={parseFloat(m)}>{m} {this.props.unit}</option>
         ))}
       </select>
     )

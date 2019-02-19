@@ -4,6 +4,8 @@ import {
   SET_FONTFAMILY_UI,
   SET_SHOW_ANSWERKEY,
   SET_HIDDEN_COUNT,
+  SET_UI_THEME,
+  SET_DEBUG_VIEW,
 } from '../actions/config'
 
 const initialState = {
@@ -13,6 +15,8 @@ const initialState = {
   showAnswerKey: true,
   allowEditing: true,
   numberHidden: 0,
+  uiTheme: 'none',
+  debugView: false,
 }
 
 const config = function(state=initialState, action) {
@@ -30,6 +34,10 @@ const config = function(state=initialState, action) {
       return {...state, showAnswerKey: action.payload}
     case SET_HIDDEN_COUNT:
       return {...state, numberHidden: action.payload}
+    case SET_UI_THEME:
+      return {...state, uiTheme: action.payload}
+    case SET_DEBUG_VIEW:
+      return {...state, debugView: action.payload}
     default:
       return state
   }

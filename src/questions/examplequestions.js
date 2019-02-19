@@ -388,7 +388,7 @@ export class IncreasingIntervals extends QGen {
 			if (ans.length === 0) {
 				return 'None'
 			}
-			return '$$' + ans.map((int) => `(${int.start}, ${int.stop})`).join(', ') + '$$'
+			return ans.map((int) => `$$(${int.start}, ${int.stop})$$`).join(', ')
 		}
 
 		const wrongs = [wrongAnswer1, wrongAnswer2, wrongAnswer3, wrongAnswer4]
@@ -408,74 +408,6 @@ export class IncreasingIntervals extends QGen {
 	}
 }
 
-
-class AngleMeasure extends QGen {
-	static info = {
-		name: 'Angle Measure',
-		description: '',
-	}
-
-	generate(params) {
-
-		const translate = (a, b) => [a[0] + b[0], a[1]+ b[1]]
-		const difference = (a, b) => [a[0] - b[0], a[1] - b[1]]
-		//const complexMult = (a, b) => [a[0] * b[0] - a[1] * b[1], a[1] * b[0] + a[0] * b[1]]
-		/*
-		const rotate = (pt, angle, center=[0,0]) => {
-			const radians = angle * Math.PI / 180
-			const rotator = [Math.cos(radians), Math.sin(radians)]
-			const recenter = difference(pt, center)
-			return translate(complexMult(recenter, rotator), center)
-		}
-		*/
-
-		const rd = this.random
-
-		const angle1 = rd.randint(35, 145)
-
-		const rotateBy = rd.randint(0, 359)
-		//let diagram = new Canvas(-20, -20, 20, 20, {height: '1.5in'})
-		//let graph = new PlotElement('g', {transform: `rotate(${rotateBy})`})
-
-		const intersect1 = [-5,0]
-		const r = 10
-		const pp = [r * Math.cos(angle1 * Math.PI / 180), r * Math.sin(angle1 * Math.PI / 180)]
-		const top1 = translate(intersect1, pp)
-		const bottom1 = difference(intersect1, pp)
-
-		const intersect2 = [intersect1[0] + r, intersect1[1]]
-		const top2 = [top1[0] + r, top1[1]]
-		const bottom2 = [bottom1[0] + r, bottom1[1]]
-
-		const left = [intersect1[0] - r, intersect1[1]]
-		const right = [intersect2[0] + r, intersect2[1]]
-
-		
-		const diagram = [
-			'CartesianPlane',
-			{span: [-20,-20,20,20], height: '3in', autogrid: false, style: 'geom'},
-			[
-				'Rotate', 
-				{degrees: rotateBy},
-				['GeomLine', {points: [left, right]}],
-				['GeomLine', {points: [top1, bottom1]}],
-				['GeomLine', {points: [top2, bottom2]}],
-				['Point', {coords: intersect1}],
-				['Point', {coords: intersect2}]
-			]
-		]
-
-
-		return {
-			instructions: 'Work in progress',
-			diagram: {
-				'type': 'vectorgraphic',
-				'data': diagram,
-			}
-		}
-
-	}
-}
 
 export class RationalZeroTheorem extends QGen {
 	static info = {
@@ -648,7 +580,7 @@ export class GraphLinearInequalities extends QGen {
 
 		const plotAnswer = a => (
 			[
-				'CoordinatePlane', {span: [-10,-10,10,10], height: '1in', style: 'primary function'},
+				'CoordinatePlane', {span: [-10,-10,10,10], height: '1in', margin: '0.5mm'},
 				[
 					'Clip', {shape: 'Path', points: a.clips[0]}, [
 						'Clip', {shape: 'Path', points: a.clips[1]},
@@ -668,7 +600,6 @@ export class GraphLinearInequalities extends QGen {
 				prompt: blankgraph,
 				correct: plotAnswer(correct),
 			},
-			layout: ['instructions', 'question', 'diagram', 'answer'],
 		}
 	}
 }

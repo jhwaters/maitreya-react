@@ -2,7 +2,9 @@ export const SET_DOCUMENT_FONTFAMILY = 'SET_DOCUMENT_FONTFAMILY'
 export const SET_DOCUMENT_FONTSIZE = 'SET_DOCUMENT_FONTSIZE'
 export const SET_MATH_FONTSIZE = 'SET_MATH_FONTSIZE'
 export const SET_MATH_FONTWEIGHT = 'SET_MATH_FONTWEIGHT'
+export const SET_MATH_FONTFAMILY = 'SET_MATH_FONTFAMILY'
 export const SET_PAGE_MARGIN = 'SET_PAGE_MARGIN'
+export const SET_PAGE_SIZE = 'SET_PAGE_SIZE'
 export const UPDATE_GRAPHSTYLE = 'UPDATE_GRAPHSTYLE'
 export const RESET_GRAPHSTYLE = 'RESET_GRAPHSTYLE'
 
@@ -33,9 +35,19 @@ export const setMathFontWeight = (weight) => {
     payload: weight
   })
 }
+export const setMathFontFamily = family => {
+  return ({
+    type: SET_MATH_FONTFAMILY,
+    payload: family,
+  })
+}
 
 // Page Layout
-export const setPageMargin = (margins) => ({
+export const setPageSize = size => ({
+  type: SET_PAGE_SIZE,
+  payload: size,
+})
+export const setPageMargin = margins => ({
   type: SET_PAGE_MARGIN,
   payload: margins
 })

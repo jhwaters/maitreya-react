@@ -1,7 +1,8 @@
 import React from 'react'
 import FontSettings from './Font'
 import GraphSettings from './Graph'
-import GUImode from './GUImode'
+import PageSettings from './Page'
+import UISettings from './UI'
 import styles from './styles.module.css'
 
 
@@ -12,17 +13,17 @@ class SettingsPage extends React.Component {
     this.state = {showing: 'font'}
   }
 
-  showFontSettings = () => {
-    this.setState({showing: 'font'})
-  }
-  showGraphSettings = () => {
-    this.setState({showing: 'graph'})
-  }
+  showFontSettings = () => this.setState({showing: 'font'})
+  showGraphSettings = () => this.setState({showing: 'graph'})
+  showPageSettings = () => this.setState({showing: 'page'})
+  showUISettings = () => this.setState({showing: 'ui'})
 
   renderSettings() {
     switch (this.state.showing) {
       case 'font': return <FontSettings/>
       case 'graph': return <GraphSettings/>
+      case 'page': return <PageSettings/>
+      case 'ui': return <UISettings />
       default: return null
     }
   }
@@ -37,16 +38,26 @@ class SettingsPage extends React.Component {
           </div>
           
           <div className={styles.NavArea}>
-            <button
+            <div
               className={styles.NavButton}
               onClick={this.showFontSettings}
-              disabled={this.state.showing === 'font'}
-            >Fonts</button>
-            <button
+              status={this.state.showing === 'font' ? 'active' : undefined}
+            >Fonts</div>
+            <div
               className={styles.NavButton}
               onClick={this.showGraphSettings}
-              disabled={this.state.showing === 'graph'}
-            >Graphs</button>
+              status={this.state.showing === 'graph' ? 'active' : undefined}
+            >Graphs</div>
+            <div
+              className={styles.NavButton}
+              onClick={this.showUISettings}
+              status={this.state.showing === 'ui' ? 'active' : undefined}
+            >Interface</div>
+            <div
+              className={styles.NavButton}
+              onClick={this.showPageSettings}
+              status={this.state.showing === 'page' ? 'active' : undefined}
+            >Page</div>
           </div>
 
           <div>

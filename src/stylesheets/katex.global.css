@@ -2,6 +2,70 @@
 
 .katex {
   white-space: nowrap;
-  font-size: var(--doc-math-font-size, 1.2em);
+  font-size: var(--doc-math-font-size, 1.21em);
   font-weight: var(--doc-math-font-weight, normal);
+}
+
+
+.katex {
+  font-family: var(--doc-math-font-family, KaTeX_Main, Times New Roman, serif);
+}
+.katex .textrm {
+  font-family: var(--doc-math-font-family, KaTeX_Main), KaTeX_Main;
+}
+.katex .textsf {
+  font-family: KaTeX_SansSerif;
+}
+.katex .texttt {
+  font-family: KaTeX_Typewriter;
+}
+.katex .mathdefault {
+  font-family: var(--doc-math-font-family, KaTeX_Math), KaTeX_Math;
+  letter-spacing: var(--doc-math-font-spacing, 0);
+}
+.katex .mathit {
+  font-family: var(--doc-math-font-family, KaTeX_Main), KaTeX_Main;
+}
+.katex .mathbf {
+  font-family: var(--doc-math-font-family, KaTeX_Main), KaTeX_Main;
+}
+.katex .boldsymbol {
+  font-family: var(--doc-math-font-family, KaTeX_Math), KaTeX_Math;
+  letter-spacing: var(--doc-math-font-spacing, 0);
+}
+.katex .amsrm {
+  font-family: KaTeX_AMS;
+}
+.katex .mathbb,
+.katex .textbb {
+  font-family: KaTeX_AMS;
+}
+.katex .mathcal {
+  font-family: KaTeX_Caligraphic;
+}
+.katex .mathfrak,
+.katex .textfrak {
+  font-family: KaTeX_Fraktur;
+}
+.katex .mathtt {
+  font-family: KaTeX_Typewriter;
+}
+.katex .mathscr,
+.katex .textscr {
+  font-family: KaTeX_Script;
+}
+.katex .mathsf,
+.katex .textsf {
+  font-family: KaTeX_SansSerif;
+}
+.katex .mathboldsf,
+.katex .textboldsf {
+  font-family: KaTeX_SansSerif;
+}
+.katex .mathitsf,
+.katex .textitsf {
+  font-family: KaTeX_SansSerif;
+}
+.katex .mainrm {
+  font-family: var(--doc-math-font-family, KaTeX_Main), KaTeX_Main;
 }

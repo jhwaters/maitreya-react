@@ -3,7 +3,9 @@ import {
   SET_DOCUMENT_FONTSIZE,
   SET_MATH_FONTSIZE,
   SET_MATH_FONTWEIGHT,
+  SET_MATH_FONTFAMILY,
   SET_PAGE_MARGIN,
+  SET_PAGE_SIZE,
   UPDATE_GRAPHSTYLE,
   RESET_GRAPHSTYLE,
 } from '../actions/style'
@@ -12,13 +14,14 @@ import { kebabCase } from 'lodash'
 
 const initialState = {
   columns: true,
-  fontFamily: 'katex_main',
-  fontSize: '8pt',
+  fontFamily: 'cmu_concrete',
+  fontSize: '9pt',
+  mathFontFamily: '__DEFAULT__',
   mathFontSize: '1.1em',
   mathFontWeight: 'normal',
   pageSize: 'letter',
   pageOrientation: 'portrait',
-  pageMargin: '0.5in',
+  pageMargin: '.4in .5in',
   graph: {
     asymptoteColor: '#888888',
     asymptoteWidth: '0.6mm',
@@ -52,8 +55,22 @@ const style = function(state=initialState, action) {
     case SET_MATH_FONTWEIGHT:
       document.body.style.setProperty('--doc-math-font-weight', action.payload)
       return {...state, mathFontWeight: action.payload}
+    case SET_MATH_FONTFAMILY:
+      if (action.payload === '__MATCH__') {
+        document.body.style.setProperty('--doc-math-font-family', 'var(--doc-font-family)')
+        //document.body.style.setProperty('--doc-math-font-spacing', '.03em')
+      } else if (action.payload === '__DEFAULT__') {
+        document.body.style.removeProperty('--doc-math-font-family')
+        document.body.style.removeProperty('--doc-math-font-spacing')
+      } else {
+        document.body.style.setProperty('--doc-math-font-family', action.payload)
+        //document.body.style.setProperty('--doc-math-font-spacing', '.03em')
+      }
+      return {...state, mathFontFamily: action.payload}
 
     // Page Layout
+    case SET_PAGE_SIZE:
+      return {...state, pageSize: action.payload}
     case SET_PAGE_MARGIN:
       return {...state, pageMargin: action.payload}
 
