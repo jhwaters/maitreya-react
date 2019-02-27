@@ -31,6 +31,10 @@ function addFontFamilies(store) {
     //'Source Serif Pro',
     'Ubuntu',
     //'Zilla Slab',
+
+    'cmu_bright',
+    'katex_main',
+    'katex_sansserif',
   ]) {
     store.dispatch(addFontFamily(f))
   }

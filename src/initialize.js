@@ -7,12 +7,12 @@ function loadFonts(store) {
   WebFont.load({
     custom: {
       families: [
-        //'cmu_bright',
-        //'cmu_concrete',
+        'cmu_bright',
+        'cmu_concrete',
         'cmu_sansserif',
         'cmu_serif',
-        //'katex_main', 
-        //'katex_sansserif', 
+        'katex_main', 
+        'katex_sansserif', 
       ].map(f => `${f}:n4,i4,n7,i7`),
       urls: ['../stylesheets/styles.global.css'],
     },

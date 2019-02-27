@@ -1,0 +1,27 @@
+@font-face {
+  font-family: 'CMU_Concrete';
+  font-style: normal;
+  font-weight: normal;
+  src: url('./cmunorm-webfont.woff');
+}
+
+@font-face {
+  font-family: 'CMU_Concrete';
+  font-style: italic;
+  font-weight: normal;
+  src: url('./cmunoti-webfont.woff');
+}
+
+@font-face {
+  font-family: 'CMU_Concrete';
+  font-style: normal;
+  font-weight: bold;
+  src: url('./cmunobx-webfont.woff');
+}
+
+@font-face {
+  font-family: 'CMU_Concrete';
+  font-style: italic;
+  font-weight: bold;
+  src: url('./cmunobi-webfont.woff');
+}

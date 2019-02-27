@@ -2,26 +2,26 @@
   font-family: 'CMU_Bright';
   font-style: normal;
   font-weight: normal;
-  src: url('./cmunbmr.ttf');
+  src: url('./cmunbmr-webfont.woff');
 }
 
 @font-face {
   font-family: 'CMU_Bright';
   font-style: normal;
   font-weight: bold;
-  src: url('./cmunbbx.ttf');
+  src: url('./cmunbsr-webfont.woff');
 }
 
 @font-face {
   font-family: 'CMU_Bright';
   font-style: italic;
   font-weight: normal;
-  src: url('./cmunbmo.ttf');
+  src: url('./cmunbmo-webfont.woff');
 }
 
 @font-face {
   font-family: 'CMU_Bright';
   font-style: italic;
   font-weight: bold;
-  src: url('./cmunbxo.ttf');
+  src: url('./cmunbso-webfont.woff');
 }
