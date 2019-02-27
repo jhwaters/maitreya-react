@@ -1,0 +1,27 @@
+@font-face {
+  font-family: 'CMU_SansSerif';
+  font-style: normal;
+  font-weight: normal;
+  src: url('./cmunss.ttf');
+}
+
+@font-face {
+  font-family: 'CMU_SansSerif';
+  font-style: normal;
+  font-weight: bold;
+  src: url('./cmunsx.ttf');
+}
+
+@font-face {
+  font-family: 'CMU_SansSerif';
+  font-style: italic;
+  font-weight: normal;
+  src: url('./cmunsi.ttf');
+}
+
+@font-face {
+  font-family: 'CMU_SansSerif';
+  font-style: italic;
+  font-weight: bold;
+  src: url('./cmunso.ttf');
+}

@@ -20,6 +20,8 @@ const Notes = (props) => {
         all page breaks.
       </p>
       <p>The answer key can't be over one page long.</p>
+      <p>Local fonts ("other") do not work in Safari.</p>
+      <p>Printing doesn't always work right with page sizes other than "letter".</p>
 
     </div>
     </>

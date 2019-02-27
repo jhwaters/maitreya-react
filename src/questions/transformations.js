@@ -110,14 +110,24 @@ export class MatchTransformations extends QGen {
 				{value: 'exp2', label: 'Exponential'},
 				{value: 'log2', label: 'Logarithm'},
 			],
-			default: ['sqrt', 'quad', 'abs', 'exp2', 'log2'],
+		}
+	}
+
+	static defaultParams = {
+		parents: {
+			sqrt: true,
+			quad: true,
+			abs: true,
+			exp2: true,
+			log2: true,
+			cubic: false,
 		}
 	}
 
 	generate(params) {
 		const rd = this.random
 
-		const parent = rd.choice(params.parents)
+		const parent = rd.choice(Object.keys(params.parents).filter(k => params.parents[k]))
 
 		const transforms = (
 			parent === 'cubic' 

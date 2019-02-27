@@ -15,7 +15,7 @@ const initialState = {
   showAnswerKey: true,
   allowEditing: true,
   numberHidden: 0,
-  uiTheme: 'none',
+  uiTheme: 'light',
   debugView: false,
 }
 

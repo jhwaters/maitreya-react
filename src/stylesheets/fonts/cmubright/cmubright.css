@@ -1,0 +1,27 @@
+@font-face {
+  font-family: 'CMU_Bright';
+  font-style: normal;
+  font-weight: normal;
+  src: url('./cmunbmr.ttf');
+}
+
+@font-face {
+  font-family: 'CMU_Bright';
+  font-style: normal;
+  font-weight: bold;
+  src: url('./cmunbbx.ttf');
+}
+
+@font-face {
+  font-family: 'CMU_Bright';
+  font-style: italic;
+  font-weight: normal;
+  src: url('./cmunbmo.ttf');
+}
+
+@font-face {
+  font-family: 'CMU_Bright';
+  font-style: italic;
+  font-weight: bold;
+  src: url('./cmunbxo.ttf');
+}

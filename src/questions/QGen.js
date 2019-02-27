@@ -36,11 +36,12 @@ class QGen {
 
   _getParams() {
     let result = ({})
+    const defaults = this.constructor.defaultParams || {}
     for (const k in this.constructor.params) {
       if (this.params[k] !== undefined) {
         result[k] = this.params[k]
-      } else {
-        result[k] = this.constructor.params[k].default
+      } else if (defaults[k] !== undefined) {
+        result[k] = defaults[k]
       }
     }
     return result

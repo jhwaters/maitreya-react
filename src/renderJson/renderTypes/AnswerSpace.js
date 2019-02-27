@@ -26,13 +26,19 @@ export const AnswerBlanks = props => {
   if (props.height !== undefined) {
     style.minHeight = props.height
   }
+  const classNames = ['answerspot']
+  if (props.box) {
+    classNames.push('answerbox')
+  } else {
+    classNames.push('answerblank')
+  }
   return (
     <table className='answerblanks'>
       <tbody>
         {React.Children.map(props.children, (c,i) => (
           <tr key={i}>
             <td>{c}</td>
-            <td><div className='blank-underline answerblank' style={style}/></td>
+            <td><div className={classNames.join(' ')} style={style}/></td>
           </tr>
         ))}
       </tbody>

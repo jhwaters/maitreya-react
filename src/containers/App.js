@@ -1,13 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ReactModal from 'react-modal';
-import {
-  Preview,
-  SideBar,
-  StatusBar,
-  TopBar,
-  Wrapper,
-} from '../components'
+import { Preview, SideBar, StatusBar, TopBar, Wrapper } from './AppLayout'
 import Document from './Document/Document'
 import CustomQuestion from './CustomQuestion'
 import Notes from './Notes'
@@ -27,25 +21,10 @@ import {
   removeLast,
   clearAll,
 } from '../actions/document'
+import { QuestionSearch } from './GeneratorMenu'
 
 import '../stylesheets/styles.global.css'
-import * as questiontypes from '../questions'
 
-
-let questionBank = {}
-for (const set of ['examplequestions', 'transformations', 'trigonometry', 'geometry']) {
-  for (const q in questiontypes[set]) {
-    const n = questiontypes[set][q].register().name
-    questionBank[n] = questiontypes[set][q]
-  }
-}
-
-for (const set of ['generatortests', 'picofermi']) {
-  for (const q in questiontypes[set]) {
-    const n = '_' + questiontypes[set][q].register().name
-    questionBank[n] = questiontypes[set][q]
-  }
-}
 
 ReactModal.setAppElement('#root')
 Object.assign(ReactModal.defaultStyles.content, {
@@ -63,12 +42,9 @@ Object.assign(ReactModal.defaultStyles.overlay, {
 })
 
 
-//let questionID = 0;
-
 class AppWrapper extends React.Component {
   constructor(props) {
     super(props)
-    this.questionTypeSelect = React.createRef()
     this.state = {
       modal: 'none',
     }
@@ -78,45 +54,10 @@ class AppWrapper extends React.Component {
     this.props.addToDocument(elem)
   }
 
-  generateAndAdd = () => {
-    const questionType = this.questionTypeSelect.current.value
-    if (questionType !== '__NONE__') {
-      console.log(`Generating ${questionType}`)
-      try {
-        const qtype = this.props.questionTypes[questionType]
-        const question = new qtype()
-        this.addToDoc(question.output())
-      } catch(e) {
-        console.log('failed')
-        console.log(e)
-      }
-    }
-  }
-
   closeModal = () => this.setState({modal: 'none'})
   openRpcTest = () => this.setState({modal: 'RpcTest'})
   openCustomQuestion = () => this.setState({modal: 'CustomQuestion'})
   openSettings = () => this.setState({modal: 'Settings'})
-  
-  renderQuestionList() {
-    const sortfunc = (a, b) => {
-      const A = a.toUpperCase(), B = b.toUpperCase()
-      if (A > B) return 1
-      if (A < B) return -1
-      return 0
-    }
-
-    return Object.keys(this.props.questionTypes).sort(sortfunc).map(k => {
-      const register = this.props.questionTypes[k].register()
-      return (
-        <option key={`qtype${k}`} 
-          title={register.description}
-          value={k} >
-          {k}
-        </option>
-      )
-    })
-  }
 
   render() {
     const toplabel = {margin: '0 0 0 0.5em'}
@@ -129,7 +70,7 @@ class AppWrapper extends React.Component {
           <span style={toplabel}>Answer Key:</span><AnswerKeyToggle />
           <span style={toplabel}>Start Numbering:</span><StartNumbering />
           <span style={toplabel}>Font:</span><FontFamily/><FontSize />
-          <span style={toplabel}>Zoom:</span><PreviewZoom defaultValue="100"/>
+          <span style={toplabel}>Zoom:</span><PreviewZoom defaultValue="110"/>
           <span style={toplabel}>Allow Editing:</span><AllowEditingToggle />
           <div style={{width: '3mm'}} />
           <FixPagination/>
@@ -138,12 +79,7 @@ class AppWrapper extends React.Component {
           <Document/>
         </Preview>
         <SideBar>
-          <select ref={this.questionTypeSelect} defaultValue='__NONE__'>
-            <option value='__NONE__' disabled>Question Type</option>
-            <option value='__NONE__' disabled>-------</option>
-            {this.renderQuestionList()}
-          </select>
-          <button onClick={this.generateAndAdd}>Add</button>
+          <QuestionSearch/>
           <button onClick={this.openCustomQuestion}>Custom Question</button>
           <button onClick={this.props.removeLast}>Remove Last</button>
           <button onClick={this.props.clearAll}>Clear All</button>
@@ -207,7 +143,6 @@ class AppWrapper extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  questionTypes: questionBank,
   statusBar: "",
   fontFamilyUI: state.config.fontFamilyUI,
 })

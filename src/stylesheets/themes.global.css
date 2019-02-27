@@ -17,7 +17,7 @@
   --ui-gradient-v-2: linear-gradient(white, 50%, #eeeeee);
   --ui-gradient-v-x: linear-gradient(#555, 50%, #aaa);
 
-  --edit-color-dark: hsl(150,50%,60%);
+  --edit-color-dark: hsl(150,50%,50%);
   --edit-color-light: hsl(150,60%,80%);
   --edit-color-faded: hsl(150,60%,98%);
 }
@@ -41,7 +41,7 @@
 
   --ui-page: #e5e1d5;
 
-  --edit-color-dark: rgba(155,170,0,0.7);
+  --edit-color-dark: rgba(145,195,0,0.7);
   --edit-color-light: rgba(55,150,0,0.5);
   --edit-color-faded: rgba(55,150,0,0.05);  
 }
@@ -106,7 +106,8 @@ body[ui-theme] {
 *[ui-theme] button, 
 *[ui-theme] input, 
 *[ui-theme] select, 
-*[ui-theme] textarea {
+*[ui-theme] textarea,
+.ui-input {
   padding: 1px 5px;
   margin: 1px;
   border-radius: 4px;

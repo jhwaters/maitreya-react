@@ -8,40 +8,35 @@ import { includes } from 'lodash'
 
 
 const googleFonts = [
-  'Alegreya',
-  'Alegreya Sans',
+  'ABeeZee',
+  //'Alegreya',
+  //'Alegreya Sans',
   'Arima Madurai',
-  'BioRhyme',
+  //'BioRhyme',
+  //'Cormorant',
   'EB Garamond',
   'Fira Sans',
   //'Gentium Basic',
   //'Handlee',
   'IBM Plex Sans',
-  'IBM Plex Serif',
+  //'IBM Plex Serif',
   //'Inconsolata',
   //'Jura',
   'Lora',
   //'Merriweather',
-  //'Noticia Text',
+  //'Neuton',
+  'Noticia Text',
   //'Noto Sans',
-  'Noto Serif',
-  'Old Standard TT',
-  'Raleway',
-  'Roboto',
+  //'Noto Serif',
+  //'Old Standard TT',
+  //'Raleway',
+  //'Roboto',
   'Roboto Slab',
-  'Signika',
-  'Source Serif Pro',
+  //'Signika',
+  //'Source Sans Pro',
+  //'Source Serif Pro',
   'Ubuntu',
   //'Zilla Slab',
-  //'Signika Negative',
-  
-  /*
-  'Ledger',
-  'Montserrat',
-  'Neuton',
-  'Nunito',
-  'Roboto Slab',
-  */
 ].sort()
 
 const fontStyles = {
@@ -136,7 +131,10 @@ class FontLoader extends React.Component {
   }
 
   renderButton() {
-    return <button onClick={this.loadAll}>Load Web Fonts</button>
+    return (
+      <button onClick={this.loadAll}
+      >{this.props.children}</button>
+    )
   }
 
   renderInput() {
@@ -145,8 +143,12 @@ class FontLoader extends React.Component {
       <input type="text" 
         onChange={this.updateInput} 
         value={this.state.input}
+        placeholder="Enter Font Name"
+        
       ></input>
-      <button onClick={this.loadInputFont}>Add</button>
+      <button onClick={this.loadInputFont}
+        title="Load from Google Fonts"
+      >{this.props.children}</button>
       </>
     )
   }

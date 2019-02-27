@@ -10,7 +10,7 @@ function parseBorder(border) {
 
 
 export const EmptySpace = props => {
-  const {width, height, border} = props
+  const {width="2cm", height="2cm", border} = props
   const style = {margin: '0'}
   if (width) style.width = width
   if (height) style.height = height

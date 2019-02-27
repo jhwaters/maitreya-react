@@ -28,7 +28,12 @@ const FontSettings = () => {
       </div>
       <div>
         Font: <FontFamily/> 
-        <FontLoader type="button"/>
+      </div>
+      <h4>Web Fonts</h4>
+      <div>
+        <FontLoader type="input">Load</FontLoader>
+        <br/>
+        <FontLoader type="button">Load Suggested Fonts</FontLoader>
       </div>
       <h4>Math Font</h4>
       <div style={{justifyItems: 'right'}}>

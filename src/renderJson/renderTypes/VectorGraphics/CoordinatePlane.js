@@ -67,11 +67,12 @@ const Styler = ({style, children}) => {
 }
 
 export const CoordinatePlane = props => {
-  
-
   const canvas = {}
-  
   const span = parseSpan(props.span)
+  if (span === null) {
+    console.log("CoordinatePlane: span is null")
+    return null
+  }
   const {x1, y1, x2, y2} = span
   const w = x2 - x1
   const h = y2 - y1

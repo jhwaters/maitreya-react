@@ -66,15 +66,18 @@ export class TransversalNames extends QGen {
 				'linear',
 				'vertical', 
 			],
-			default: {
-				'alternate exterior': true,
-				'alternate interior': true,
-				'consecutive exterior': false,
-				'consecutive interior': true,
-				'corresponding': true,
-				'linear': false,
-				'vertical': false,
-			}
+		}
+	}
+
+	static defaultParams = {
+		possibleRelations: {
+			'alternate exterior': true,
+			'alternate interior': true,
+			'consecutive exterior': false,
+			'consecutive interior': true,
+			'corresponding': true,
+			'linear': true,
+			'vertical': true,
 		}
 	}
 
@@ -102,11 +105,11 @@ export class TransversalNames extends QGen {
 		const left = [intersect1[0] - r2, intersect1[1]]
 		const right = [intersect2[0] + r2, intersect2[1]]
 
-		function angleMark(transversal, position) {
+		function angleMark(transversal, position, linear=false) {
 			// transversal: 1 or 2 
 			// position: 'a', 'b', 'c', or 'd'
 
-			const result = {minRadius: 1.6};
+			const result = linear ? {radius: 1.8} : {minRadius: 1.6};
 
 			if (transversal === 1) {
 				result.coords = intersect1;
@@ -157,8 +160,8 @@ export class TransversalNames extends QGen {
 		const anglesToMark = rd.choice(relations[answer])
 		const [a1, a2] = anglesToMark.split(':')
 
-		const angleMark1 = angleMark(+a1[0], a1[1])
-		const angleMark2 = angleMark(+a2[0], a2[1])
+		const angleMark1 = angleMark(+a1[0], a1[1], answer === 'linear')
+		const angleMark2 = angleMark(+a2[0], a2[1], answer === 'linear')
 		
 		const diagram = [
 			'CoordinatePlane',

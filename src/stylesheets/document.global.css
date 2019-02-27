@@ -21,6 +21,7 @@
 
 .document table {
   border-collapse: collapse;
+  margin: 1em;
 }
 
 .document th {
@@ -57,12 +58,21 @@
   text-align: right;
 }
 
-.answerblank {
+.answerspot {
+  display: inline-block;
+  margin: 0 1mm;
   min-width: 1cm;
   min-height: 1cm;
   width: 1in;
   height: 1.2cm;
+}
+
+.answerbox {
   border: 1px solid black;
+}
+
+.answerblank {
+  border: none;
 }
 
 .answerchoice-list {
@@ -163,7 +173,6 @@
 }
 
 .question-layout {
-  align-content: space-between;
   display: flex;
   margin: 0;
   padding: 0;
@@ -171,7 +180,7 @@
 
 .question-layout-row {
   flex-direction: row;
-  align-content: space-between;
+  justify-content: flex-start;
 }
 
 .question-layout-column {
@@ -184,10 +193,12 @@
 
 .question-area {
   margin-bottom: 0.5em;
-  margin-right: 0.5em;
+  margin-right: auto;
+  margin-left: 0;
   justify-content: flex-start;
 }
 
+/*
 .question-area-diagram {
   margin: auto;
 }
@@ -195,4 +206,5 @@
   margin-top: auto;
   margin-bottom: auto;
 }
+*/
 

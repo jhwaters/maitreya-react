@@ -42,14 +42,15 @@ const BrowserFonts = [
 
 const fontLabels = {
   '__CUSTOM__': 'other',
+  'cmu_bright': 'CMU Bright',
   'cmu_concrete': 'CMU Concrete',
+  'cmu_sansserif': 'CMU Sans',
   'cmu_serif': 'CMU Serif',
   'katex_sansserif': 'KaTeX Sans',
   'katex_main': 'KaTeX Serif',
   'sans-serif': 'sans-serif (browser)',
   'serif': 'serif (browser)'
 }
-
 
 function fontSort(a, b) {
   const aName = (fontLabels[a] || a).toUpperCase()
@@ -59,13 +60,13 @@ function fontSort(a, b) {
   return 0
 }
 
-
 function renderFontOption(family) {
   if (family) {
     const label = fontLabels[family] || family
     return (
       <option key={`font-${family}`}
         value={family}
+        title={family === '__CUSTOM__' ? 'Choose a font not on this list' : ''}
         >{label}</option>
     )
   }

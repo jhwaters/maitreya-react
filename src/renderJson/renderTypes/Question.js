@@ -2,19 +2,25 @@ import React from 'react'
 import { renderJson } from '..'
 
 
+
+const defaultLayout = ['instructions', 'question', ['answer', 'diagram']]
+//const defaultLayout = [[['instructions', 'question', 'answer'], 'diagram']]
+const layoutAnswerRight = ['instructions', 'question', ['diagram', 'answer']]
+
 const QuestionLayout = ({
   content,
-  //layout=[[['instructions', 'question', 'answer'], 'diagram']], 
-  layout = ['instructions', 'question', ['answer', 'diagram']],
+  layout,
   direction='column',
 }={}) => {
 
   const className = `question-layout question-layout-${direction}`
   const newDirection = {row: 'column', column: 'row'}[direction]
+  //const useLayout = layout || defaultLayout
+  const useLayout = layout || (content.answer && content.answer[0] === 'EmptySpace' ? layoutAnswerRight : defaultLayout)
 
   return (
     <div className={className}>
-      {layout.map((area, i) => {
+      {useLayout.map((area, i) => {
         if (Array.isArray(area)) {
           return (
             <QuestionLayout key={`region-${i}`} 
@@ -58,7 +64,6 @@ export const Question = (props) => {
   
   const {instructions, question, diagram} = props.content
   let content = { instructions, question, diagram }
-  const layout = props.content.layout || options.layout
 
   // Determine what to render in answer space
   if (isMultipleChoice(props.content, options)) {
@@ -79,6 +84,8 @@ export const Question = (props) => {
       content.answer = ['EmptySpace', {height: '1cm', width: '2cm'}]
     }
   }
+
+  const layout = props.content.layout || options.layout
   return (
     <div className='question-wrapper'>
       <QuestionLayout content={content} layout={layout}/>

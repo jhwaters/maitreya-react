@@ -95,7 +95,7 @@ export class PicoFermiSet extends QGen {
     
     const versions = []
     const answers = []
-    for (const i of [1,2,3,4,5,6]) {
+    for (const i of [1,2,3,4,5,6,7,8,9,10]) {
       const slotmap = rd.shuffleRange(0,3)
       const digitmap = rd.shuffleRange(0,9)
       const clues = rd.shuffle(Object.keys(template.clues)).map(c => [
@@ -123,6 +123,11 @@ export class PicoFermiSet extends QGen {
     }
 
     return ({
+      instructions: [
+        'These puzzles are equivalent, but the order of their clues have',
+        'been scrambled and their digits have been remapped in order',
+        'to make them appear different.'
+      ].join(' '),
       question, 
       answer: {
         correct: answer,

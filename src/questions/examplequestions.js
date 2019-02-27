@@ -211,7 +211,7 @@ export class RationalGraph extends QGen {
 			for (const r of ans.bottom.sort((a,b) => b-a)) {
 				denom += '(' + math.simplify(`x - ${r}`).toString() + ')'
 			}
-			return `$$y = \\displaystyle\\frac{ ${numer} }{ ${denom} }$$`
+			return `$$\\displaystyle y = \\frac{ ${numer} }{ ${denom} }$$`
 		}
 
 		const answer = {top: [...roots, ...holes], bottom: [...holes, ...asymptotes]}
@@ -236,7 +236,11 @@ export class RationalGraph extends QGen {
 				correct: fmtAns(answer),
 				choices: choices,
 				correctIndex: i,
-				prompt: [{label: '$$y = $$', height: '8em', width: '20em'}],
+				prompt: [
+					'AnswerBlanks',
+					{height: '8em', width: '20em'},
+					'$$y = $$', 
+				],
 			}
 		}
 	}
@@ -254,24 +258,23 @@ export class IncreasingIntervals extends QGen {
 		toFind: {
 			label: 'Type of interval to find',
 			type: 'select',
-			options: [
-				{value: ['inc'], label: 'increasing'}, 
-				{value: ['dec'], label: 'decreasing'},
-				{value: ['inc', 'dec'], label: 'either'},
-			],
-			default: ['inc'],
+			options: ['increasing', 'decreasing', 'either'],
 		},
 		style: {
 			label: 'Graph style',
 			type: 'select',
 			options: ['jagged', 'smooth'],
-			default: 'smooth'
 		},
 		points: {
 			label: 'Mark points',
 			type: 'bool',
-			default: false,
 		}
+	}
+
+	static defaultParams = {
+		toFind: 'increasing',
+		style: 'smooth',
+		points: true,
 	}
 
 	interpolatePath(points) {
@@ -292,7 +295,11 @@ export class IncreasingIntervals extends QGen {
 	generate(params) {
 		const rd = this.random
 
-		const toFind = rd.choice(params.toFind)
+		const toFind = rd.choice({
+			increasing: ['inc'],
+			decreasing: ['dec'],
+			either: ['inc', 'dec']
+		}[params.toFind])
 
 		const xs = [-10]
 		let prev = -10
@@ -453,7 +460,7 @@ export class RationalZeroTheorem extends QGen {
 			}
 		}
 
-		const numCorrect = rd.choice([0,1,1,2,2,2,2,3,3,4])
+		const numCorrect = rd.choice([0,1,1,2,2,2,2,2,2,3,3,4])
 		const correctAnswers = []
 		while (correctAnswers.length < numCorrect) {
 			const [a, b] = [rd.choice(correctNumerators), rd.choice(correctDenominators)]
@@ -484,7 +491,7 @@ export class RationalZeroTheorem extends QGen {
 		}
 
 		return {
-			instructions: "Which of the following are possible zeros of the function according to the _Rational Zero Theorem_? Choose ***all*** that apply.",
+			instructions: "Which of the following are _possible_ zeros of the function according to the _Rational Zero Theorem_? Choose ***all*** that apply.",
 			question: question,
 			answer: {
 				correct: allPossibleZeros.map(s => `$$${fraction(s).toLatex()}$$`).join(', '),
@@ -538,9 +545,9 @@ export class GraphLinearInequalities extends QGen {
 
 		const latexeqn = f => `${f.a}x ${withsign(f.b)}y &${latexineq(f.ineq)} ${f.c}`
 
-		const question = `$$\\displaystyle\\left\\{\\begin{aligned} ${latexeqn(line1)} \\\\ ${latexeqn(line2)} \\end{aligned}\\right.$$`
+		const question = `$$\\displaystyle\\left\\{\\begin{aligned}\n${latexeqn(line1)} \\\\\n${latexeqn(line2)}\n\\end{aligned}\\right.$$`
 
-		const blankgraph = ['CoordinatePlane', {span: [-10,-10,10,10], height: '1.8in'}]
+		const blankgraph = ['CoordinatePlane', {span: "-10,-10 10,10", height: "1.8in"}]
 
 		const correct = {
 			lines: [], 
@@ -604,3 +611,95 @@ export class GraphLinearInequalities extends QGen {
 	}
 }
 
+
+function eqnFromPoints(p1, p2) {
+	const m = fraction(p2[1] - p1[1], p2[0] - p1[0])
+	const b = p1[1] - m*p1[0]
+	const f = x => m*x + b
+	Polynomial.setField('Q')
+	const latex = new Polynomial([b, m]).toLatex()
+	return ({f, latex})
+}
+
+
+class WritePiecewise extends QGen {
+	static info = {
+		name: 'Write Piecewise Function',
+		description: 'Write the equation for a piecewise function from its graph.'
+	}
+
+	generate(params) {
+		const rd = this.random
+
+		const domain = [-9,9]
+		const range = [-10,10]
+
+		const order = rd.sample(['inc', 'dec', 'const'], 3)
+
+
+
+		const eqns = []
+
+		const pieces = []
+		const xs = [domain[0], -3, 3, domain[1]]
+
+
+		const left = [rd.bool(), rd.bool()] // does the function go with the left at the domain break?
+
+		const markers = [
+			['<', '.', '.'], 
+			['.', '.', '.'], 
+			['.', '.', '>'], 
+		]
+
+		const domainIneqs = [
+			['\\leq', '\\leq'],
+			['\\leq', '\\leq'],
+			['\\leq', '\\leq'],
+		]
+
+		if (left[0]) {
+			markers[1][0] = 'o'
+			domainIneqs[1][0] = '<'
+		} else {
+			markers[0][2] = 'o'
+			domainIneqs[0][1] = '<'
+		}
+		if (left[1]) {
+			markers[2][0] = 'o'
+			domainIneqs[2][0] = '<'
+		} else {
+			markers[1][2] = 'o'
+			domainIneqs[1][1] = '<'
+		}
+
+		const answer = `$$y = \\left\\{\\begin{array}{r l r}
+	${eqns[0].latex} & \\text{ for } & -\\infty ${domainIneqs[0][0]} x ${domainIneqs[0][1]} ${xs[1]} \\\\
+	${eqns[1].latex} & \\text{ for } & ${xs[1]} ${domainIneqs[1][0]} x ${domainIneqs[1][1]} ${xs[2]} \\\\
+	${eqns[2].latex} & \\text{ for } & ${xs[2]} ${domainIneqs[2][0]} x ${domainIneqs[2][1]} \\infty \\\\
+\\end{array}\\right.$$`
+
+		const paths = [
+			['Path', {points: [pieces[0]], markers: markers[0].join('')}],
+			['Path', {points: [pieces[1]], markers: markers[1].join('')}],
+			['Path', {points: [pieces[2]], markers: markers[2].join('')}],
+		]
+
+		const diagram = [
+			'CoordinatePlane', {
+				span: [domain[0]-1, range[0], domain[1]+1, range[1]], 
+				clip: false,
+				height: '2in',
+			},
+			...paths
+		]
+
+		return {
+			instructions: 'Write the equation for the piecewise function shown.',
+			diagram,
+			answer,
+		}
+
+
+	}
+}

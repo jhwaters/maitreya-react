@@ -19,6 +19,11 @@ export const PolynomialFunction = (props) => {
     ...otherprops
   } = props
 
+  if (domain === undefined) {
+    console.error("no domain provided for PolynomialFunction")
+    return null
+  }
+
   const f = (x) => {
     let ans = 0
     for (const deg in coefficients) {
@@ -37,6 +42,11 @@ export const RationalFunction = (props) => {
     renderAsymptotes=true, renderRoots=true, renderHoles=true,
     style, fill,
   } = props
+
+  if (domain === undefined) {
+    console.error("no domain provided for RationalFunction")
+    return null
+  }
 
   const f = (x) => {
     let num = numerLC

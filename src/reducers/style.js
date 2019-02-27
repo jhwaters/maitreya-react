@@ -14,14 +14,14 @@ import { kebabCase } from 'lodash'
 
 const initialState = {
   columns: true,
-  fontFamily: 'cmu_concrete',
+  fontFamily: 'cmu_sansserif',
   fontSize: '9pt',
   mathFontFamily: '__DEFAULT__',
   mathFontSize: '1.1em',
   mathFontWeight: 'normal',
   pageSize: 'letter',
   pageOrientation: 'portrait',
-  pageMargin: '.4in .5in',
+  pageMargin: '.4in .5in .45in .5in',
   graph: {
     asymptoteColor: '#888888',
     asymptoteWidth: '0.6mm',

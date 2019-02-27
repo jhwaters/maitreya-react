@@ -66,7 +66,7 @@ export class RationalPlot extends QGen {
     ]
 
     return {
-      question: `The graph of $$$ ${y} = \\frac{${num}}{${den}} $$$`,
+      question: `The graph of $$ ${y} = \\displaystyle\\frac{${num}}{${den}} $$`,
       diagram: graph,
     }
 
@@ -123,7 +123,7 @@ export class PolynomialPlot extends QGen {
       ]
     ]
 
-    const question = `The graph of $$$ ${w} = \\frac{1}{${denom}}(${tex})$$$`
+    const question = `The graph of $$${w} = \\displaystyle\\frac{1}{${denom}}(${tex})$$`
 
     return {
       question: question,

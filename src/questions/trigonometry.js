@@ -53,23 +53,18 @@ export class ConvertAngle extends QGen {
     conversion: {
       label: 'Convert from:',
       type: 'select',
-      options: [
-        {value: ['d2r'], label: 'degrees to radians'},
-        {value: ['r2d'], label: 'radians to degrees'},
-        {value: ['d2r', 'r2d'], label: 'either'},
-      ],
-      default: ['d2r', 'r2d']
+      options: ['degrees to radians', 'radians to degrees', 'either'],
     },
     negative: {
       label: 'Negative angle',
       type: 'select',
-      options: [
-        {value: [false], label: 'No'},
-        {value: [true], label: 'Yes'},
-        {value: [false, true], label: 'Random'}
-      ],
-      default: [false, true],
+      options: ['yes', 'no', 'random'],
     }
+  }
+
+  static defaultParams = {
+    conversion: 'either',
+    negative: 'random'
   }
 
   static options = {
@@ -78,8 +73,16 @@ export class ConvertAngle extends QGen {
 
   generate(params) {
     const rd = this.random
-    const conversion = rd.choice(params.conversion)
-    const neg = rd.choice(params.negative)
+    const conversion = rd.choice({
+      'degrees to radians': ['d2r'],
+      'radians to degrees': ['r2d'],
+      'either': ['d2r', 'r2d'],
+    }[params.conversion])
+    const neg = rd.choice({
+      yes: [true],
+      no: [false],
+      random: [true, false],
+    }[params.negative])
     const rotations = rd.choice([0,1,2])
     
     const denom = rd.choice([5,10,10,12,12])
@@ -88,6 +91,14 @@ export class ConvertAngle extends QGen {
     let numer = rd.choice(numers)
     if (rotations) {
       numer += denom * 2 * rotations
+    }
+
+    // don't freak students out with 666
+    while (denom === 10 && numer === 37) {
+      numer = rd.choice(numers)
+      if (rotations) {
+        numer += denom * 2 * rotations
+      }
     }
     
     const radians = fraction(neg ? numer : -numer, denom)
@@ -128,7 +139,6 @@ export class IdentifyQuadrant extends QGen {
       minSelections: 2,
       maxSelections: 6,
       options: ['sin', 'cos', 'tan', 'csc', 'sec', 'cot'],
-      default: {sin: true, cos: true, tan: true, csc: true, sec: true, cot: true},
     },
     quadrant: {
       label: 'Quadrant',
@@ -136,8 +146,12 @@ export class IdentifyQuadrant extends QGen {
       minSelections: 1,
       maxSelections: 4,
       options: [1, 2, 3, 4],
-      default: {1: true, 2: true, 3: true, 4: true}
     }
+  }
+
+  static defaultParams = {
+    functions: {sin: true, cos: true, tan: true, csc: true, sec: true, cot: true},
+    quadrant: {1: true, 2: true, 3: true, 4: true},
   }
 
   static options = {
@@ -206,8 +220,11 @@ export class SolveRightTriangle extends QGen {
         {value: 'HA', label: 'Hypotenuse-Angle'}, 
         {value: 'LA', label: 'Leg-Angle'},
       ],
-      default: {HL: true, LL: true, HA: true, 'LA': true}
     },
+  }
+
+  static defaultParams = {
+    given: {HL: true, LL: true, HA: true, 'LA': true}
   }
 
   generate(params) {
@@ -377,7 +394,7 @@ export class SolveRightTriangle extends QGen {
       answer: {
         correct: answer.map(a => '$$' + a + '$$').join(', '),
         prompt: [
-          'AnswerBlanks',
+          'AnswerBlanks', {box: true},
           ...answerblanks.map(answerPrompt)
         ]
       },

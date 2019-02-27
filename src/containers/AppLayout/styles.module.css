@@ -1,7 +1,7 @@
 @media screen {
 .Wrapper {
   display: grid;
-  grid-template-columns: 45mm 1fr;
+  grid-template-columns: 50mm 1fr;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
@@ -114,6 +114,7 @@
   left: 0;
   top: 0;
   position: absolute;
+  display: flex;
 }
 
 

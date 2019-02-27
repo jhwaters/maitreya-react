@@ -67,7 +67,7 @@ const Overlay = props => {
         W: 180, SW: 225, S: 270, SE: 315,
       }
       if (angles[anchor] !== undefined) {
-        const a = (+angles[anchor] + 180) % 370
+        const a = ((rotate ? +rotate : 0) + (+angles[anchor] + 180)) % 360
         const r = parseFloat(displacement)
         const u = displacement.replace(r, '')
         const dx = Math.round(Math.cos(a * Math.PI / 180) * r) + u
