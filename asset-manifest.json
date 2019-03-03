@@ -1,7 +1,7 @@
 {
   "main.css": "/maitreya-react/static/css/main.0779f354.chunk.css",
-  "main.js": "/maitreya-react/static/js/main.5e41e881.chunk.js",
-  "main.js.map": "/maitreya-react/static/js/main.5e41e881.chunk.js.map",
+  "main.js": "/maitreya-react/static/js/main.62220cf7.chunk.js",
+  "main.js.map": "/maitreya-react/static/js/main.62220cf7.chunk.js.map",
   "static/css/1.14646dab.chunk.css": "/maitreya-react/static/css/1.14646dab.chunk.css",
   "static/js/1.f76acf85.chunk.js": "/maitreya-react/static/js/1.f76acf85.chunk.js",
   "static/js/1.f76acf85.chunk.js.map": "/maitreya-react/static/js/1.f76acf85.chunk.js.map",
@@ -11,6 +11,6 @@
   "static/css/main.0779f354.chunk.css.map": "/maitreya-react/static/css/main.0779f354.chunk.css.map",
   "static/css/1.14646dab.chunk.css.map": "/maitreya-react/static/css/1.14646dab.chunk.css.map",
   "index.html": "/maitreya-react/index.html",
-  "precache-manifest.59dc3ebc64d65a96d4e8094e2190a15a.js": "/maitreya-react/precache-manifest.59dc3ebc64d65a96d4e8094e2190a15a.js",
+  "precache-manifest.9a44dcb7324956c0d9884a8301c610e2.js": "/maitreya-react/precache-manifest.9a44dcb7324956c0d9884a8301c610e2.js",
   "service-worker.js": "/maitreya-react/service-worker.js"
 }
