@@ -2,7 +2,6 @@ import React from 'react'
 import { renderJson } from '..'
 
 
-
 const defaultLayout = ['instructions', 'question', ['answer', 'diagram']]
 //const defaultLayout = [[['instructions', 'question', 'answer'], 'diagram']]
 const layoutAnswerRight = ['instructions', 'question', ['diagram', 'answer']]
@@ -46,46 +45,100 @@ const QuestionLayout = ({
 }
 
 
-function isMultipleChoice(content, options={}) {
-  if (options.isMultipleChoice !== undefined) {
-    return options.isMultipleChoice
-  }
-  if (content.answer && typeof content.answer !== 'string') {
-    if (content.answer.choices) {
-      return true
+function parseAnswer(answer) {
+  if (answer) {
+    if (answer.constructor.name === 'Object') {
+      return answer
+    } else {
+      return {correct: answer}
     }
   }
-  return false
+}
+
+export function determineVariant(content={}, options={}) {
+  if (options.variant) {
+    return options.variant
+  }
+  if (content.answer && content.answer.choices) {
+    return 'multipleChoice'
+  }
+  if (content.variants && content.variants.multipleChoice) {
+    return 'multipleChoice'
+  }
+  return 'freeResponse'
+}
+
+function determineAnswerSpace(answer, variant) {
+  if (answer) {
+    if (variant === 'multipleChoice' && answer.choices) {
+      const listDirection = answer.listDirection
+      return ['AnswerChoices', {listDirection}, ...answer.choices]
+    } else if (answer.prompt !== undefined) {
+      if (answer.prompt === null) {
+        return null
+      }
+      if (typeof answer.prompt === 'string') {
+        return ['AnswerBlanks', null, answer.prompt]
+      } else if (Array.isArray(answer.prompt)) {
+        return answer.prompt
+      }
+    }
+  }
+  return ['EmptySpace', {width: '1cm', height: '1cm'}]
+}
+
+function determineContent(content, variant) {
+  const {variants, ...othercontent} = content
+  const usecontent = Object.assign({}, othercontent)
+  if (variants) {
+    const variantContent = variants[variant]
+    Object.assign(usecontent, variantContent)
+  }
+  return {
+    ...usecontent,
+    answer: determineAnswerSpace(parseAnswer(usecontent.answer), variant)
+  }
+}
+
+function determineAnswerKey(answer={}, variant='freeResponse', letters='abcdef') {
+  if (answer) {
+    if (variant === 'multipleChoice') {
+      if (answer.correctIndex !== undefined) {
+        if (Array.isArray(answer.correctIndex)) {
+          return answer.correctIndex.map(i => letters[i]).join(', ')
+        } else {
+          return letters[answer.correctIndex]
+        }
+      }
+      if (answer.correct !== undefined) {
+        for (let i = 0; i < answer.choices.length; i++) {
+          if (answer.choices[i] == answer.correct) {
+            return letters[i]
+          }
+        }
+      }
+    }
+    if (answer !== null) {
+      if (answer.correct) {
+        return answer.correct
+      }
+      if (Array.isArray(answer) ||  typeof answer === 'string' || typeof answer === 'number') {
+        return answer
+      }
+    }
+    if (answer.choices && answer.correctIndex !== undefined) {
+      return answer.choices[answer.correctIndex]
+    }
+  }
 }
 
 
 export const Question = (props) => {
-  const { options={} } = props
-  
-  const {instructions, question, diagram} = props.content
-  let content = { instructions, question, diagram }
+  const options = props.options || {}
+  const variant = determineVariant(props.content, props.options)
+  const content = determineContent(props.content, variant)
 
-  // Determine what to render in answer space
-  if (isMultipleChoice(props.content, options)) {
-    Object.assign(content, props.content.multipleChoice)
-    const listDirection = props.content.answer.listDirection
-    content.answer = ['AnswerChoices', {listDirection}, ...props.content.answer.choices]
-  } else {
-    Object.assign(content, props.content.freeResponse)
-    if (props.content.answer && props.content.answer.prompt !== undefined) {
-      if (props.content.answer.prompt !== null) {
-        if (typeof props.content.answer.prompt === 'string') {
-          content.answer = ['AnswerBlanks', null, props.content.answer.prompt]
-        } else if (Array.isArray(props.content.answer.prompt)) {
-          content.answer = props.content.answer.prompt
-        }
-      }
-    } else {
-      content.answer = ['EmptySpace', {height: '1cm', width: '2cm'}]
-    }
-  }
-
-  const layout = props.content.layout || options.layout
+  const layout = content.layout || options.layout
   return (
     <div className='question-wrapper'>
       <QuestionLayout content={content} layout={layout}/>
@@ -105,37 +158,8 @@ export const NumberedQuestion = props => {
 
 export const AnswerKey = props => {
   const letters = 'abcdefg'
-  const { content, options } = props
-  if (isMultipleChoice(content, options)) {
-    if (content.answer.choices) {
-      if (content.answer.correctIndex !== undefined) {
-        if (Array.isArray(content.answer.correctIndex)) {
-          return content.answer.correctIndex.map(i => letters[i]).join(', ')
-        } else {
-          return letters[content.answer.correctIndex]
-        }
-      }
-      if (content.answer.correct) {
-        for (let i = 0; i < content.answer.choices.length; i++) {
-          if (content.answer.choices[i] == content.answer.correct) {
-            return letters[i]
-          }
-        }
-      }
-    }
-  }
-  if (content.answer !== undefined) {
-    if (content.answer !== null) {
-      if (content.answer.correct) {
-        return renderJson(content.answer.correct)
-      }
-      if (Array.isArray(content.answer) ||  typeof content.answer === 'string' || typeof content.answer === 'number') {
-        return renderJson(content.answer, options)
-      }
-    }
-    if (content.answer.choices && content.answer.correctIndex !== undefined) {
-      return renderJson(content.answer.choices[content.answer.correctIndex])
-    }
-  }
-  return null
+  const { options } = props
+  const variant = determineVariant(props.content, options)
+  const answer = determineAnswerKey(props.content.answer, variant, letters)
+  return renderJson(answer)
 }

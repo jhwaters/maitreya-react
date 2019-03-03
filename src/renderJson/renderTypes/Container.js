@@ -5,7 +5,7 @@ export const Container = props => {
   const divstyle = {
     display: 'flex',
     flexDirection: direction,
-    flexWrap: 'wrap',
+    flexWrap: 'nowrap',
     border: border ? '1px solid black' : 'none',
   }
   if (direction === 'row') {

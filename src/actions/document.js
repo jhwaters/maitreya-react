@@ -8,6 +8,7 @@ export const DELETE_HEADER = 'DELETE_HEADER'
 export const SET_DOCUMENT_STARTNUMBERING = 'SET_DOCUMENT_STARTNUMBERING'
 export const ADD_PAGEBREAK_BEFORE = 'ADD_PAGEBREAK_BEFORE' // need to come up with a better way to do this
 export const CLEAR_PAGEBREAKS = 'CLEAR_PAGEBREAKS'
+export const LOAD_DOCUMENT = 'LOAD_DOCUMENT'
 
 let elemID = 0
 
@@ -51,15 +52,21 @@ export const deleteHeader = (id) => ({
   payload: +id,
 })
 
-// Document settings
+export const loadDocument = doc => {
+  const ids = Object.keys(doc.content).map(k => +k).sort((a,b) => a-b)
+  elemID = ids[ids.length-1]
+  return ({
+    type: LOAD_DOCUMENT,
+    payload: doc
+  })
+}
 
+// Document settings
 
 export const setDocumentStartNumbering = (n) => ({
   type: SET_DOCUMENT_STARTNUMBERING,
   payload: n
 })
-
-
 
 // Document view
 

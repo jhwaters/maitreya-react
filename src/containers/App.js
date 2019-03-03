@@ -5,6 +5,7 @@ import { Preview, SideBar, StatusBar, TopBar, Wrapper } from './AppLayout'
 import Document from './Document/Document'
 import CustomQuestion from './CustomQuestion'
 import Notes from './Notes'
+import { DownloadButton, UploadButton } from './Menu'
 import { CheckStateButton } from './Debug'
 import SettingsPage, {
   AllowEditingToggle,
@@ -65,13 +66,15 @@ class AppWrapper extends React.Component {
       <Wrapper >
         {/* customTitleBar ? <TitleBar /> : null */}
         <TopBar>
-          <button onClick={window.print}>Print / PDF</button>
+          <UploadButton>Load</UploadButton>
+          <DownloadButton>Save</DownloadButton>
+          <button onClick={window.print}>Print/PDF</button>
           <button onClick={this.openSettings}>Settings</button>
-          <span style={toplabel}>Answer Key:</span><AnswerKeyToggle />
+          <label htmlFor="show-answer-key-checkbox" style={toplabel}>Answer Key:</label><AnswerKeyToggle />
           <span style={toplabel}>Start Numbering:</span><StartNumbering />
           <span style={toplabel}>Font:</span><FontFamily/><FontSize />
-          <span style={toplabel}>Zoom:</span><PreviewZoom defaultValue="110"/>
-          <span style={toplabel}>Allow Editing:</span><AllowEditingToggle />
+          <span style={toplabel}>Zoom:</span><PreviewZoom defaultValue="100"/>
+          <label htmlFor="allow-editing-checkbox" style={toplabel}>Allow Editing:</label><AllowEditingToggle />
           <div style={{width: '3mm'}} />
           <FixPagination/>
         </TopBar>
@@ -83,7 +86,7 @@ class AppWrapper extends React.Component {
           <button onClick={this.openCustomQuestion}>Custom Question</button>
           <button onClick={this.props.removeLast}>Remove Last</button>
           <button onClick={this.props.clearAll}>Clear All</button>
-          <div style={{height: '1in'}}></div>
+          <div style={{margin: 'auto'}}></div>
           <GUImode/>
           <button onClick={() => this.setState({modal: 'Notes'})}>Notes</button>
           <CheckStateButton>Log State</CheckStateButton>
@@ -95,6 +98,7 @@ class AppWrapper extends React.Component {
           onRequestClose={this.closeModal}
           style={{
             content: {
+              border: 'none',
               top: '0',
               bottom: 0,
               left: 0,

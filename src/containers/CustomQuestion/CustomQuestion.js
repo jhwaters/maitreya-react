@@ -48,14 +48,14 @@ const jsonExample = `{
     {
       "span": "-5,-5 5,5", 
       "axis": false, 
-      "height": "1.5in"
+      "height": "1.5in",
+      "style": "geometry green dashed"
     },
     [
       "Path", 
       {
         "points": "-4,3 4,-3", 
-        "markers": ".-.",
-        "style": "blue dashed"
+        "markers": ".-."
       }
     ],
     [

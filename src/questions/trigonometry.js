@@ -137,14 +137,12 @@ export class IdentifyQuadrant extends QGen {
       label: 'Trig functions',
       type: 'multiple-select',
       minSelections: 2,
-      maxSelections: 6,
       options: ['sin', 'cos', 'tan', 'csc', 'sec', 'cot'],
     },
     quadrant: {
       label: 'Quadrant',
       type: 'multiple-select',
       minSelections: 1,
-      maxSelections: 4,
       options: [1, 2, 3, 4],
     }
   }
@@ -375,8 +373,25 @@ export class SolveRightTriangle extends QGen {
         {x: 2, y: 1.5, anchor: 'SE', displacement: '1mm', rotate: '30' },
         `$$${labels.c}$$`,
       ],
-      ['Overlay', {x: 4, y: 3, displacement: {angle: 245, radius: labels.B === 'B' ? '7mm': '8.5mm'}}, `$$${labels.B}$$`],
-      ['Overlay', {x: 0, y: 0, displacement: {angle: 15, radius: labels.A === 'A' ? '8mm' : '10mm'}}, `$$${labels.A}$$`],
+      [
+        'Overlay', 
+        {
+          x: 4, y: 3, 
+          displacement: {angle: 245, radius: labels.B === 'B' ? '7mm': '8.5mm'}
+        }, 
+        `$$${labels.B}$$`
+      ],
+      [
+        'Overlay', 
+        {
+          x: 0, y: 0, 
+          displacement: {
+            angle: labels.A === 'A' ? 18 : 15, 
+            radius: labels.A === 'A' ? '9mm' : '11mm',
+          }
+        },
+        `$$${labels.A}$$`
+      ],
     ]
 
     function answerPrompt(s) {

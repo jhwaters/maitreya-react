@@ -204,7 +204,7 @@ export class PlotStyling extends QGen {
 export class FontTest extends QGen {
   static info = {
     name: 'Font Test',
-    description: 'how do 1lIJ look?',
+    description: 'how do 1, l, I, J look?',
   }
 
   generate(params) {

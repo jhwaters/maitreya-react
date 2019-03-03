@@ -3,6 +3,7 @@
   font-family: var(--doc-font-family, serif);
   font-size: var(--doc-font-size);
   color: black;
+  user-select: text;
 }
 
 .document blockquote {
@@ -141,8 +142,8 @@
 
 .page-content {
   display: grid;
-  grid-template-columns: 47% 53%;
-  column-gap: 3mm;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 7mm;
 }
 
 .page-content > * {

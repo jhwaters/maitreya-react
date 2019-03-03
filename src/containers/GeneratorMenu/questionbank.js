@@ -1,20 +1,19 @@
-import * as questiontypes from '../../questions'
+import * as questionTypes from '../../questions'
+const modules = questionTypes.modules
 
 let questionBank = {}
-for (const set of ['examplequestions', 'transformations', 'trigonometry', 'geometry']) {
-  for (const q in questiontypes[set]) {
-    const n = questiontypes[set][q].register().name
-    questionBank[n] = questiontypes[set][q]
+for (const set of Object.keys(modules)) {
+  for (const q in modules[set]) {
+    const k = `${set}.${q}.${modules[set][q].register().name}`
+    questionBank[k] = modules[set][q]
   }
 }
 
-
-for (const set of ['generatortests', 'picofermi']) {
-  for (const q in questiontypes[set]) {
-    const n = '_' + questiontypes[set][q].register().name
-    questionBank[n] = questiontypes[set][q]
+for (const set of ['examples', 'tests']) {
+  for (const q in questionTypes[set]) {
+    const k = `_${set}.${q}.${questionTypes[set][q].register().name}`
+    questionBank[k] = questionTypes[set][q]
   }
 }
-
 
 export default questionBank

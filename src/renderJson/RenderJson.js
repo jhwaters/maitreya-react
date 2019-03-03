@@ -44,6 +44,6 @@ export const renderJson = function(json) {
   else if (json === null || json === undefined) {
     return null
   }
-  console.error(`cannot render ${json}`)
+  console.error(`cannot render ${JSON.stringify(json)}`)
   return null
 }

@@ -33,6 +33,9 @@ function addFontFamilies(store) {
     //'Zilla Slab',
 
     'cmu_bright',
+    'cmu_concrete',
+    'cmu_sansserif',
+    'cmu_serif',
     'katex_main',
     'katex_sansserif',
   ]) {

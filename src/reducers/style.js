@@ -1,3 +1,5 @@
+import { defaultsDeep } from 'lodash'
+import { setStyle } from '../stylesetter'
 import {
   SET_DOCUMENT_FONTFAMILY,
   SET_DOCUMENT_FONTSIZE,
@@ -8,6 +10,7 @@ import {
   SET_PAGE_SIZE,
   UPDATE_GRAPHSTYLE,
   RESET_GRAPHSTYLE,
+  LOAD_STYLE,
 } from '../actions/style'
 
 import { kebabCase } from 'lodash'
@@ -44,27 +47,27 @@ const style = function(state=initialState, action) {
   switch(action.type) {
     // Fonts
     case SET_DOCUMENT_FONTFAMILY:
-      document.body.style.setProperty('--doc-font-family', action.payload)
+      document.documentElement.style.setProperty('--doc-font-family', action.payload)
       return {...state, fontFamily: action.payload}
     case SET_DOCUMENT_FONTSIZE:
-      document.body.style.setProperty('--doc-font-size', action.payload)
+      document.documentElement.style.setProperty('--doc-font-size', action.payload)
       return {...state, fontSize: action.payload}
     case SET_MATH_FONTSIZE:
-      document.body.style.setProperty('--doc-math-font-size', action.payload)
+      document.documentElement.style.setProperty('--doc-math-font-size', action.payload)
       return {...state, mathFontSize: action.payload}
     case SET_MATH_FONTWEIGHT:
-      document.body.style.setProperty('--doc-math-font-weight', action.payload)
+      document.documentElement.style.setProperty('--doc-math-font-weight', action.payload)
       return {...state, mathFontWeight: action.payload}
     case SET_MATH_FONTFAMILY:
       if (action.payload === '__MATCH__') {
-        document.body.style.setProperty('--doc-math-font-family', 'var(--doc-font-family)')
-        //document.body.style.setProperty('--doc-math-font-spacing', '.03em')
+        document.documentElement.style.setProperty('--doc-math-font-family', 'var(--doc-font-family)')
+        //document.documentElement.style.setProperty('--doc-math-font-spacing', '.03em')
       } else if (action.payload === '__DEFAULT__') {
-        document.body.style.removeProperty('--doc-math-font-family')
-        document.body.style.removeProperty('--doc-math-font-spacing')
+        document.documentElement.style.removeProperty('--doc-math-font-family')
+        //document.documentElement.style.removeProperty('--doc-math-font-spacing')
       } else {
-        document.body.style.setProperty('--doc-math-font-family', action.payload)
-        //document.body.style.setProperty('--doc-math-font-spacing', '.03em')
+        document.documentElement.style.setProperty('--doc-math-font-family', action.payload)
+        //document.documentElement.style.setProperty('--doc-math-font-spacing', '.03em')
       }
       return {...state, mathFontFamily: action.payload}
 
@@ -77,14 +80,19 @@ const style = function(state=initialState, action) {
     // Graph Style
     case UPDATE_GRAPHSTYLE:
       for (const k in action.payload) {
-        document.body.style.setProperty(`--vg-${kebabCase(k)}`, action.payload[k])
+        document.documentElement.style.setProperty(`--vg-${kebabCase(k)}`, action.payload[k])
       }
       return {...state, graph: {...state.graph, ...action.payload}}
     case RESET_GRAPHSTYLE:
       for (const k in initialState.graph) {
-        document.body.style.setProperty(`--vg-${kebabCase(k)}`, initialState.graph[k])
+        document.documentElement.style.setProperty(`--vg-${kebabCase(k)}`, initialState.graph[k])
       }
       return {...state, graph: {...initialState.graph}}
+    
+    case LOAD_STYLE:
+      const newstyle = defaultsDeep({}, action.payload, state)
+      setStyle(newstyle)
+      return newstyle
 
     default:
       return state

@@ -31,9 +31,16 @@ function sortByName(a, b) {
 }
 
 function sortByID(a, b) {
-  if (a.id < b.id) return -1
-  if (a.id > b.id) return 1
-  return 0
+  if (a.id[0] === '_') {
+    if (b.id[0] === '_') {
+      if (a.id < b.id) return -1
+      if (a.id > b.id) return 1
+      return 0
+    }
+    return 1
+  }
+  if (b.id[0] === '_') return -1
+  return sortByName(a, b)
 }
 
 
@@ -51,6 +58,10 @@ class QuestionSearch extends React.Component {
     }
   }
 
+  clearSearch = () => {
+    this.setState({ input: '', kwds: [], selection: null})
+  }
+
   updateSearch = evt => {
     const input = evt.target.value
     const kwds = input.split(' ').map(k => k.toLowerCase())
@@ -58,7 +69,6 @@ class QuestionSearch extends React.Component {
   }
 
   setSelection(id) {
-    console.log(id)
     this.setState({selection: id})
   }
 
@@ -82,9 +92,10 @@ class QuestionSearch extends React.Component {
       id: k, ...this.props.questionTypes[k].register()
     })).sort(sortByID)
     const results = qtypes.filter(q => checkForKwds(q, this.state.kwds))
+    const className = styles.ResultContainer + ' ui-input'
     if (results.length) {
       return (
-        <div className={styles.ResultContainer + ' ui-input'}>
+        <div className={className}>
           {results.map(r => (
             <div key={r.id} 
               className={styles.SearchResult + (r.id === this.state.selection ? ' ' + styles.Selected : '')}
@@ -92,14 +103,14 @@ class QuestionSearch extends React.Component {
               onDoubleClick={this.generateAndAdd}
               title={r.description}
             >
-              {r.id}
+              {r.id[0] === '_' ? r.id.split('.')[0] + ': ' + r.name : r.name}
             </div>
           ))}
         </div>
       )
     } else {
       return (
-        <div className={styles.ResultContainer + ' ui-input'}>
+        <div className={className}>
           <span className={styles.SearchResultNone + ' ' + styles.SearchResult}>No results</span>
         </div>
       )
@@ -112,6 +123,7 @@ class QuestionSearch extends React.Component {
         <input type="search"
           onChange={this.updateSearch}
           value={this.state.input}
+          onDoubleClick={this.clearSearch}
           placeholder="filter"
         ></input>
         {this.renderResults()}

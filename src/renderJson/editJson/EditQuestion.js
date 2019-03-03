@@ -1,30 +1,33 @@
 import React from 'react'
 import DefaultEditor from './DefaultEditor'
 import { RenderJson, parseJson } from '..'
+import { determineVariant } from '../renderTypes/Question'
 
-function checkMC(content, options={}) {
-  if (options.isMultipleChoice === undefined) {
-    if (content.answer && content.answer.choices) {
-      return true
-    } else {
-      return false
-    }
-  } else {
-    return options.isMultipleChoice
-  }
+const variantNames = {
+  freeResponse: 'free response',
+  multipleChoice: 'multiple choice',
 }
 
+function parseAndSetVariant(data) {
+  const {type, props={}} = parseJson(data)
+  const {content={}, options={}} = props
+  if (!options.variant) {
+    options.variant = determineVariant(content)
+  }
+  if (!options.variants) {
+    if (content.answer && content.answer.choices) {
+      options.variants = ['multipleChoice', 'freeResponse']
+    } else {
+      options.variants = ['freeResponse']
+    }
+  }
+  return {type, content, options}
+}
 
 export default class Question extends DefaultEditor {
   constructor(props) {
     super(props)
-    const parsed = parseJson(props.json)
-    this.state = {
-      type: parsed.type,
-      content: parsed.props.content || {},
-      options: parsed.props.options || {},
-    }
-    this.state.options.isMultipleChoice = checkMC(this.state.content, this.state.options)
+    this.state = parseAndSetVariant(props.json)
   }
 
   stateToJson() {
@@ -32,64 +35,61 @@ export default class Question extends DefaultEditor {
   }
 
   revertChanges = () => {
-    const newState = ({
-      content: this.state.content || {},
-      options: this.state.options || {},
-    })
-    newState.options.isMultipleChoice = checkMC(newState.content, newState.options)
+    const newState = parseAndSetVariant(this.props.json)
     this.setState(newState)
   }
 
-  toggleMC = evt => {
-    //this.isMC = evt.target.checked
-    this.setState({
-      options: {...this.state.options, isMultipleChoice: evt.target.checked}
-    })
+  updateVariant = evt => {
+    this.setState({options: {...this.state.options, variant: evt.target.value}})
   }
 
-  updateVersionDefault(k, v) {
-    this.setState({content: {...this.state.content, [k]: v}})
-  } 
-  updateVersionMC(k, v) {
-    const multipleChoice = {...this.state.content.multipleChoice}
-    if (v === '') {
-      delete multipleChoice[k]
+  updateContent(k, v, variant) {
+    if (variant) {
+      const variants = this.state.variants || {}
+      const updated = variants[variant] || {}
+      if (v === '') {
+        delete updated[k]
+      } else {
+        updated[k] = v
+      }
+      variants[variant] = updated
+      this.setState({
+        content: {
+          ...this.state.content, 
+          variants,
+        }
+      })
     } else {
-      multipleChoice[k] = v
+      this.setState({
+        content: {
+          ...this.state.content,
+          [k]: v
+        }
+      })
     }
-    this.setState({content: {...this.state.content, multipleChoice}})
-  }
-  updateVersionFR(k, v) {
-    const freeResponse = {...this.state.content.freeResponse}
-    if (v === '') {
-      delete freeResponse[k]
-    } else {
-      freeResponse[k] = v
-    }
-    this.setState({content: {...this.state.content, freeResponse}})
   }
 
-  updateInstructions = evt => this.updateVersionDefault('instructions', evt.target.value)
-  updateInstructionsMC = evt => this.updateVersionMC('instructions', evt.target.value)
-  updateInstructionsFR = evt => this.updateVersionFR('instructions', evt.target.value)
+  updateInstructions = evt => this.updateContent('instructions', evt.target.value)
+  updateInstructionsMC = evt => this.updateContent('instructions', evt.target.value, 'multipleChoice')
+  updateInstructionsFR = evt => this.updateContent('instructions', evt.target.value, 'freeResponse')
 
-  updateQuestion = evt => this.updateVersionDefault('question', evt.target.value)
-  updateQuestionMC = evt => this.updateVersionMC('question', evt.target.value)
-  updateQuestionFR = evt => this.updateVersionFR('question', evt.target.value)
+  updateQuestion = evt => this.updateContent('question', evt.target.value)
+  updateQuestionMC = evt => this.updateContent('question', evt.target.value, 'multipleChoice')
+  updateQuestionFR = evt => this.updateContent('question', evt.target.value, 'freeResponse')
 
   renderInstructionsOrQuestionInputs(fieldname) {
     const isMC = this.state.options.isMultipleChoice
-    const overrides = isMC ? this.state.content.multipleChoice || {} : this.state.content.freeResponse || {}
+    const overrides = (this.state.content.variants || {})[this.state.options.variant] || {}
     const updaters = {
       instructions: {
         default: this.updateInstructions,
-        mc: this.updateInstructionsMC,
-        fr: this.updateInstructionsFR,
+        multipleChoice: this.updateInstructionsMC,
+        freeResponse: this.updateInstructionsFR,
       },
       question: {
         default: this.updateQuestion,
-        mc: this.updateQuestionMC,
-        fr: this.updateQuestionFR,
+        multipleChoice: this.updateQuestionMC,
+        freeResponse: this.updateQuestionFR,
       }
     }[fieldname]
     return (
@@ -102,19 +102,12 @@ export default class Question extends DefaultEditor {
         />
       </td>
       <td>
-        {isMC ? (
-          <textarea value={overrides[fieldname] || ''} 
-            onChange={updaters.mc}
-            cols="40"
-            rows="4"
-          />
-        ) : (
-          <textarea value={overrides[fieldname] || ''} 
-            onChange={updaters.fr}
-            cols="40"
-            rows="4"
-          />
-        )}
+        <textarea value={overrides[fieldname] || ''} 
+          onChange={updaters[this.state.options.variant]}
+          cols="40"
+          rows="4"
+          placeholder={this.state.content[fieldname]}
+        />
       </td>
       </>
     )
@@ -125,34 +118,30 @@ export default class Question extends DefaultEditor {
     return null
   }
 
-  renderMCToggle() {
-    if (this.state.content.answer && this.state.content.answer.choices) {
-      return (
-        <>
-          Multiple Choice:
-          <input type="checkbox" 
-            checked={this.state.options.isMultipleChoice}
-            onChange={this.toggleMC}
-          />
-        </>
-      )
-    }
-    return null
+  renderVariantSelect() {
+    return (
+      <>
+        Variant:
+        <select value={this.state.options.variant}
+          onChange={this.updateVariant}
+        >
+          {this.state.options.variants.map(v => (
+            <option key={v} value={v}>{variantNames[v]}</option>
+          ))}
+        </select>
+      </>
+    )
   }
 
   renderEditor() {
-    const isMC = this.state.options.isMultipleChoice
-    //const content = this.state.content
-
     return (
       <div>
-        {this.renderMCToggle()}
         <table>
           <tbody>
             <tr>
               <td></td>
               <td style={{textAlign: 'center'}}>Default</td>
-              <td style={{textAlign: 'center'}}>{isMC ? 'Multiple Choice' : 'Free Response'} Version</td>
+              <td style={{textAlign: 'center'}}>{this.renderVariantSelect()}</td>
             </tr>
             <tr>
               <td>Instructions</td>

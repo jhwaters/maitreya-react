@@ -9,6 +9,7 @@ import {
   DELETE_HEADER,
   DELETE_ELEMENT,
   CLEAR_PAGEBREAKS,
+  LOAD_DOCUMENT,
 } from '../actions/document'
 
 
@@ -101,7 +102,8 @@ const document = function(state=initialState, action) {
       return state
     case CLEAR_PAGEBREAKS:
       return {...state, pagebreaks: []}
-      
+    case LOAD_DOCUMENT:
+      return {...action.payload}
     
     default:
       return state

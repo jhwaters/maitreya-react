@@ -48,6 +48,7 @@
   bottom: auto;
   left: auto;
   right: auto;
+  user-select: none;
 }
 
 .StatusBar {
@@ -97,11 +98,11 @@
 
 .TopBar * {
   white-space: nowrap;
+  user-select: none;
 }
 
 .PreviewOuter {
   grid-area: preview;
-  flex: 1 1 100%;
   overflow: scroll;
   position: relative;
   padding: 0;

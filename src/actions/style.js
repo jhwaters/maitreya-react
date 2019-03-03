@@ -7,6 +7,7 @@ export const SET_PAGE_MARGIN = 'SET_PAGE_MARGIN'
 export const SET_PAGE_SIZE = 'SET_PAGE_SIZE'
 export const UPDATE_GRAPHSTYLE = 'UPDATE_GRAPHSTYLE'
 export const RESET_GRAPHSTYLE = 'RESET_GRAPHSTYLE'
+export const LOAD_STYLE = 'LOAD_STYLE'
 
 // Document font
 export const setDocumentFontFamily = (family) => {
@@ -62,4 +63,9 @@ export const updateGraphStyle = (props) => {
 
 export const resetGraphStyle = () => ({
   type: RESET_GRAPHSTYLE,
+})
+
+export const loadStyle = style => ({
+  type: LOAD_STYLE,
+  payload: style
 })

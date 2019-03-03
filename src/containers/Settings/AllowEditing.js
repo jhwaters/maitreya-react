@@ -20,6 +20,7 @@ class AllowEditing extends React.Component {
   render() {
     return (
       <input
+        id="allow-editing-checkbox"
         onChange={this.toggle}
         type='checkbox' 
         checked={this.props.current}

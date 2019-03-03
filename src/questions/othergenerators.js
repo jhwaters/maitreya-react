@@ -1,145 +1,20 @@
 import math from 'mathjs'
 import Polynomial from 'polynomial'
 import fraction from 'fraction.js'
-import { range, gcd, listFactors } from './tools/handystuff'
 import QGen from './QGen'
 import _ from 'lodash'
-
-
-////// Handy Things ///////
-
-function randomPolynomialCoefficients({degree, maxCoefficient=12, terms='auto'}={}) {
-	const rd = this.random
-	if (terms === 'auto') {
-		terms = degree + 1
-	}
-	let p = {}
-	const whichterms = rd.sample(range(0,degree), terms-1)
-	p[degree] = rd.randint(1, maxCoefficient)
-
-	for (const d of whichterms) {
-		p[d] = rd.randint(1, maxCoefficient) * rd.choice([-1,1])
-	}
-	return p
-}
-
-function randomPolynomial(props={}) {
-	const p = randomPolynomialCoefficients.call(this, props)
-	return new Polynomial(p)
-}
-
-
-
-/***********************
-
-
-Question Generators 
-
-
-************************/
-
-
-export class SolveQuadratic extends QGen {
-	static info = {
-		name: 'Solve Quadratic',
-		description: 'Solve a quadratic equation with integer solutions.'
-	}
-
-	static options = {
-		singleColumn: true,
-	}
-
-	generate(props) {
-		const rd = this.random
-		const [r1, r2] = rd.sample(range(-12,13), 2)
-
-		const a = 1
-		const b = -(r1 + r2)
-		const c = r1 * r2
-
-		const poly = new Polynomial({2: a, 1: b, 0: c})
-		const rand = randomPolynomial.call(this, {degree: 2, maxCoefficient: 7, terms: 2})
-		
-		const [left, right] = rd.random() < 0.5 ? [poly.add(rand), rand] : [rand, poly.add(rand)]
-
-		function fmtAns(ans) {
-			return'$$x = ' + ans.sort((a, b) => a > b).join(', ') + '$$'
-		}
-
-		return {
-			instructions: 'Determine the values of $$x$$ that satisfy the equation:',
-			question: '$$' + left.toLatex() + ' = ' + right.toLatex() +'$$',
-			answer: fmtAns([r1, r2]),
-		}
-	}
-}
-
-export class FactorQuadraticHard extends QGen {
-	static info = {
-		name: 'Factor Quadratic (Hard)',
-		description: 'Factor a quadratic using AC method.'
-	}
-
-	static options = {
-		singleColumn: true,
-	}
-
-	generate(params) {
-		let rd = this.random
-
-		const a1 = rd.randint(2,5)
-		const a2 = rd.randint(2,8-a1)
-
-		let b1 = rd.randint(1,14-a2)
-		while (gcd(a1, b1) !== 1) {
-			b1 = rd.randint(1,14-a2)
-		}
-		b1 *= rd.choice([-1,1])
-
-		
-		let b2 = rd.randint(2, 14-a1)
-		while (gcd(a2, b2) !== 1) {
-			b2 = rd.randint(1,14-a1)
-		}
-		b2 *= rd.choice([-1,1])
-
-		// prevent difference of squares and perfect square
-		while (Math.abs(a1) === Math.abs(a2) && Math.abs(b1) === Math.abs(b2)) {
-			b2 = rd.randint(2, 14-a1)
-			while (gcd(a2, b2) !== 1) {
-				b2 = rd.randint(1,14-a1)
-			}
-			b2 *= rd.choice([-1,1])
-		}
-
-		const p1 = new Polynomial({1: a1, 0: b1})
-		const p2 = new Polynomial({1: a2, 0: b2})
-
-		const a = a1 * a2
-		const b = a1 * b2 + a2 * b1
-		const c = b1 * b2
-
-		const poly = new Polynomial({2: a, 1: b, 0: c})
-
-		const answer = `$$(${p1.toLatex()})(${p2.toLatex()})$$`
-
-		return {
-			instructions: 'Rewrite as the product of linear factors:',
-			question: `$$${poly.toLatex()}$$`,
-			answer: answer,
-		}
-	}
-}
 
 
 export class RationalGraph extends QGen {
 	static info = {
 		name: 'Rational Graph',
-		description: 'Determine the equation from the graph of a rational function'
+		description: 'Determine the equation from the graph of a rational function',
 	}
 
 	generate(params) {
 		const rd = this.random
+
+		const variant = params.variant
 
 		const makeFunction = (top, bottom) => {
 			let f = function(x) {
@@ -157,7 +32,7 @@ export class RationalGraph extends QGen {
 		}
 
 		function generateValues() {
-			let vals = rd.sample(range(1, 9), 4).map(v => rd.random() < 0.5 ? v : -v)
+			let vals = rd.sampleRange(1, 8, 4).map(v => rd.bool() ? v : -v)
 			let roots = [vals[0]]
 			let holes = [vals[1]]
 			let asymptotes = [vals[2]]
@@ -187,7 +62,6 @@ export class RationalGraph extends QGen {
 			isGood = allHolesInRange(holes, f)
 		}
 		
-
 		const graph = [
 			'CoordinatePlane',
 			{span: [-10,-8,10,8], height: '1.8in'},
@@ -200,7 +74,6 @@ export class RationalGraph extends QGen {
 				}
 			]
 		]
-
 
 		function fmtAns(ans) {
 			let numer = ''
@@ -228,9 +101,6 @@ export class RationalGraph extends QGen {
 
 		return {
 			instructions: 'Choose the equation that best describes the graph shown.',
-			freeResponse: {
-				instructions: 'Write the equation that best describes the graph shown.'
-			},
 			diagram: graph,
 			answer: {
 				correct: fmtAns(answer),
@@ -241,6 +111,12 @@ export class RationalGraph extends QGen {
 					{height: '8em', width: '20em'},
 					'$$y = $$', 
 				],
+			},
+			options: { variant },
+			variants: {
+				freeResponse: {
+					instructions: 'Write the equation that best describes the graph shown.',
+				}
 			}
 		}
 	}
@@ -416,97 +292,6 @@ export class IncreasingIntervals extends QGen {
 }
 
 
-export class RationalZeroTheorem extends QGen {
-	static info = {
-		name: 'Rational Zero Theorem',
-		description: 'State possible rational zeros for a polynomial function.'
-	}
-
-	generate(params) {
-		const rd = this.random
-		let primes = rd.sample([1, 2, 3, 5, 7, 11], 4)
-		for (const i in primes) {
-			if (primes[i] === 1) {
-				if (i === 0 | i === 2) {
-					primes[i+1] = Math.pow(primes[i+1], rd.randint(1,2))
-				} else {
-					primes[i-1] = Math.pow(primes[i-1], rd.randint(1,2))
-				}
-			}
-		}
-		for (const i in primes) {
-			if (primes[i] === 2 | primes[i] === 3) {
-				primes[i] = Math.pow(primes[i], rd.randint(1,2))
-			}
-		}
-		const leading_coeff = primes[0] * primes[1]
-		const trailing_coeff = primes[2] * primes[3]
-		const degree = rd.randint(3,6)
-		const num_coeffs = rd.randint(3,degree)
-		let poly = randomPolynomialCoefficients.call(this, {degree: degree, terms: num_coeffs})
-		poly[0] = trailing_coeff
-		poly[degree] = leading_coeff
-		const f = new Polynomial(poly)
-
-		const question = '$$f(x) = ' + f.toLatex() + '$$'
-		
-		const correctNumerators = listFactors(trailing_coeff, {include1: true, includeN: true})
-		const correctDenominators = listFactors(leading_coeff, {include1: true, includeN: true})
-		
-		const allPossibleZeros = []
-		for (const a of correctNumerators) {
-			for (const b of correctDenominators) {
-				allPossibleZeros.push(`${a}/${b}`)
-			}
-		}
-
-		const numCorrect = rd.choice([0,1,1,2,2,2,2,2,2,3,3,4])
-		const correctAnswers = []
-		while (correctAnswers.length < numCorrect) {
-			const [a, b] = [rd.choice(correctNumerators), rd.choice(correctDenominators)]
-			const s = `${a}/${b}`
-			if (!_.includes(correctAnswers, s)) {
-				correctAnswers.push(s)
-			}
-		}
-
-		const wrongAnswers = []
-		while (wrongAnswers.length < 4-numCorrect) {
-			const [a,b] = [rd.choice(correctDenominators), rd.choice(correctNumerators)]
-			const s = `${a}/${b}`
-			if (!(s == '1/1') && !_.includes(wrongAnswers, s)) {
-				wrongAnswers.push(s)
-			}
-		}
-
-		const allChoices = [...correctAnswers, ...wrongAnswers]
-		const shuffled = []
-		const correctIndex = numCorrect ? [] : 4
-		for (let i = 0; i < 4; i++) {
-			const a = rd.poprandom(allChoices)
-			if (_.includes(correctAnswers, a)) {
-				correctIndex.push(i)
-			}
-			shuffled.push(a)
-		}
-
-		return {
-			instructions: "Which of the following are _possible_ zeros of the function according to the _Rational Zero Theorem_? Choose ***all*** that apply.",
-			question: question,
-			answer: {
-				correct: allPossibleZeros.map(s => `$$${fraction(s).toLatex()}$$`).join(', '),
-				choices: [...shuffled.map(s => `$$\\displaystyle ${fraction(s).toLatex()}$$`), 'None of these'],
-				correctIndex: correctIndex,
-				listDirection: 'horizontal',
-			},
-			freeResponse: {
-				instructions: "List all possible rational zeros of the function (according to the _Rational Zero Theorem_)."
-			}
-		}
-	}
-}
-
-
 export class GraphLinearInequalities extends QGen {
 	static info = {
 		name: 'Graph Inequalities',
@@ -516,6 +301,7 @@ export class GraphLinearInequalities extends QGen {
 
 	static options = {
 		singleColumn: true,
+		variants: ['freeResponse'],
 	}
 
 	generate(params) {
@@ -699,7 +485,5 @@ class WritePiecewise extends QGen {
 			diagram,
 			answer,
 		}
-
-
 	}
 }

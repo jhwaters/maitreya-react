@@ -51,11 +51,6 @@ class TopLevelElement extends React.Component {
       </div>
       <ReactModal isOpen={this.state.modal === 'edit'}
         onRequestClose={this.closeModal}
-        style={{
-          content: {
-            margin: '20px'
-          }
-        }}
       >
         <EditJson
           id={this.props.id}

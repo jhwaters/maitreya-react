@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { setDocumentFontFamily } from '../../../actions/style'
 import { addFontFamily } from '../../../actions/config'
-
+import ReactModal from 'react-modal'
 
 const DefaultFonts = [
   /*
@@ -95,7 +95,16 @@ class FontFamilySelect extends React.Component {
 
   constructor(props) {
     super(props)
+    this.inputRef = React.createRef()
+    this.state = {
+      modal: 'none',
+    }
   }
+
+  openFontInput = () => {
+    this.setState({modal: 'fontInput'})
+  }
+  closeModal = () => { this.setState({modal: 'none'}) }
 
   fontList = () => {
     const result = [
@@ -115,20 +124,26 @@ class FontFamilySelect extends React.Component {
   }
 
   setFromPrompt = () => {
-    const family = window.prompt(`Enter Font Name
-(this should be the name of a font already installed on your computer)`)
+    const family = this.inputRef.current.value
     if (family) {
       this.props.addFontFamily(family)
       this.setFontFamily(family)
     }
+    this.closeModal()
   }
 
   onChange = (evt) => {
     const value = evt.target.value
     if (value === '__CUSTOM__') {
-      this.setFromPrompt()
+      this.openFontInput()
     } else {
       this.setFontFamily(value)
+    }
+  }
+
+  handleKeyPress = evt => {
+    if (evt.key === 'Enter') {
+      this.setFromPrompt()
     }
   }
 
@@ -141,6 +156,31 @@ class FontFamilySelect extends React.Component {
         >
           {this.fontList().map((f) => renderFontOption(f))}
         </select>
+        <ReactModal 
+          className="modal-dialog-popup"
+          isOpen={this.state.modal === 'fontInput'}
+          onRequestClose={this.closeModal}
+        >
+        <div>
+          <span>
+            This should be the name of a font already<br/> installed on your computer.
+          </span>
+          <br/>
+          <span style={{fontWeight: 'bold'}}>Font: </span>
+          <input
+            type="text"
+            autoFocus
+            ref={this.inputRef}
+            placeholder="Enter Font Name"
+            style={{padding: '1mm', margin: '1mm'}}
+            onKeyPress={this.handleKeyPress}
+          />
+          <div className="dialog-button-container">
+            <button onClick={this.setFromPrompt}>Accept</button>
+            <button onClick={this.closeModal}>Cancel</button>
+          </div>
+        </div>
+        </ReactModal>
       </>
     )
   }

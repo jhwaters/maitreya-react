@@ -3,7 +3,6 @@ import FontFamily from './FontFamily'
 import FontLoader from './FontLoader'
 import MathFontSettings from './MathFontSettings'
 import FontFamilyUI from './FontFamilyUI'
-import AddLocalFont from './AddLocalFont'
 import TextPreview from './TextPreview'
 
 const previewtext = `To solve an equation of the form $$ax^2 + bx + c = 0$$, use the *quadratic formula*:
@@ -41,7 +40,7 @@ const FontSettings = () => {
       </div>
       <h4>Preview</h4>
       <div style={{display: 'flex', flexDirection: 'row', '--doc-font-size': '11pt'}}>
-        <TextPreview wrapperElement='div' defaultValue={previewtext} style={{input: {height: '100%'}, output: {height: '100%'}}}/>      
+        <TextPreview wrapperElement='div' defaultValue={previewtext} style={{input: {height: '110%'}, output: {height: '110%'}}}/>      
       </div>
     </>
   )

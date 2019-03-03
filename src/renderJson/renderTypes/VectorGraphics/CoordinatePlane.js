@@ -67,7 +67,7 @@ const Styler = ({style, children}) => {
 }
 
 export const CoordinatePlane = props => {
-  const canvas = {}
+  
   const span = parseSpan(props.span)
   if (span === null) {
     console.log("CoordinatePlane: span is null")
@@ -78,10 +78,14 @@ export const CoordinatePlane = props => {
   const h = y2 - y1
   const {
     preserveAspectRatio=true, 
-    margin='3mm',
+    margin='2mm',
     grid=true, axis=true, 
-    style="primary function", clip=true,
+    style="primary function", 
+    clip=true,
+    border=false,
   } = props
+
+  const canvas = { border }
 
   const clipper = {x1, y1, x2, y2, clip}
   const styler = {style}

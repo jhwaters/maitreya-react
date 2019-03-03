@@ -12,6 +12,10 @@
   --ui-border-0: #ddd;
   --ui-border-1: #ccc;
   --ui-border-2: #888;
+
+  --ui-highlight-bg: hsl(230,80%,60%);
+  --ui-highlight-fg: white;
+  --ui-highlight-faded: hsl(210,80%,80%);
   
   --ui-gradient-v-1: linear-gradient(white, 50%, #f5f5f5);
   --ui-gradient-v-2: linear-gradient(white, 50%, #eeeeee);
@@ -34,6 +38,10 @@
   --ui-border-0: #333;
   --ui-border-1: #444;
   --ui-border-2: #555;
+
+  --ui-highlight-bg: hsl(210,20%,40%);
+  --ui-highlight-fg: white;
+  --ui-highlight-faded: hsl(210,40%,40%);
   
   --ui-gradient-v-1: linear-gradient(#333, 50%, #222);
   --ui-gradient-v-2: linear-gradient(#444, 50%, #222);
@@ -58,6 +66,10 @@
   --ui-border-0: #555;
   --ui-border-1: #555;
   --ui-border-2: #555;
+
+  --ui-highlight-bg: hsl(10,100%,50%);
+  --ui-highlight-fg: black;
+  --ui-highlight-faded: hsl(20,90%,40%);
   
   --ui-gradient-v-1: linear-gradient(#222, 50%, #000);
   --ui-gradient-v-2: linear-gradient(#222, 50%, #111);
@@ -105,7 +117,7 @@ body[ui-theme] {
 
 *[ui-theme] button, 
 *[ui-theme] input, 
-*[ui-theme] select, 
+*[ui-theme] select,
 *[ui-theme] textarea,
 .ui-input {
   padding: 1px 5px;
@@ -118,6 +130,10 @@ body[ui-theme] {
   color: var(--ui-fg-1, black);
   font-family: var(--ui-font-family, sans-serif);
   font-size: var(--ui-font-size, 3mm);
+}
+
+*[ui-theme] input[type="file"] {
+  all: unset;
 }
 
 *[ui-theme] textarea {
@@ -148,9 +164,10 @@ body[ui-theme] {
 }
 
 *[ui-theme] input[type="text"]:focus, 
+*[ui-theme] input[type="search"]:focus, 
 *[ui-theme] textarea:focus {
   border-color: var(--ui-border-2, #ccc);
-  box-shadow: 0 0 5px var(--edit-color-dark);
+  box-shadow: 0 0 2px 2px var(--ui-highlight-faded);
 }
 
 *[ui-theme] button:active, 

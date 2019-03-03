@@ -1,10 +1,13 @@
-import Random from 'random-js'
+const Random = require('random-js')
 
 export class Randomizer {
   constructor(seed=null) {
-    this.seed = seed;
-    this.engine = Random.engines.mt19937();
-    this.reset();
+    this.seed = seed
+    if (seed !== null) {
+      this.engine = Random.MersenneTwister19937.seed(seed)
+    } else {
+      this.engine = Random.MersenneTwister19937.autoSeed()
+    }
   }
 
   reset() {

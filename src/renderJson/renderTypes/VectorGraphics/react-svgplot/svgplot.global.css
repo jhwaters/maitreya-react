@@ -1,5 +1,5 @@
 .svgplot-canvas {
-  --svgplot-color: black;
+  /*--svgplot-color: black;*/
   stroke: var(--svgplot-color);
   stroke-width: 0.3mm;
   stroke-opacity: 1;
@@ -7,6 +7,7 @@
   fill-opacity: 0.5;
   stroke-linecap: butt;
   stroke-linejoin: round;
+  margin: 2mm;
 }
 
 .svgplot-canvas *[marker-start="arrowfwd"] { marker-start: var(--svgplot-marker-arrowfwd, none) }

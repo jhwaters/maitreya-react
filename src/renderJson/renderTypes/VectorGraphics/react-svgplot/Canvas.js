@@ -16,7 +16,11 @@ class Canvas extends React.Component {
 
   render() {
     const props = this.props
-    const {cartesian=true, x1, x2, y1, y2, width, height, preserveAspectRatio} = props
+    const {
+      cartesian=true, x1, x2, y1, y2, 
+      width, height, preserveAspectRatio,
+      border=false
+    } = props
 
 
     const wrapperprops = {
@@ -26,6 +30,10 @@ class Canvas extends React.Component {
         padding: 0,
         width, height,
       },
+    }
+
+    if (border) {
+      wrapperprops.style.border = '1px solid black'
     }
 
     const svgprops = {  

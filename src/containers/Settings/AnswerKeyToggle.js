@@ -21,6 +21,7 @@ class AnswerKeyToggle extends React.Component {
   render() {
     return (
       <input
+        id="show-answer-key-checkbox"
         onChange={this.toggle}
         type='checkbox' 
         checked={this.props.current}

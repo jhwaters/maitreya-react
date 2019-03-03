@@ -89,7 +89,7 @@ export class TransversalNames extends QGen {
 
 		const angle1 = rd.randint(45, 135)
 
-		const rotateBy = rd.randint(-35,35)
+		const rotateBy = rd.randint(-25,25)
 
 		const r1 = 8
 		const r2 = 5
@@ -167,7 +167,7 @@ export class TransversalNames extends QGen {
 			'CoordinatePlane',
 			{
 				span: [-11,-7,11,7], margin: '0mm', width: '2.5in', 
-				grid: false, axis: false, style: 'geom',
+				grid: false, axis: false, style: 'geometry',
 			},
 			[
 				'Transform', 

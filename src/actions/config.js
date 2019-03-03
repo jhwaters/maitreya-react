@@ -5,6 +5,7 @@ export const SET_SHOW_ANSWERKEY = 'SET_SHOW_ANSWERKEY'
 export const SET_HIDDEN_COUNT = 'SET_HIDDEN_COUNT'
 export const SET_UI_THEME = 'SET_UI_THEME'
 export const SET_DEBUG_VIEW = 'SET_DEBUG_VIEW'
+export const SET_FILENAME = 'SET_FILENAME'
 
 export const addFontFamily = (font) => ({
   type: ADD_FONTFAMILY,
@@ -46,5 +47,10 @@ export const setUITheme = theme => {
 export const setDebugView = bool => ({
   type: SET_DEBUG_VIEW,
   payload: bool
+})
+
+export const setFilename = filename => ({
+  type: SET_FILENAME,
+  payload: filename
 })
 

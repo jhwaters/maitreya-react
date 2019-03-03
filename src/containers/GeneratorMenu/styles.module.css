@@ -3,7 +3,7 @@
   border-radius: 0 !important;
   padding: 0 !important;
   overflow-y: scroll;
-  height: 18em;
+  height: 24em;
 }
 
 .SearchResult {
@@ -15,15 +15,13 @@
 }
 
 .SearchResult:hover {
-  background-color: rgba(127,127,127,0.1);
-  outline: 1px solid rgba(127,127,127,0.2);
+  background-color: rgba(127,127,127,0.2);
 }
 
 .Selected, .Selected:hover {
-  background-color: #25d;
-  color: white;
+  background-color: var(--ui-highlight-bg, hsl(230,80%,60%));
+  color: var(--ui-highlight-fg, white);
 }
-
 
 .SearchResultNone, .SearchResultNone:hover {
   outline: none;

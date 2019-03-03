@@ -1,20 +1,20 @@
 import WebFont from 'webfontloader'
 import { addFontFamily, setUITheme } from './actions/config'
-import { kebabCase } from 'lodash'
+import { setStyle } from './stylesetter'
 import initializeDev from './initialize-dev'
 
 function loadFonts(store) {
   WebFont.load({
     custom: {
       families: [
-        'cmu_bright',
-        'cmu_concrete',
+        //'cmu_bright',
+        //'cmu_concrete',
         'cmu_sansserif',
         'cmu_serif',
-        'katex_main', 
-        'katex_sansserif', 
+        //'katex_main', 
+        //'katex_sansserif', 
       ].map(f => `${f}:n4,i4,n7,i7`),
-      urls: ['../stylesheets/styles.global.css'],
+      urls: ['./stylesheets/styles.global.css'],
     },
     /*
     google: {
@@ -29,25 +29,28 @@ function loadFonts(store) {
   })
 }
 
-function setCss(store) {
+function checkCookie(store) {
   const state = store.getState()
-  document.body.style.setProperty('--doc-font-family', state.style.fontFamily)
-  document.body.style.setProperty('--doc-font-size', state.style.fontSize)
-  document.body.style.setProperty('--doc-math-font-size', state.style.mathFontSize)
-  document.body.style.setProperty('--doc-math-font-weight', state.style.mathFontWeight)
-  const mathFontFamily = state.style.mathFontFamily
-  if (mathFontFamily !== '__DEFAULT__') {
-    document.body.style.setProperty('--doc-math-font-family', mathFontFamily)
+  let themeset = false
+  const cookie = document.cookie
+  if (cookie) {
+    for (const c of cookie.split(';')) {
+      const [k, v] = c.split('=')
+      if (k === 'ui-theme') {
+        store.dispatch(setUITheme(v))
+        themeset = true
+      }
+    }
   }
-  for (const k in state.style.graph) {
-    document.body.style.setProperty(`--vg-${kebabCase(k)}`, state.style.graph[k])
+  if (!themeset) {
+    store.dispatch(setUITheme(state.config.uiTheme))
   }
-  store.dispatch(setUITheme(state.config.uiTheme))
 }
 
 export default function intialize(store) {
   loadFonts(store)
-  setCss(store)
+  checkCookie(store)
+  setStyle(store.getState().style)
   //initializeDev(store)
   return store
 }
