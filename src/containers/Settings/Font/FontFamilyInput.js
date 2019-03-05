@@ -10,14 +10,9 @@ class FontFamilyInput extends React.Component {
     setDocumentFontFamily: PropTypes.func,
   }
 
-  setFontFamily(fontFamily) {
+  onChange = evt => {
+    const fontFamily = evt.target.value
     this.props.setDocumentFontFamily(fontFamily)
-  }
-
-  onChange = (evt) => {
-    const value = evt.target.value
-    const fontFamily = value.slice(0,7) === '_LOCAL_' ? value.slice(8) : value
-    this.setFontFamily(fontFamily)
   }
 
   render() {

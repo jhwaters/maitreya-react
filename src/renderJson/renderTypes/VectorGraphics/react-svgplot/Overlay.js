@@ -1,9 +1,10 @@
 import React from 'react'
 
+
 const Overlay = props => {
   const {
-    x1, y1, x2, y2, 
     x, y, 
+    x1, y1, x2, y2,
     rotate,
     anchor,
     displacement,
@@ -17,8 +18,8 @@ const Overlay = props => {
     position: 'absolute',
     left: xPerc + '%',
     top: yPerc + '%',
-    height: 0,
-    width: 0,
+    height: '0px',
+    width: '0px',
     overflow: 'visible',
   }
 
@@ -58,7 +59,7 @@ const Overlay = props => {
         const u = displacement.radius.replace(r, '')
         const a = parseFloat(displacement.angle)
         const dx = Math.round(Math.cos(a * Math.PI / 180) * r) + u
-        const dy = Math.round(-Math.sin(a * Math.PI / 180) * r) + u
+        const dy = Math.round(Math.sin(a * Math.PI / 180) * (cartesian ? -r : r)) + u
         innerstyle.transform += ` translate(${dx},${dy})`
       }
     } else if (anchor) {
@@ -79,8 +80,10 @@ const Overlay = props => {
 
   if (rotate) {
     const rotateAngle = parseFloat(rotate)
-    innerstyle.transform += ` rotate(${-rotateAngle}deg)`
+    innerstyle.transform += ` rotate(${cartesian ? -rotateAngle : rotateAngle}deg)`
   }
+
+  console.log({innerstyle, outerstyle})
   
   return (
     <div style={outerstyle}>

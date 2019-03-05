@@ -44,7 +44,7 @@ const terminal = {
 
 
 // childless types will ignore children
-// many of these will be tweaked to become nonTerminal or terminal
+// many of these may be tweaked to become nonTerminal or terminal
 const childless = {
   AnswerKey,
   EmptySpace, 

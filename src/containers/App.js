@@ -4,10 +4,9 @@ import ReactModal from 'react-modal';
 import { Preview, SideBar, StatusBar, TopBar, Wrapper } from './AppLayout'
 import Document from './Document/Document'
 import CustomQuestion from './CustomQuestion'
-import Notes from './Notes'
-import { DownloadButton, UploadButton } from './Menu'
+import { UploadModal, SavePopup, SettingsModal, NotesModal } from './Modals'
 import { CheckStateButton } from './Debug'
-import SettingsPage, {
+import {
   AllowEditingToggle,
   AnswerKeyToggle,
   FixPagination,
@@ -59,6 +58,8 @@ class AppWrapper extends React.Component {
   openRpcTest = () => this.setState({modal: 'RpcTest'})
   openCustomQuestion = () => this.setState({modal: 'CustomQuestion'})
   openSettings = () => this.setState({modal: 'Settings'})
+  openUpload = () => this.setState({modal: 'Upload'})
+  openSave = () => this.setState({modal: 'Save'})
 
   render() {
     const toplabel = {margin: '0 0 0 0.5em'}
@@ -66,8 +67,8 @@ class AppWrapper extends React.Component {
       <Wrapper >
         {/* customTitleBar ? <TitleBar /> : null */}
         <TopBar>
-          <UploadButton>Load</UploadButton>
-          <DownloadButton>Save</DownloadButton>
+          <button onClick={this.openUpload}>Load</button>
+          <button onClick={this.openSave}>Save</button>
           <button onClick={window.print}>Print/PDF</button>
           <button onClick={this.openSettings}>Settings</button>
           <label htmlFor="show-answer-key-checkbox" style={toplabel}>Answer Key:</label><AnswerKeyToggle />
@@ -93,26 +94,7 @@ class AppWrapper extends React.Component {
         </SideBar>
         { this.props.statusBar ? <StatusBar><span>{this.props.statusBar}</span></StatusBar> : null }
 
-        <ReactModal
-          isOpen={this.state.modal === 'Settings'}
-          onRequestClose={this.closeModal}
-          style={{
-            content: {
-              border: 'none',
-              top: '0',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              padding: 0,
-            },
-            overlay: {
-              background: 'none',
-              backgroundColor: 'none',
-            }
-          }}
-        >
-          <SettingsPage onRequestClose={this.closeModal}/>
-        </ReactModal>
+        <SettingsModal isOpen={this.state.modal === 'Settings'} onRequestClose={this.closeModal}/>
 
         <ReactModal
           isOpen={this.state.modal === 'CustomQuestion'}
@@ -122,23 +104,9 @@ class AppWrapper extends React.Component {
           <CustomQuestion onRequestClose={this.closeModal}/>
         </ReactModal>
 
-        <ReactModal
-          isOpen={this.state.modal === 'Notes'}
-          onRequestClose={this.closeModal}
-          style={{
-            content: {
-              width: '4in',
-              top: '1in',
-              left: '1in',
-              right: 'unset',
-              bottom: 'unset',
-              color: 'black',
-              backgroundColor: 'var(--ui-page, white)',
-            }
-          }}
-        >
-          <Notes onRequestClose={this.closeModal} />
-        </ReactModal>
+        <NotesModal isOpen={this.state.modal === 'Notes'} onRequestClose={this.closeModal}/>
+        <UploadModal isOpen={this.state.modal === 'Upload'} onRequestClose={this.closeModal}/>
+        <SavePopup isOpen={this.state.modal === 'Save'} onRequestClose={this.closeModal}/>
 
       </Wrapper>
     )

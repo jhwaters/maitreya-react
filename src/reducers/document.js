@@ -56,7 +56,7 @@ const document = function(state=initialState, action) {
       return {
         ...state, 
         order: state.order.slice(0,-1), 
-        pagebreaks: state.pagebreaks.filter(n => n < state.order.length),
+        pagebreaks: state.pagebreaks.filter(n => n < state.order.length-1),
       }
     case DELETE_HEADER:
       const headers = {...state.headers}
@@ -72,7 +72,7 @@ const document = function(state=initialState, action) {
       return {
         ...state, 
         order: state.order.filter(id => id !== +action.payload),
-        pagebreaks: state.pagebreaks.filter(n => n < state.order.length),
+        pagebreaks: state.pagebreaks.filter(n => n < state.order.length-1),
       }
     case UPDATE_HEADER:
       return {

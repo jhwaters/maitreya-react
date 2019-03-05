@@ -27,6 +27,11 @@ pre, code {
   font-family: var(--ui-font-family-monospace, monospace);
 }
 
+.editable {
+  margin: 0;
+  padding: 0;
+}
+
 .editable > *:hover {
   outline: 3px dotted var(--edit-color-light, hsl(150,60%,80%));
   background-color: var(--edit-color-faded, hsl(150,60%,98%));
@@ -59,27 +64,4 @@ pre, code {
   width: fit-content;
   border-radius: 0px;
   margin: 2px;
-}
-
-.modal-dialog-popup {
-  display: flex;
-  justify-content: center;
-  outline: none;
-}
-
-.modal-dialog-popup > * {
-  border-radius: 4px;
-  border-color: var(--ui-border-1, #999);
-  background: var(--ui-bg-1, #eee);
-  padding: 5mm;
-  top: 1cm;
-  bottom: auto;
-  right: auto;
-}
-
-.modal-dialog-popup .dialog-button-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin-top: 3mm;
 }

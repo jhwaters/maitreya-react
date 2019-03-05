@@ -47,9 +47,9 @@ class Quadratic {
   }
 
   polynomial() {
-    const {a, b, d, rt} = this.params
+    const {a, b, d, rt, im} = this.params
     return new Polynomial([
-      a*a - b*b*rt,
+      a*a + (im ?  b*b*rt : -b*b*rt),
       -2*a*d,
       d*d
     ])

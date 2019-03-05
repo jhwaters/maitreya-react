@@ -2,28 +2,39 @@ import React from 'react';
 import { connect } from 'react-redux'
 import ReactModal from 'react-modal'
 import { setFilename } from '../../actions/config'
+import styles from './styles.module.css'
+
+function filterUnusedElements(document) {
+  const result = {...document, content: {}}
+  for (const k of document.order) {
+    result.content[k] = document.content[k]
+  }
+  return result
+}
 
 // Download document as JSON
-class DownloadButton extends React.Component {
+class SaveFilePopup extends React.Component {
+  static defaultProps = {
+    isOpen: false,
+  }
+
   constructor(props) {
     super(props)
     this.inputRef = React.createRef()
     this.state = {
-      modal: 'none'
+      includeStyle: true,
     }
   }
 
-  closeModal= () => this.setState({modal: 'none'})
-  openModal = () => {
-    this.setState({modal: 'savePrompt'})
-  }
+  close= () => this.props.onRequestClose()
   updateFilename = evt => this.props.setFilename(evt.target.value)
+  toggleIncludeStyle = evt => this.setState({includeStyle: evt.target.checked})
 
   downloadAs(filename) {
-    const dataString = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
-      document: this.props.document,
-      style: this.props.style,
-    }));
+    const data = this.state.includeStyle
+      ? {document: filterUnusedElements(this.props.document), style: this.props.style}
+      : {document: filterUnusedElements(this.props.document)}
+    const dataString = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
     const dlanchor = document.createElement('a')
     dlanchor.setAttribute('href', dataString)
     dlanchor.setAttribute('download', filename)
@@ -36,7 +47,7 @@ class DownloadButton extends React.Component {
     const filename = this.props.filename
     this.props.setFilename(filename)
     this.downloadAs(filename)
-    this.closeModal()
+    this.close()
   }
 
   handleKeyPress = evt => {
@@ -47,19 +58,17 @@ class DownloadButton extends React.Component {
 
   render() {
     return (
-      <>
-      <button
-        onClick={this.openModal}
-      >{this.props.children}</button>
       <ReactModal 
-        className="modal-dialog-popup"
-        isOpen={this.state.modal === 'savePrompt'}
-        onRequestClose={this.closeModal}
+        className={styles.Popup}
+        isOpen={this.props.isOpen}
+        onRequestClose={this.close}
       >
         <div>
           <span style={{fontWeight: 'bold'}}>Save as: </span>
+          <br/>
           <input 
             type="text" 
+            style={{width: '30em', margin: '2mm 0'}}
             ref={this.inputRef}
             defaultValue={this.props.filename} 
             onChange={this.updateFilename}
@@ -68,13 +77,22 @@ class DownloadButton extends React.Component {
             onKeyPress={this.handleKeyPress}
             onFocus={evt => {evt.target.selectionStart = 0; evt.target.selectionEnd = evt.target.value.length-5}}
           />
-          <div className="dialog-button-container">
+          <br/>
+          <input 
+            id="save-style-with-document-checkbox"
+            type="checkbox"
+            checked={this.state.includeStyle}
+            onChange={this.toggleIncludeStyle}
+          />
+          <label htmlFor="save-style-with-document-checkbox">
+            Save style with document
+          </label>
+          <div className={styles.PopupButtons}>
             <button onClick={this.download}>Save</button>
-            <button onClick={this.closeModal}>Cancel</button>
+            <button onClick={this.close}>Cancel</button>
           </div>
         </div>
       </ReactModal>
-      </>
     )
   }
 }
@@ -106,4 +124,4 @@ const mapDispatchToProps = dispatch => ({
   setFilename: filename => dispatch(setFilename(filename)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(DownloadButton)
+export default connect(mapStateToProps, mapDispatchToProps)(SaveFilePopup)

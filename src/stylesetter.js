@@ -8,7 +8,9 @@ export function setStyle(style) {
   const mathFontFamily = style.mathFontFamily
   if (mathFontFamily === '__MATCH__') {
     document.documentElement.style.setProperty('--doc-math-font-family', 'var(--doc-font-family)')
-  } else if (mathFontFamily !== '__DEFAULT__') {
+  } else if (mathFontFamily === '__DEFAULT__') {
+    document.documentElement.style.removeProperty('--doc-math-font-family')
+  } else {
     document.documentElement.style.setProperty('--doc-math-font-family', mathFontFamily)
   }
   for (const k in style.graph) {

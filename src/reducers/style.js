@@ -24,7 +24,7 @@ const initialState = {
   mathFontWeight: 'normal',
   pageSize: 'letter',
   pageOrientation: 'portrait',
-  pageMargin: '.4in .5in .45in .5in',
+  pageMargin: '.5in',
   graph: {
     asymptoteColor: '#888888',
     asymptoteWidth: '0.6mm',

@@ -1,158 +1,158 @@
 @media screen {
-.Wrapper {
-  display: grid;
-  grid-template-columns: 50mm 1fr;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-}
-
-.Wrapper-TitleBar-StatusBar {
-  grid-template-areas:
-    "title title"
-    "sidebar preview"
-    "status status";
-  grid-template-rows: 25px 1fr 25px;
-}
-
-.Wrapper-TopBar {
-  grid-template-areas:
-    "topbar topbar"
-    "sidebar preview";
-  grid-template-rows: 8mm 1fr;  
-}
-
-.Wrapper-TopBar-StatusBar {
-  grid-template-areas:
-    "topbar topbar"
-    "sidebar preview"
-    "status status";
-  grid-template-rows: 8mm 1fr 5mm;  
-}
-
-.SideBar {
-  grid-area: sidebar;
-  display: flex;
-  flex: 1 1 100%;
-  flex-direction: column;
-  /*background-image: linear-gradient(90deg, #ddd, 5%, #f0f0f0, 95%, #ddd);*/
-  background-color: var(--ui-bg-2, #f5f5f5);
-  border-right: 1px solid var(--ui-border-1, #ccc);
-  overflow: clip;
-  padding: 2mm;
-}
-
-.SideBar > * {
-  margin: 2px;
-  top: auto;
-  bottom: auto;
-  left: auto;
-  right: auto;
-  user-select: none;
-}
-
-.StatusBar {
-  grid-area: status;
-  /*background-image: linear-gradient(0deg, #ddd, 25%, #f0f0f0, 99%, #ddd);*/
-  background-color: var(--ui-bg-2, #f5f5f5);
-  border-top: 1px solid #ccc;
-  display: flex;
-  padding-left: 2mm;
-  padding-right: 2mm;
-  flex: 1 1 100%;
-  align-items: center;
-  justify-content: right;
-  font-size: 0.9em;
-}
-
-.StatusBar > * {
-  top: auto;
-  bottom: auto;
-  left: auto;
-  right: auto;
-}
-
-.TitleBar {
-  grid-area: title;
-  background-image: linear-gradient(0deg, #ddd, 25%, #ededed, 99%, #ddd);
-  display: flex;
-  flex: 1 1 100%;
-  align-items: center;
-  justify-content: center;
-  -webkit-user-select: none;
-  -webkit-app-region: drag;
-}
-
-.TopBar {
-  grid-area: topbar;
-  background-color: var(--ui-bg-2, #f5f5f5);
-  border-bottom: 1px solid var(--ui-border-1, #ccc);
-  display: flex;
-  flex: 1 1 100%;
-  align-items: center;
-  padding: 0 2mm;
-  justify-content: left;
-  font-size: 0.9em;
-  overflow: hidden;
-}
-
-.TopBar * {
-  white-space: nowrap;
-  user-select: none;
-}
-
-.PreviewOuter {
-  grid-area: preview;
-  overflow: scroll;
-  position: relative;
-  padding: 0;
-  margin: 0;
-}
-
-.PreviewInner {
-  padding: 0;
-  margin: 0;
-  left: 0;
-  top: 0;
-  position: absolute;
-  display: flex;
-}
-
-
-  .PreviewInner > * {
-    transform: var(--previewInnerTransform);
-    transform-origin: top left;
-  }
-}
-
-@media print {
-
   .Wrapper {
-    display: block;
-    overflow: visible;
-    position: absolute;
+    display: grid;
+    grid-template-columns: 50mm 1fr;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
   }
-
-  .PreviewOuter, .PreviewInner  {
-    position: static;
-    overflow: visible;
-    top: 0;
-    left: 0;
+  
+  .Wrapper-TitleBar-StatusBar {
+    grid-template-areas:
+      "title title"
+      "sidebar preview"
+      "status status";
+    grid-template-rows: 25px 1fr 25px;
   }
-
+  
+  .Wrapper-TopBar {
+    grid-template-areas:
+      "topbar topbar"
+      "sidebar preview";
+    grid-template-rows: 8mm 1fr;  
+  }
+  
+  .Wrapper-TopBar-StatusBar {
+    grid-template-areas:
+      "topbar topbar"
+      "sidebar preview"
+      "status status";
+    grid-template-rows: 8mm 1fr 5mm;  
+  }
+  
   .SideBar {
-    display: none;
+    grid-area: sidebar;
+    display: flex;
+    flex: 1 1 100%;
+    flex-direction: column;
+    /*background-image: linear-gradient(90deg, #ddd, 5%, #f0f0f0, 95%, #ddd);*/
+    background-color: var(--ui-bg-2, #f5f5f5);
+    border-right: 1px solid var(--ui-border-1, #ccc);
+    overflow: clip;
+    padding: 2mm;
   }
-
+  
+  .SideBar > * {
+    margin: 2px;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    user-select: none;
+  }
+  
   .StatusBar {
-    display: none;
+    grid-area: status;
+    /*background-image: linear-gradient(0deg, #ddd, 25%, #f0f0f0, 99%, #ddd);*/
+    background-color: var(--ui-bg-2, #f5f5f5);
+    border-top: 1px solid #ccc;
+    display: flex;
+    padding-left: 2mm;
+    padding-right: 2mm;
+    flex: 1 1 100%;
+    align-items: center;
+    justify-content: right;
+    font-size: 0.9em;
   }
-
-  .TopBar {
-    display: none;
+  
+  .StatusBar > * {
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
   }
-
+  
   .TitleBar {
-    display: none;
+    grid-area: title;
+    background-image: linear-gradient(0deg, #ddd, 25%, #ededed, 99%, #ddd);
+    display: flex;
+    flex: 1 1 100%;
+    align-items: center;
+    justify-content: center;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
   }
-}
+  
+  .TopBar {
+    grid-area: topbar;
+    background-color: var(--ui-bg-2, #f5f5f5);
+    border-bottom: 1px solid var(--ui-border-1, #ccc);
+    display: flex;
+    flex: 1 1 100%;
+    align-items: center;
+    padding: 0 2mm;
+    justify-content: left;
+    font-size: 0.9em;
+    overflow: hidden;
+  }
+  
+  .TopBar * {
+    white-space: nowrap;
+    user-select: none;
+  }
+  
+  .PreviewOuter {
+    grid-area: preview;
+    overflow: scroll;
+    position: relative;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .PreviewInner {
+    padding: 0;
+    margin: 0;
+    left: 0;
+    top: 0;
+    position: absolute;
+    display: flex;
+  }
+  
+  
+    .PreviewInner > * {
+      transform: var(--previewInnerTransform);
+      transform-origin: top left;
+    }
+  }
+  
+  @media print {
+  
+    .Wrapper {
+      display: block;
+      overflow: visible;
+      position: absolute;
+    }
+  
+    .PreviewOuter, .PreviewInner  {
+      position: static;
+      overflow: visible;
+      top: 0;
+      left: 0;
+    }
+  
+    .SideBar {
+      display: none;
+    }
+  
+    .StatusBar {
+      display: none;
+    }
+  
+    .TopBar {
+      display: none;
+    }
+  
+    .TitleBar {
+      display: none;
+    }
+  }

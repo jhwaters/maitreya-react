@@ -14,7 +14,7 @@ function hasKwd(item, kwd) {
   return false
 }
 
-function checkForKwds(item, kwds) {
+function checkForKwds(item, kwds=[]) {
   for (const k of kwds.map(k => k.toLowerCase())) {
     if (!hasKwd(item, k)) {
       return false
@@ -28,19 +28,6 @@ function sortByName(a, b) {
   if (a.name < b.name) return -1
   if (a.name > b.name) return 1
   return 0
-}
-
-function sortByID(a, b) {
-  if (a.id[0] === '_') {
-    if (b.id[0] === '_') {
-      if (a.id < b.id) return -1
-      if (a.id > b.id) return 1
-      return 0
-    }
-    return 1
-  }
-  if (b.id[0] === '_') return -1
-  return sortByName(a, b)
 }
 
 
@@ -77,7 +64,7 @@ class QuestionSearch extends React.Component {
     if (questionType) {
       console.log(`Generating ${questionType}`)
       try {
-        const qtype = this.props.questionTypes[questionType]
+        const qtype = this.props.questionTypes[questionType].generator
         const question = new qtype()
         this.props.addToDocument(question.output())
       } catch(e) {
@@ -88,10 +75,15 @@ class QuestionSearch extends React.Component {
   }
 
   renderResults() {
-    const qtypes = Object.keys(this.props.questionTypes).map(k => ({
-      id: k, ...this.props.questionTypes[k].register()
-    })).sort(sortByID)
-    const results = qtypes.filter(q => checkForKwds(q, this.state.kwds))
+    //const qtypes = Object.keys(this.props.questionTypes).map(k => ({
+    //  id: k, ...this.props.questionTypes[k].register()
+    //})).sort(sortByID)
+    const results = (
+      Object.keys(this.props.questionTypes)
+        .map(k => ({id: k, ...this.props.questionTypes[k]}))
+        .filter(q => checkForKwds(q, this.state.kwds))
+        .sort(sortByName)
+    )
     const className = styles.ResultContainer + ' ui-input'
     if (results.length) {
       return (
@@ -103,7 +95,7 @@ class QuestionSearch extends React.Component {
               onDoubleClick={this.generateAndAdd}
               title={r.description}
             >
-              {r.id[0] === '_' ? r.id.split('.')[0] + ': ' + r.name : r.name}
+              {r.name}
             </div>
           ))}
         </div>
@@ -125,7 +117,7 @@ class QuestionSearch extends React.Component {
           value={this.state.input}
           onDoubleClick={this.clearSearch}
           placeholder="filter"
-        ></input>
+        />
         {this.renderResults()}
         <button onClick={this.generateAndAdd}>Add</button>
       </>

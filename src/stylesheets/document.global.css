@@ -20,6 +20,7 @@
 
 /* TABLES */
 
+
 .document table {
   border-collapse: collapse;
   margin: 1em;
@@ -33,6 +34,7 @@
   border: 1px solid black;
   padding: 0.2em 0.5em;
 }
+
 
 .document {
   /*font-family: var(--doc-font-family, serif);
@@ -116,13 +118,30 @@
   content: counter(answerkey) '. ';
 }
 
-.page-header {
+.document .page-header {
+  margin: 0;
   border-collapse: collapse;
-  width: 100%;
-  margin-top: 0;
 }
 
-.page-header td {
+.page-header,
+.page-header tbody,
+.page-header tr {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.page-header,
+.page-header td,
+.page-header th,
+.page-header tbody,
+.page-header tr {
+  margin: 0;
+  padding: 0;
+}
+
+.page-header td,
+.page-header th {
   border: none;
   font-size: 1.4em;
   font-weight: bold;

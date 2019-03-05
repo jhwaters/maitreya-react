@@ -12,6 +12,7 @@ function convertToPx(val, unit) {
 }
 
 
+
 class Canvas extends React.Component {
 
   render() {

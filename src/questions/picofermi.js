@@ -73,7 +73,7 @@ export class PicoFermi extends QGen {
       answer: {
         correct: answer,
         prompt: [
-          'Container', {direction: 'row'}, 
+          'Container', {direction: 'row', wrap: false}, 
           blank, gap, blank, gap, blank, gap, blank
         ],
       },

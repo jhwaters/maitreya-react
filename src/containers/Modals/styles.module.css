@@ -1,0 +1,22 @@
+.Popup {
+  display: flex;
+  justify-content: center;
+  outline: none;
+}
+
+.Popup > * {
+  border-radius: 4px;
+  border-color: var(--ui-border-1, #999);
+  background: var(--ui-bg-1, #eee);
+  padding: 5mm;
+  top: 1cm;
+  bottom: auto;
+  right: auto;
+}
+
+.Popup .PopupButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 3mm;
+}

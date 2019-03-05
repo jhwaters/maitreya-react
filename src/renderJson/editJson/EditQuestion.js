@@ -78,7 +78,6 @@ export default class Question extends DefaultEditor {
   updateQuestionFR = evt => this.updateContent('question', evt.target.value, 'freeResponse')
 
   renderInstructionsOrQuestionInputs(fieldname) {
-    const isMC = this.state.options.isMultipleChoice
     const overrides = (this.state.content.variants || {})[this.state.options.variant] || {}
     const updaters = {
       instructions: {

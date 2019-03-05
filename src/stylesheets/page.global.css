@@ -1,7 +1,6 @@
 html, body { margin: 0 }
 @page { margin: 0 }
 
-/** For screen preview **/
 @media screen {
   body { background: var(--ui-border-0, #ccc); }
   .page-outer {
@@ -9,9 +8,7 @@ html, body { margin: 0 }
     box-shadow: 0 .5mm 2mm rgba(0,0,0,.5);
     margin: 5mm;
   }
-  .page-overflowing {
-    outline: 4px dotted red;
-  }
+  .page-overflowing { outline: 4px dotted red }
 }
 
 @media print {

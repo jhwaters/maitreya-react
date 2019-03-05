@@ -5,6 +5,7 @@ export const portrait = {
   A4: { width: 210, height: 296 },
   A5: { width: 148, height: 209 },
   letter: { width: 216, height: 279 },
+  //letter: { width: 216, height: 130 },
   legal: { width: 216, height: 356 },
 }
 

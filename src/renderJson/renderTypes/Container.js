@@ -1,11 +1,11 @@
 import React from 'react'
 
 export const Container = props => {
-  const {direction='row', border=false, alignItems, justifyItems} = props
+  const {direction='row', border=false, alignItems, justifyItems, wrap=true} = props
   const divstyle = {
     display: 'flex',
     flexDirection: direction,
-    flexWrap: 'nowrap',
+    flexWrap: wrap ? 'wrap' : 'nowrap',
     border: border ? '1px solid black' : 'none',
   }
   if (direction === 'row') {

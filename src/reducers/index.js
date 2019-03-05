@@ -8,3 +8,9 @@ const rootReducer = combineReducers({
 })
 
 export default rootReducer
+
+export {
+  config,
+  document,
+  style,
+}

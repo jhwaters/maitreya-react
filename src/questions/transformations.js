@@ -200,7 +200,7 @@ export class MatchTransformations extends QGen {
 
 		const makebox = i => [
 			'Container', 
-			{direction: 'row', alignItems: 'center'}, 
+			{direction: 'row', alignItems: 'center', wrap: false}, 
 			letters[i] + ')',
 			graphPoints(paths[graphScramble[i]])
 		]
