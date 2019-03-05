@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import ReactModal from 'react-modal'
-import { setFilename } from '../../actions/config'
 import styles from './styles.module.css'
 
 function filterUnusedElements(document) {
@@ -20,14 +19,14 @@ class SaveFilePopup extends React.Component {
 
   constructor(props) {
     super(props)
-    this.inputRef = React.createRef()
     this.state = {
       includeStyle: true,
+      filename: defaultFilename(props.document) + '.json',
     }
   }
 
   close= () => this.props.onRequestClose()
-  updateFilename = evt => this.props.setFilename(evt.target.value)
+  updateFilename = evt => this.setState({filename: evt.target.value})
   toggleIncludeStyle = evt => this.setState({includeStyle: evt.target.checked})
 
   downloadAs(filename) {
@@ -44,8 +43,7 @@ class SaveFilePopup extends React.Component {
   }
 
   download = () => {
-    const filename = this.props.filename
-    this.props.setFilename(filename)
+    const filename = this.state.filename
     this.downloadAs(filename)
     this.close()
   }
@@ -54,6 +52,11 @@ class SaveFilePopup extends React.Component {
     if (evt.key === 'Enter') {
       this.download()
     }
+  }
+
+  onFocus = evt => {
+    evt.target.selectionStart = 0;
+    evt.target.selectionEnd = evt.target.value.length-5;
   }
 
   render() {
@@ -69,13 +72,12 @@ class SaveFilePopup extends React.Component {
           <input 
             type="text" 
             style={{width: '30em', margin: '2mm 0'}}
-            ref={this.inputRef}
             defaultValue={this.props.filename} 
             onChange={this.updateFilename}
             spellCheck={false}
             autoFocus
             onKeyPress={this.handleKeyPress}
-            onFocus={evt => {evt.target.selectionStart = 0; evt.target.selectionEnd = evt.target.value.length-5}}
+            onFocus={this.onFocus}
           />
           <br/>
           <input 
@@ -104,7 +106,7 @@ function defaultFilename(document) {
       const titleparts = []
       for (const r of rows) {
         if (r[0]) {
-          titleparts.push(r[0].replace(' ', ''))
+          titleparts.push(r[0].replace(/\ /g, ''))
         }
       }
       if (titleparts.length) {
@@ -116,12 +118,9 @@ function defaultFilename(document) {
 }
 
 const mapStateToProps = state => ({
-  filename: state.config.filename || defaultFilename(state.document) + '.json',
+  filename: defaultFilename(state.document) + '.json',
   document: state.document,
   style: state.style,
 })
-const mapDispatchToProps = dispatch => ({
-  setFilename: filename => dispatch(setFilename(filename)),
-})
 
-export default connect(mapStateToProps, mapDispatchToProps)(SaveFilePopup)
+export default connect(mapStateToProps)(SaveFilePopup)

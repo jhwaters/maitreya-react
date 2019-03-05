@@ -3,7 +3,31 @@ import { addFontFamily, setUITheme } from './actions/config'
 import { setStyle } from './stylesetter'
 import initializeDev from './initialize-dev'
 
-function loadFonts(store) {
+function loadKatexFonts() {
+  WebFont.load({
+    custom: {
+      families: [
+        'katex_ams',
+        'katex_caligraphic',
+        'katex_fraktur',
+        'katex_main',
+        'katex_math',
+        'katex_sansserif',
+        'katex_script',
+        'katex_size1',
+        'katex_size2',
+        'katex_size3',
+        'katex_size4',
+        'katex_typewriter',
+      ].map(f => `${f}:n4,i4,n7,i7`),
+      urls: ['./stylesheets/styles.global.css']
+    },
+    fontactive: (family) => console.log(`load font ${family} successful`),
+    fontinactive: (family) => console.error(`load font ${family} failed`),
+  })
+}
+
+function addFonts(store) {
   WebFont.load({
     custom: {
       families: [
@@ -48,7 +72,8 @@ function checkCookie(store) {
 }
 
 export default function intialize(store) {
-  loadFonts(store)
+  loadKatexFonts()
+  addFonts(store)
   checkCookie(store)
   setStyle(store.getState().style)
   //initializeDev(store)

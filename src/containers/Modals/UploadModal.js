@@ -99,7 +99,6 @@ class UploadModal extends React.Component {
 
   loadJson = () => {
     if (this.state.document) {
-      this.props.setFilename(this.state.validFilename)
       this.props.loadStyle(this.state.style || {})
       this.props.loadDocument(this.state.document)
       this.close()
@@ -176,7 +175,6 @@ class UploadModal extends React.Component {
 const mapDispatchToProps = dispatch => ({
   loadDocument: doc => dispatch(loadDocument(doc)),
   loadStyle: style => dispatch(loadStyle(style)),
-  setFilename: filename => dispatch(setFilename(filename)),
 })
 
 export default connect(null, mapDispatchToProps)(UploadModal)

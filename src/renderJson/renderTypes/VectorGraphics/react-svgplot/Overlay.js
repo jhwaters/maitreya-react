@@ -1,20 +1,12 @@
 import React from 'react'
 
 
-const Overlay = props => {
-  const {
-    x, y, 
-    x1, y1, x2, y2,
-    rotate,
-    anchor,
-    displacement,
-    cartesian=true,
-  } = props
-
+export const OverlayPosition = props => {
+  const {x, y, x1, y1, x2, y2, cartesian=true} = props
   const xPerc = 100 * (x - x1) / (x2 - x1)
   const yPerc = cartesian ? 100 * (y2 - y) / (y2 - y1) : (y - y1) / (y2 - y1)
 
-  const outerstyle = {
+  const style = {
     position: 'absolute',
     left: xPerc + '%',
     top: yPerc + '%',
@@ -22,6 +14,21 @@ const Overlay = props => {
     width: '0px',
     overflow: 'visible',
   }
+
+  return (
+    <div style={style}>
+      {props.children}
+    </div>
+  )
+}
+
+const Overlay = props => {
+  const {
+    rotate,
+    anchor,
+    displacement,
+  } = props
+
 
   const innerstyle = {
     position: 'absolute',
@@ -59,7 +66,7 @@ const Overlay = props => {
         const u = displacement.radius.replace(r, '')
         const a = parseFloat(displacement.angle)
         const dx = Math.round(Math.cos(a * Math.PI / 180) * r) + u
-        const dy = Math.round(Math.sin(a * Math.PI / 180) * (cartesian ? -r : r)) + u
+        const dy = Math.round(-Math.sin(a * Math.PI / 180) * r) + u
         innerstyle.transform += ` translate(${dx},${dy})`
       }
     } else if (anchor) {
@@ -80,16 +87,14 @@ const Overlay = props => {
 
   if (rotate) {
     const rotateAngle = parseFloat(rotate)
-    innerstyle.transform += ` rotate(${cartesian ? -rotateAngle : rotateAngle}deg)`
+    innerstyle.transform += ` rotate(${-rotateAngle}deg)`
   }
 
-  console.log({innerstyle, outerstyle})
+  //console.log({innerstyle, outerstyle})
   
   return (
-    <div style={outerstyle}>
-      <div className="svgplot-label" style={innerstyle}>
-        {props.children}
-      </div>
+    <div className="svgplot-label" style={innerstyle}>
+      {props.children}
     </div>
   )
 }

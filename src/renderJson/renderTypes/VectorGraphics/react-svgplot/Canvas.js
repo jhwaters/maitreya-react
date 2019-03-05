@@ -1,6 +1,6 @@
 import React from 'react'
 import { MarkerSymbols } from './Style'
-import Overlay from './Overlay'
+import Overlay, { OverlayPosition } from './Overlay'
 
 function convertToPx(val, unit) {
   if (unit === 'px') return val
@@ -69,7 +69,13 @@ class Canvas extends React.Component {
         </svg>
         {overlays.length ? (
           overlays.map((o, i) => (
-            <Overlay key={i} cartesian={cartesian} x1={x1} y1={y1} x2={x2} y2={y2} {...o.props} />
+            <OverlayPosition key={i} 
+              cartesian={cartesian} 
+              x1={x1} y1={y1} x2={x2} y2={y2} 
+              x={o.props.x} y={o.props.y} 
+            >
+              {o}
+            </OverlayPosition>
           ))
         ) : null}
       </div>

@@ -267,9 +267,6 @@ export class SolveRightTriangle extends QGen {
       }
     }
 
-    console.log(given)
-    console.log(givens)
-
     // Generate triangle
     const C = 90
     let a, b, c, A, B
@@ -288,8 +285,6 @@ export class SolveRightTriangle extends QGen {
     c = rd.randint(8, 90)
     a = Math.sin(A * Math.PI / 180) * c
     b = Math.sin(B * Math.PI / 180) * c
-    
-    console.log({a, b, c, A, B})
 
 
     // Make sure all givens are integers

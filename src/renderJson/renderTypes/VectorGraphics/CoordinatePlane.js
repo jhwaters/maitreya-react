@@ -1,5 +1,6 @@
 import React from 'react'
-import { Clip, Style, Grid, Overlay, Path } from '.'
+import { Clip, Style, Grid, Path } from '.'
+import Overlay from './react-svgplot/Overlay'
 import { MarkerSymbols } from './react-svgplot/Style'
 import { Canvas } from './react-svgplot'
 

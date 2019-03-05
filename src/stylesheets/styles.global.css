@@ -1,10 +1,10 @@
-@import './fonts.global.css';
-@import './variables.global.css';
-@import './katex.global.css';
-@import './document.global.css';
+@import './fonts.css';
+@import './variables.css';
+@import './katex.css';
+@import './document.css';
 @import './debugview.css';
-@import './page.global.css';
-@import './themes.global.css';
+@import './page.css';
+@import './themes.css';
 
 
 body {
