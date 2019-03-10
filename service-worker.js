@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/maitreya-react/precache-manifest.4fbb64117ab171fc358f0413acb62423.js"
+  "/maitreya-react/precache-manifest.ce58d8910935a3955bc0c46315f7edad.js"
 );
 
 workbox.clientsClaim();
