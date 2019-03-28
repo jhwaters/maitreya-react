@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "4194ca4548152b4f028d",
-    "url": "/maitreya-react/static/css/main.e222e8da.chunk.css"
+    "revision": "612cd1cda3d6ef9799f1",
+    "url": "/maitreya-react/static/css/main.832c8515.chunk.css"
   },
   {
-    "revision": "4194ca4548152b4f028d",
-    "url": "/maitreya-react/static/js/main.4194ca45.chunk.js"
+    "revision": "612cd1cda3d6ef9799f1",
+    "url": "/maitreya-react/static/js/main.612cd1cd.chunk.js"
   },
   {
     "revision": "74304c90cd8757aed672",
@@ -24,6 +24,10 @@ self.__precacheManifest = [
     "url": "/maitreya-react/static/media/KaTeX_Size1-Regular.2870a8f8.woff2"
   },
   {
+    "revision": "6dbdad7ae27338101bfd05c181891588",
+    "url": "/maitreya-react/static/media/KaTeX_Size2-Regular.6dbdad7a.woff2"
+  },
+  {
     "revision": "df2ac4dc4060253c264b85384ec0e2f3",
     "url": "/maitreya-react/static/media/KaTeX_Size1-Regular.df2ac4dc.woff"
   },
@@ -32,24 +36,20 @@ self.__precacheManifest = [
     "url": "/maitreya-react/static/media/KaTeX_Size2-Regular.aec9a679.woff"
   },
   {
-    "revision": "6dbdad7ae27338101bfd05c181891588",
-    "url": "/maitreya-react/static/media/KaTeX_Size2-Regular.6dbdad7a.woff2"
+    "revision": "f1a090a4c1a36d1d3b1fdc6736db8748",
+    "url": "/maitreya-react/static/media/KaTeX_Size3-Regular.f1a090a4.woff"
   },
   {
     "revision": "dc7be1610075c0ca8581477f050444df",
     "url": "/maitreya-react/static/media/KaTeX_Size3-Regular.dc7be161.woff2"
   },
   {
-    "revision": "f1a090a4c1a36d1d3b1fdc6736db8748",
-    "url": "/maitreya-react/static/media/KaTeX_Size3-Regular.f1a090a4.woff"
+    "revision": "ecd52e1e2f0cc1b6d4d8d29db4c792c9",
+    "url": "/maitreya-react/static/media/KaTeX_Size4-Regular.ecd52e1e.woff2"
   },
   {
     "revision": "1571003843c39b73f69bb9ffafc6b51c",
     "url": "/maitreya-react/static/media/KaTeX_Size4-Regular.15710038.woff"
-  },
-  {
-    "revision": "ecd52e1e2f0cc1b6d4d8d29db4c792c9",
-    "url": "/maitreya-react/static/media/KaTeX_Size4-Regular.ecd52e1e.woff2"
   },
   {
     "revision": "42a984df9caeef0f96fa6234a41ff1a3",
@@ -88,20 +88,20 @@ self.__precacheManifest = [
     "url": "/maitreya-react/static/media/KaTeX_Script-Regular.ae1b9702.woff"
   },
   {
-    "revision": "ae9ca32213bdef3d2b7006c743ffdb8a",
-    "url": "/maitreya-react/static/media/KaTeX_Size3-Regular.ae9ca322.ttf"
-  },
-  {
-    "revision": "b790cf180d62ae91960d6b46cbb3905e",
-    "url": "/maitreya-react/static/media/KaTeX_Size4-Regular.b790cf18.ttf"
+    "revision": "923e515d161a541174ba0f71e1adb54e",
+    "url": "/maitreya-react/static/media/KaTeX_Size1-Regular.923e515d.ttf"
   },
   {
     "revision": "e3717988fb1ebd63efd10fd2e05568bc",
     "url": "/maitreya-react/static/media/KaTeX_Size2-Regular.e3717988.ttf"
   },
   {
-    "revision": "923e515d161a541174ba0f71e1adb54e",
-    "url": "/maitreya-react/static/media/KaTeX_Size1-Regular.923e515d.ttf"
+    "revision": "b790cf180d62ae91960d6b46cbb3905e",
+    "url": "/maitreya-react/static/media/KaTeX_Size4-Regular.b790cf18.ttf"
+  },
+  {
+    "revision": "ae9ca32213bdef3d2b7006c743ffdb8a",
+    "url": "/maitreya-react/static/media/KaTeX_Size3-Regular.ae9ca322.ttf"
   },
   {
     "revision": "c7e386dd35c841d1a8f9e11fd1a11010",
@@ -110,6 +110,10 @@ self.__precacheManifest = [
   {
     "revision": "d04d48408d923e5bb6883a514481b7d8",
     "url": "/maitreya-react/static/media/KaTeX_Caligraphic-Regular.d04d4840.ttf"
+  },
+  {
+    "revision": "e21a6db7f372856ebfd6a278b56b8c7d",
+    "url": "/maitreya-react/static/media/KaTeX_Fraktur-Regular.e21a6db7.woff2"
   },
   {
     "revision": "b1a879453aae1660b06d5941c50457c5",
@@ -124,10 +128,6 @@ self.__precacheManifest = [
     "url": "/maitreya-react/static/media/KaTeX_Fraktur-Regular.801690bb.woff"
   },
   {
-    "revision": "e21a6db7f372856ebfd6a278b56b8c7d",
-    "url": "/maitreya-react/static/media/KaTeX_Fraktur-Regular.e21a6db7.woff2"
-  },
-  {
     "revision": "2484936f0b130a0d2bb745766058b46d",
     "url": "/maitreya-react/static/media/KaTeX_Main-BoldItalic.2484936f.woff2"
   },
@@ -136,12 +136,12 @@ self.__precacheManifest = [
     "url": "/maitreya-react/static/media/KaTeX_Main-Italic.c9d5a32d.woff2"
   },
   {
-    "revision": "96b229786edd80e54fa2b68c5f032960",
-    "url": "/maitreya-react/static/media/KaTeX_Math-BoldItalic.96b22978.woff2"
-  },
-  {
     "revision": "6091397cdc326cf8c8f7b648e2341483",
     "url": "/maitreya-react/static/media/KaTeX_Math-BoldItalic.6091397c.woff"
+  },
+  {
+    "revision": "dc91856176c1350f1ee303851a422277",
+    "url": "/maitreya-react/static/media/KaTeX_Math-Italic.dc918561.woff"
   },
   {
     "revision": "e08eb4331e7db133b6d2e355cd74724a",
@@ -152,8 +152,8 @@ self.__precacheManifest = [
     "url": "/maitreya-react/static/media/KaTeX_Math-Italic.4b3b168e.woff2"
   },
   {
-    "revision": "dc91856176c1350f1ee303851a422277",
-    "url": "/maitreya-react/static/media/KaTeX_Math-Italic.dc918561.woff"
+    "revision": "96b229786edd80e54fa2b68c5f032960",
+    "url": "/maitreya-react/static/media/KaTeX_Math-BoldItalic.96b22978.woff2"
   },
   {
     "revision": "c789d74a74097a2e9a1bb50f8714b531",
@@ -172,16 +172,8 @@ self.__precacheManifest = [
     "url": "/maitreya-react/static/media/KaTeX_Typewriter-Regular.6a862f8f.woff"
   },
   {
-    "revision": "623adf0b7730e8e7f6d4eb23c7d0ed0b",
-    "url": "/maitreya-react/static/media/cmunbx-webfont.623adf0b.woff"
-  },
-  {
     "revision": "e472a84ab9f9973ee027e06772d884b8",
     "url": "/maitreya-react/static/media/cmunorm-webfont.e472a84a.woff"
-  },
-  {
-    "revision": "bf9d5028c505bd141b1c2e7a67dde114",
-    "url": "/maitreya-react/static/media/cmunrm-webfont.bf9d5028.woff"
   },
   {
     "revision": "252fc14a5fd3f7489d24f3e75eb44c27",
@@ -190,6 +182,10 @@ self.__precacheManifest = [
   {
     "revision": "0b4b128c5448c4e1ece5bfec39bbfd75",
     "url": "/maitreya-react/static/media/cmunbmr-webfont.0b4b128c.woff"
+  },
+  {
+    "revision": "aee010b73bd03f7d42bc47e2cc588baa",
+    "url": "/maitreya-react/static/media/cmunbsr-webfont.aee010b7.woff"
   },
   {
     "revision": "e647fecfc0e0155fa8f6804576ef5a81",
@@ -208,8 +204,12 @@ self.__precacheManifest = [
     "url": "/maitreya-react/static/media/cmunsi-webfont.39bf0c81.woff"
   },
   {
-    "revision": "aee010b73bd03f7d42bc47e2cc588baa",
-    "url": "/maitreya-react/static/media/cmunbsr-webfont.aee010b7.woff"
+    "revision": "bf9d5028c505bd141b1c2e7a67dde114",
+    "url": "/maitreya-react/static/media/cmunrm-webfont.bf9d5028.woff"
+  },
+  {
+    "revision": "623adf0b7730e8e7f6d4eb23c7d0ed0b",
+    "url": "/maitreya-react/static/media/cmunbx-webfont.623adf0b.woff"
   },
   {
     "revision": "2057e5cbb505134b0a620e681abc5070",
@@ -236,20 +236,8 @@ self.__precacheManifest = [
     "url": "/maitreya-react/static/media/KaTeX_Script-Regular.85007a59.ttf"
   },
   {
-    "revision": "ee626b11d1313092be96a5cf146a02c0",
-    "url": "/maitreya-react/static/media/cmunti-webfont.ee626b11.woff"
-  },
-  {
-    "revision": "30ff89f809e9efa8f278e1601b1a4128",
-    "url": "/maitreya-react/static/media/cmunbi-webfont.30ff89f8.woff"
-  },
-  {
     "revision": "bf301791640747afbd25435e0a7bddde",
     "url": "/maitreya-react/static/media/cmunoti-webfont.bf301791.woff"
-  },
-  {
-    "revision": "210979ab30cc9680ba21be336ce663d2",
-    "url": "/maitreya-react/static/media/cmunobi-webfont.210979ab.woff"
   },
   {
     "revision": "be05e781dedada76b831a2ad0065c02e",
@@ -260,24 +248,36 @@ self.__precacheManifest = [
     "url": "/maitreya-react/static/media/cmunso-webfont.43849947.woff"
   },
   {
-    "revision": "b2d929640f68a1bd67eff3ebd331159a",
-    "url": "/maitreya-react/static/media/KaTeX_AMS-Regular.b2d92964.woff"
+    "revision": "30ff89f809e9efa8f278e1601b1a4128",
+    "url": "/maitreya-react/static/media/cmunbi-webfont.30ff89f8.woff"
+  },
+  {
+    "revision": "ee626b11d1313092be96a5cf146a02c0",
+    "url": "/maitreya-react/static/media/cmunti-webfont.ee626b11.woff"
+  },
+  {
+    "revision": "210979ab30cc9680ba21be336ce663d2",
+    "url": "/maitreya-react/static/media/cmunobi-webfont.210979ab.woff"
   },
   {
     "revision": "cd28a1d7203aef546e0f7733d98e8ea9",
     "url": "/maitreya-react/static/media/KaTeX_AMS-Regular.cd28a1d7.woff2"
   },
   {
+    "revision": "b2d929640f68a1bd67eff3ebd331159a",
+    "url": "/maitreya-react/static/media/KaTeX_AMS-Regular.b2d92964.woff"
+  },
+  {
     "revision": "9b1486220b5ca974aaceebbf70e1f087",
     "url": "/maitreya-react/static/media/KaTeX_Fraktur-Bold.9b148622.ttf"
   },
   {
-    "revision": "0dee09596a43df990fdefbe5ed207b2b",
-    "url": "/maitreya-react/static/media/KaTeX_Main-Bold.0dee0959.woff"
-  },
-  {
     "revision": "576266ad7ee52fe0285e1f8a76163d65",
     "url": "/maitreya-react/static/media/KaTeX_Fraktur-Regular.576266ad.ttf"
+  },
+  {
+    "revision": "0dee09596a43df990fdefbe5ed207b2b",
+    "url": "/maitreya-react/static/media/KaTeX_Main-Bold.0dee0959.woff"
   },
   {
     "revision": "a547140c5430ed97183f87d9fa247890",
@@ -288,12 +288,12 @@ self.__precacheManifest = [
     "url": "/maitreya-react/static/media/KaTeX_Main-Regular.54e5ba96.woff"
   },
   {
-    "revision": "d081a42411cc6f54d404ee2de6e63a41",
-    "url": "/maitreya-react/static/media/KaTeX_Math-BoldItalic.d081a424.ttf"
-  },
-  {
     "revision": "4c2a414abb99038cdc7d84d9711d06b2",
     "url": "/maitreya-react/static/media/KaTeX_SansSerif-Bold.4c2a414a.ttf"
+  },
+  {
+    "revision": "d081a42411cc6f54d404ee2de6e63a41",
+    "url": "/maitreya-react/static/media/KaTeX_Math-BoldItalic.d081a424.ttf"
   },
   {
     "revision": "dbf31d0ed38be8d16e4386e27b18de9d",
@@ -324,7 +324,7 @@ self.__precacheManifest = [
     "url": "/maitreya-react/static/media/KaTeX_Main-Regular.424335d9.ttf"
   },
   {
-    "revision": "85c1fa6ddac3123a58d65bb9230926d7",
+    "revision": "20cb6e7f9d42ad15db780ee1afcf09bc",
     "url": "/maitreya-react/index.html"
   }
 ];
